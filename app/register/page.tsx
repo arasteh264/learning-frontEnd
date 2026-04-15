@@ -1,0 +1,229 @@
+"use client";
+import React from "react";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { Form, Input, Button, Card, Typography, Checkbox } from "antd";
+import { AuthLayout } from "@/components/layout/AuthLayout";
+import {  Register } from "@/services/auth/auth.services";
+import { toast } from "react-toastify";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { RegisterType } from "@/types/auth";
+import { useRouter } from 'next/navigation';
+
+const { Title } = Typography;
+const RegisterPage: React.FC = () => {
+const router = useRouter();
+  const {
+    control: registerControl, 
+    handleSubmit: handleRegisterSubmit,
+    formState: { errors: registerErrors },
+    watch, 
+  } = useForm<RegisterType>({
+    defaultValues: {
+      userName: "",
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+
+
+  const password = watch("password");
+
+  const handleRegister = async (data: RegisterType) => {
+    try {
+
+const userData = {
+  userName: data.userName,
+  name: data.name,
+  email: data.email,
+  password: data.password,
+  phone: data.phone,
+  confirmPassword:data.confirmPassword
+};
+
+const resLogin = await Register(userData);
+
+if(resLogin.status===201){
+router.push('/login');
+    toast.success("ثبت نام با موفقیت انجام شد.");
+}
+    } catch (error:any) {
+
+      const errorMessage = error.response?.data?.message || 'خطا در ثبت نام. لطفا دوباره تلاش کنید.';
+      toast.error(errorMessage);
+    }
+  };
+
+
+
+  return (
+    <AuthLayout>
+      <Card className="w-full max-w-sm mx-auto">
+        <Title level={3} className="text-center mb-6 text-gray-800">
+          ثبت نام حساب کاربری
+        </Title>
+        <Form
+          name="registerForm"
+          layout="vertical"
+          onFinish={handleRegisterSubmit(handleRegister)} 
+          autoComplete="on"
+          className="space-y-4"
+        >
+          <Controller
+            name="userName"
+            control={registerControl}
+            rules={{ required: "نام کاربری الزامی است." }}
+            render={({ field }) => (
+              <Form.Item
+                label="نام کاربری"
+                validateStatus={registerErrors.userName ? "error" : ""}
+                help={registerErrors.userName?.message}
+              >
+                <Input
+                  {...field}
+                  placeholder="نام کاربری خود را وارد کنید"
+                  prefix={<UserOutlined className="site-form-item-icon" />} 
+                />
+              </Form.Item>
+            )}
+          />
+
+          <Controller
+            name="name"
+            control={registerControl}
+            rules={{ required: "نام و نام خانوادگی الزامی است." }}
+            render={({ field }) => (
+              <Form.Item
+                label="نام و نام خانوادگی"
+                validateStatus={registerErrors.name ? "error" : ""}
+                help={registerErrors.name?.message}
+              >
+                <Input
+                  {...field}
+                  placeholder="نام و نام خانوادگی خود را وارد کنید"
+                />
+              </Form.Item>
+            )}
+          />
+
+          <Controller
+            name="email"
+            control={registerControl}
+            rules={[
+              { required: true, message: "ایمیل الزامی است." },
+              {
+                type: "email",
+                message: "فرمت ایمیل نامعتبر است.",
+              },
+            ]}
+            render={({ field }) => (
+              <Form.Item
+                label="ایمیل"
+                validateStatus={registerErrors.email ? "error" : ""}
+                help={registerErrors.email?.message}
+              >
+                <Input
+                  {...field}
+                  placeholder="example@domain.com"
+                />
+              </Form.Item>
+            )}
+          />
+
+          <Controller
+            name="password"
+            control={registerControl}
+            rules={[
+              { required: true, message: "رمز عبور الزامی است." },
+              { min: 8, message: "رمز عبور باید حداقل 8 کاراکتر باشد." },
+            ]}
+            render={({ field }) => (
+              <Form.Item
+                label="رمز عبور"
+                validateStatus={registerErrors.password ? "error" : ""}
+                help={registerErrors.password?.message}
+              >
+                <Input.Password
+                  {...field}
+                  placeholder="رمز عبور خود را وارد کنید"
+                  prefix={<LockOutlined className="site-form-item-icon" />} 
+                />
+              </Form.Item>
+            )}
+          />
+
+          <Controller
+            name="confirmPassword"
+            control={registerControl}
+            rules={[
+              { required: true, message: "تایید رمز عبور الزامی است." },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("رمز عبور و تایید آن مطابقت ندارند.")
+                  );
+                },
+              }),
+            ]}
+            render={({ field }) => (
+              <Form.Item
+                label="تایید رمز عبور"
+                validateStatus={registerErrors.confirmPassword ? "error" : ""}
+                help={registerErrors.confirmPassword?.message}
+              >
+                <Input.Password
+                  {...field}
+                  placeholder="رمز عبور خود را دوباره وارد کنید"
+                />
+              </Form.Item>
+            )}
+          />
+
+          <Controller
+            name="phone"
+            control={registerControl}
+            rules={[
+              { required: true, message: "شماره تلفن الزامی است." },
+              {
+                pattern: /^09\d{9}$/,
+                message: "فرمت شماره تلفن نامعتبر است (مثال: 09123456789).",
+              },
+            ]}
+            render={({ field }) => (
+              <Form.Item
+                label="شماره تلفن"
+                validateStatus={registerErrors.phone ? "error" : ""}
+                help={registerErrors.phone?.message}
+              >
+                <Input
+                  {...field}
+                  placeholder="09123456789"
+                />
+              </Form.Item>
+            )}
+          />
+
+         
+                    <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="w-full bg-blue-600"
+              onClick={handleRegisterSubmit(handleRegister)} // فراخوانی submit برای فرم ثبت نام
+            >
+              ثبت نام
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </AuthLayout>
+  );
+};
+
+export default RegisterPage;
