@@ -7,7 +7,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Login } from "@/services/auth/auth.services";
 import { toast } from "react-toastify";
-
+import { useRouter } from 'next/navigation';
 type Inputs = {
   username: string;
   password: string;
@@ -26,7 +26,7 @@ const LoginPage: React.FC = () => {
       remember: false,
     },
   });
-
+const router = useRouter();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const resLogin = await Login({
@@ -34,6 +34,7 @@ const LoginPage: React.FC = () => {
         password: data.password,
       });
 localStorage.setItem("accessToken",resLogin.data.accessToken);
+router.push('/dashboard');
     } catch (error) {
        toast.error('نام کاربری یا رمز عبور اشتباه است.');
     }
