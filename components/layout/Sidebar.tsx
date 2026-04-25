@@ -1,67 +1,63 @@
 'use client';
+
 import React from 'react';
-import Link from 'next/link';
 import { Layout, Menu } from 'antd';
-import { AppstoreOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { usePathname } from 'next/navigation'; // برای App Router
+import { usePathname, useRouter } from 'next/navigation';
 import { sidebarMenuItemsWithSubmenus } from '@/config/menuItems';
-import SubMenu from 'antd/es/menu/SubMenu';
 
 const { Sider } = Layout;
-// const { SubMenu } = Menu; // اگر نیاز به SubMenu دارید، این خط را از کامنت دربیاورید
 
-const Sidebar = () => {
+export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
 
+  const selectedKey = '/' + pathname.split('/')[1];
 
+  const items = sidebarMenuItemsWithSubmenus.map((item) => {
+    if (item.children) {
+      return {
+        key: item.key,
+        icon: item.icon,
+        label: item.label,
+        children: item.children.map((child) => ({
+          key: child.key,
+          icon: child.icon,
+          label: child.label,
+          onClick: () => router.push(child.key),
+        })),
+      };
+    }
 
-
-  // پیدا کردن آیتم فعلی برای هایلایت کردن
-  // این بخش برای زمانی است که فقط از Menu.Item استفاده می‌کنید.
-  // اگر از SubMenu استفاده می‌کنید، منطق کمی پیچیده‌تر می‌شود.
-  // let selectedKey = pathname;
-  // if (!menuItems.find(item => item.key === pathname)) {
-  //   selectedKey = '/dashboard'; // مقدار پیش‌فرض در صورت عدم تطابق
-  // }
+    return {
+      key: item.key,
+      icon: item.icon,
+      label: item.label,
+      onClick: () => router.push(item.key),
+    };
+  });
 
   return (
     <Sider
-      width={256}
-      className="min-h-screen  text-gray-100"
+      width={260}
+      className="min-h-screen bg-white border-l border-gray-100"
     >
-      <div className="flex items-center justify-center h-16 bg-gray-900">
-        <h2 className="text-2xl font-bold ">سبز لرن</h2>
+      {/* لوگو */}
+      <div className="flex items-center justify-center h-16 border-b border-gray-100">
+        <h2 className="text-xl font-bold text-white">
+          سبز لرن
+        </h2>
       </div>
+
+      {/* منو */}
       <Menu
         mode="inline"
-        selectedKeys={[pathname]} 
-        className=""
-        style={{ border: 'none' }}
-      >
-        {sidebarMenuItemsWithSubmenus.map((item) => (
-  
-          item.children ? (
-            <SubMenu
-              key={item.key}
-              icon={item.icon}
-              title={item.label}
-              theme='light'
-            >
-              {item.children.map((child) => (
-                <Menu.Item key={child.key} icon={child.icon} className='!bg-none'>
-                  <Link href={child.key}>{child.label}</Link>
-                </Menu.Item>
-              ))}
-            </SubMenu>
-          ) : (
-            <Menu.Item key={item.key} icon={item.icon} className='!bg-none'>
-              <Link href={item.key}>{item.label}</Link>
-            </Menu.Item>
-          )
-        ))}
-      </Menu>
+        selectedKeys={[selectedKey]}
+        items={items}
+        style={{
+          border: 'none',
+          height: '100%',
+        }}
+      />
     </Sider>
   );
-};
-
-export default Sidebar;
+}

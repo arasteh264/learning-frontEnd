@@ -31,7 +31,7 @@ const router = useRouter();
   };
 
   return (
-    <header className="bg-white shadow py-4 px-4 sm:px-6 lg:px-8">
+    <header className="bg-white shadow py-4 px-4 sm:px-6 lg:px-8 border-b border-b-gray-200">
       <div className="flex items-center justify-between">
         <div className="flex gap-3">
           <Button
