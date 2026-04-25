@@ -11,6 +11,11 @@ export const sidebarMenuItemsWithSubmenus = [
     label: "داشبورد اصلی",
   },
   {
+    key: "/dashboard/courses",
+    icon: <UserOutlined />,
+    label: "دوره ها",
+  },
+  {
     key: "settings-group",
     icon: <SettingOutlined />,
     label: "تنظیمات",
