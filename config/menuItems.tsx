@@ -2,6 +2,11 @@ import {
   AppstoreOutlined,
   SettingOutlined,
   UserOutlined,
+  BookOutlined,
+  TagsOutlined,
+  PlayCircleOutlined,
+  TeamOutlined,
+  ProfileOutlined,
 } from "@ant-design/icons";
 
 export const sidebarMenuItemsWithSubmenus = [
@@ -10,31 +15,53 @@ export const sidebarMenuItemsWithSubmenus = [
     icon: <AppstoreOutlined />,
     label: "داشبورد اصلی",
   },
+
   {
-    key: "/dashboard/courses",
-    icon: <UserOutlined />,
+    key: "courses-group",
+    icon: <BookOutlined />, 
     label: "دوره ها",
+    children: [
+      {
+        key: "/courses",
+        icon: <ProfileOutlined />, 
+        label: "مدیریت دوره‌ها",
+      },
+
+      {
+        key: "/categories",
+        icon: <TagsOutlined />, 
+        label: "دسته‌بندی دوره‌ها",
+      },
+
+      {
+        key: "/sessions",
+        icon: <PlayCircleOutlined />, 
+        label: "جلسات دوره‌ها",
+      },
+    ],
   },
+
   {
     key: "settings-group",
     icon: <SettingOutlined />,
     label: "تنظیمات",
     children: [
       {
-        key: "/dashboard/settings/profile",
+        key: "/profile",
         label: "پروفایل",
-        icon: <UserOutlined />,
+        icon: <UserOutlined />, 
       },
       {
-        key: "/dashboard/settings/account",
+        key: "/settings/account",
         label: "حساب کاربری",
         icon: <SettingOutlined />,
       },
     ],
   },
+
   {
-    key: "/dashboard/users",
-    icon: <UserOutlined />,
+    key: "/users",
+    icon: <TeamOutlined />, 
     label: "کاربران",
   },
 ];
