@@ -2,66 +2,81 @@
 
 import BaseTable from "@/components/tables/BaseTable";
 import { getUserColumns } from "@/components/tables/tablesColumns/users.columns";
-import { useState } from "react";
-
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteUser, getUsers, RoleUser, BanUser } from "@/services/user";
+import { toast } from "react-toastify";
 
 export default function UsersPage() {
-const [data, setData] = useState([
-  {
-    _id: "1",
-    userName: "ali123",
-    name: "علی",
-    email: "ali@gmail.com",
-    phone: "09120000000",
-    role: "ADMIN",
-    isBanned: false,
-  },
-]);
+  const queryClient = useQueryClient();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
+  const { mutate: handleDeleteUUser } = useMutation({
+    mutationFn: deleteUser,
 
-  const handleEdit = (record: any) => {
-    console.log("edit user:", record);
-  };
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("کاربر با موفقیت حذف شد.");
+    },
+    onError: (err) => {
+      toast.error("خطا در حذف کاربر.");
+    },
+  });
+
+const { mutate: toggleBan } = useMutation({
+  mutationFn: BanUser,
+
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["users"] });
+    toast.success("وضعیت کاربر با موفقیت تغییر کرد.");
+  },
+  onError: (err) => {
+    toast.error("خطا در تغییر وضعیت کاربر.");
+  }
+});
+const { mutate: toggleRole } = useMutation({
+  mutationFn: RoleUser,
+
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["users"] });
+    toast.success("نقش کاربر تغییر کرد");
+  },
+
+  onError: () => {
+    toast.error("خطا در تغییر نقش");
+  },
+});
+  if (isLoading) return <p>loading...</p>;
+  if (error) return <p>error loading users</p>;
+
 
   const handleDelete = (id: string) => {
-    setData((prev) => prev.filter((u) => u._id !== id));
+    handleDeleteUUser(id);
   };
-const onToggleBan = (record: any) => {
-  setData((prev) =>
-    prev.map((user) =>
-      user._id === record._id
-        ? { ...user, isBanned: !user.isBanned }
-        : user
-    )
-  );
+
+  const onToggleBan = (record: any) => {
+    toggleBan(record._id || record.id);
+  };
+
+ const onToggleRole = (record: any) => {
+  toggleRole(record._id);
 };
-const onToggleRole = (record: any) => {
-  setData((prev) =>
-    prev.map((user) =>
-      user._id === record._id
-        ? {
-            ...user,
-            role: user.role === "ADMIN" ? "USER" : "ADMIN",
-          }
-        : user
-    )
-  );
-};
+
   return (
     <section className="w-full px-10 flex flex-col">
-
-      <div className="flex justify-end items-end mb-4">
-
-        <h2 className="text-xl font-bold text-right">
-          لیست کاربران
-        </h2>
-
+      <div className="flex justify-end mb-4">
+        <h2 className="text-xl font-bold">لیست کاربران</h2>
       </div>
 
       <BaseTable
-        data={data}
-       columns={getUserColumns(handleEdit, handleDelete, onToggleBan, onToggleRole)}
+        data={data ?? []}
+        columns={getUserColumns(
+          handleDelete,
+          onToggleBan,
+          onToggleRole,
+        )}
       />
-
     </section>
   );
 }

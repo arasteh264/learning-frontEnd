@@ -2,6 +2,8 @@ import { Modal, Input } from "antd";
 import { useState } from "react";
 import { EditOutlined } from "@ant-design/icons";
 import EditProfileModal from "./modals/editProfileModal";
+import { useQuery } from "@tanstack/react-query";
+import { getUserProfile } from "@/services/user";
 
 type ProfileItemProps = {
   label: string;
@@ -31,70 +33,85 @@ function ProfileItem({ label, value, onEdit, hasBorder }: ProfileItemProps) {
 }
 
 export default function ProfileInfo() {
+    const { data, isLoading, error } = useQuery({
+    queryKey: ["getUserProfile"],
+    queryFn: getUserProfile,
+  });
+  const userData = data?.data;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    nationalId: "",
-    phone: "",
-    email: "",
-    // birthDate: "",
-    lastName: "",
-     day: "1",
-  month: "1",
-  year: "1300",
-  });
-  const openModal = (data: typeof formData) => {
-    setFormData(data);
+
+  const openModal = (data: any) => {
+  
     setIsModalOpen(true);
   };
   return (
     <div className="w-[50%] border border-gray-200 rounded-lg flex items-center justify-center">
       <div className="w-full flex flex-col ">
         <div className="flex items-center justify-between px-2 gap-5 border-b border-gray-200">
-          <ProfileItem label="کد ملی" value="1234567890" hasBorder={true} />
           <ProfileItem
-            label="نام و نام خانوادگی"
-            value="علی رضایی"
-            hasBorder={false}
-            onEdit={() =>
-              openModal({
-                name: "علی",
-                lastName: "رضایی",
-                nationalId: "1234567890",
-                phone: "09123456789",
-                email: "test@gmail.com",
-                // birthDate: "1370/01/01",
-                day: "1",
-                month: "1",
-                year: "1370",
-              })
-            }
-          />
+  label="کد ملی"
+  value={userData?.nationalId || "-"}
+  hasBorder={true}
+/>
+
+<ProfileItem
+  label="نام و نام خانوادگی"
+  value={`${userData?.name || ""} ${userData?.lastName || ""}`}
+  hasBorder={false}
+  onEdit={() =>
+    openModal({
+      name: userData?.name || "",
+      lastName: userData?.lastName || "",
+      nationalId: userData?.nationalId || "",
+      phone: userData?.phone || "",
+      email: userData?.email || "",
+      day: "1",
+      month: "1",
+      year: "1370",
+    })
+  }
+/>
         </div>
         <div className="flex items-center justify-between px-2 gap-5 border-b border-gray-200">
-          <ProfileItem
-            label="شماره موبایل"
-            value="09123456789"
-            hasBorder={true}
-          />
-          <ProfileItem label="ایمیل" value="test@gmail.com" hasBorder={false} />
+ <ProfileItem
+  label="شماره موبایل"
+  value={userData?.phone || "-"}
+  hasBorder={true}
+/>
+
+<ProfileItem
+  label="ایمیل"
+  value={userData?.email || "-"}
+  hasBorder={false}
+/>
         </div>
         <div className="flex items-center justify-between px-2 gap-5 ">
-          <ProfileItem label="تاریخ تولد" value="1370/01/01" hasBorder={true} />
-          <ProfileItem label="شغل" value="دانشجو" hasBorder={false} />
+<ProfileItem
+  label="تاریخ تولد"
+  value="-"
+  hasBorder={true}
+/>          <ProfileItem label="شغل" value="دانشجو" hasBorder={false} />
         </div>
       </div>
-      <EditProfileModal
+     <EditProfileModal
         open={isModalOpen}
-        data={formData}
+        data={{
+          name: userData?.name || "",
+          lastName: userData?.lastName || "",
+          nationalId: userData?.nationalId || "",
+          phone: userData?.phone || "",
+          email: userData?.email || "",
+          day: "1",
+          month: "1",
+          year: "1370",
+        }}
         onCancel={() => setIsModalOpen(false)}
-        onOk={(data) => {
-          console.log(data);
+        onOk={(formData) => {
+          console.log(formData);
           setIsModalOpen(false);
         }}
-        onChange={setFormData}
-      />
+        />
     </div>
   );
 }
