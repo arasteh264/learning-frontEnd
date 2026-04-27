@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { categorySchema } from "@/validation/category.schema";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCategoryList } from "@/services/category";
 
 type CategoryForm = {
   title: string;
@@ -15,9 +17,12 @@ type CategoryForm = {
 };
 
 export default function Category() {
-  const [data, setData] = useState([
-    { id: 1, title: "React Next", href: "/react-next" },
-  ]);
+    const queryClient = useQueryClient();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["category"],
+    queryFn: getCategoryList,
+  });
+
 
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
@@ -47,31 +52,31 @@ export default function Category() {
 
 
   const handleDelete = (id: number) => {
-    setData((prev) => prev.filter((c) => c.id !== id));
+    // setData((prev) => prev.filter((c) => c.id !== id));
   };
 
 
-  const onSubmit = (formData: CategoryForm) => {
-    if (isEdit) {
-      setData((prev) =>
-        prev.map((item) =>
-          item.id === editing.id
-            ? { ...item, ...formData }
-            : item
-        )
-      );
-    } else {
-      setData((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          ...formData,
-        },
-      ]);
-    }
+  // const onSubmit = (formData: CategoryForm) => {
+  //   if (isEdit) {
+  //     setData((prev) =>
+  //       prev.map((item) =>
+  //         item.id === editing.id
+  //           ? { ...item, ...formData }
+  //           : item
+  //       )
+  //     );
+  //   } else {
+  //     setData((prev) => [
+  //       ...prev,
+  //       {
+  //         id: Date.now(),
+  //         ...formData,
+  //       },
+  //     ]);
+  //   }
 
-    setOpen(false);
-  };
+  //   setOpen(false);
+  // };
 
   return (
     <section className="w-full px-10 flex flex-col">
@@ -85,14 +90,14 @@ export default function Category() {
       </Button>
 
       <BaseTable
-        data={data}
+        data={data?.data || []}
         columns={getCategoryColumns(handleEdit, handleDelete)}
       />
 
       <Modal
         open={open}
         onCancel={() => setOpen(false)}
-        onOk={handleSubmit(onSubmit)}
+        // onOk={handleSubmit(onSubmit)}
         okText="ذخیره"
         cancelText="بستن"
         title={isEdit ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی"}

@@ -134,7 +134,7 @@ router.push('/dashboard');
         <div className="text-center text-sm text-gray-600">
           حساب کاربری ندارید؟
           <a
-            href="/register"
+            href="/auth/register"
             className="text-blue-500 hover:text-blue-700 ml-1"
           >
             ثبت نام کنید

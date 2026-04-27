@@ -27,7 +27,7 @@ const router = useRouter();
 
  const handleLogout = () => {
   localStorage.removeItem("accessToken")
-  router.push('/login');
+  router.push('/auth/login');
   };
 
   return (
