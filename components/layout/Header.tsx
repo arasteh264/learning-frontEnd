@@ -50,13 +50,13 @@ const router = useRouter();
           </Link>
         </div>
         <div>
-          {userData && userData.name ? (
+          {/* {userData && userData.name ? (
             <div className="flex gap-4">
               <span>نام : {userData.name} </span>
             </div>
           ) : (
             <span>کاربر مهمان</span>
-          )}
+          )} */}
         </div>
       </div>
     </header>

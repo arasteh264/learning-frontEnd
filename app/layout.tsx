@@ -6,6 +6,7 @@ import { ConfigProvider } from "antd";
 import HeaderDashborad from "@/components/layout/Header";
 import localFont from 'next/font/local';
 import Providers from './providers';
+import { ToastContainer } from "react-toastify";
 
 const iranYekan = localFont({
   src: [
@@ -47,6 +48,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Sidebar />
             </div>
           </ConfigProvider>
+                         <ToastContainer
+                position="top-right"
+                autoClose={5000} 
+                hideProgressBar={false} 
+                newestOnTop={false}
+                closeOnClick
+                rtl={false} 
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light" 
+              />
          </Providers>
       </body>
     </html>

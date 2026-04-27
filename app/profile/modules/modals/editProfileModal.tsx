@@ -47,7 +47,6 @@ type ProfileForm = {
 type Props = {
   open: boolean;
   data: ProfileForm;
-  onChange: (data: ProfileForm) => void;
   onOk: (data: ProfileForm) => void;
   onCancel: () => void;
 };
@@ -55,7 +54,6 @@ type Props = {
 export default function EditProfileModal({
   open,
   data,
-  onChange,
   onOk,
   onCancel,
 }: Props) {
@@ -63,14 +61,29 @@ export default function EditProfileModal({
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<ProfileForm>({
-    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      name: "",
+      lastName: "",
+      nationalId: "",
+      phone: "",
+      email: "",
+      day: "",
+      month: "",
+      year: "",
+    },
   });
-  const [isOtpOpen, setIsOtpOpen] = useState(false);
+  console.log("DATA FROM API:", data);
   useEffect(() => {
-    // reset(data);
-  }, [data]);
+    if (open && data) {
+      reset({
+        ...data,
+      });
+    }
+  }, [open]);
+  const [isOtpOpen, setIsOtpOpen] = useState(false);
 
   const onSubmit = (formData: ProfileForm) => {
     onOk(formData);
@@ -98,15 +111,6 @@ export default function EditProfileModal({
             {errors.name && (
               <span className="text-red-500 text-xs">
                 {errors.name.message}
-              </span>
-            )}
-          </div>
-          <div className="w-full flex flex-col gap-1">
-            <span>نام خانوادگی :</span>
-            <Input {...register("lastName")} />
-            {errors.lastName && (
-              <span className="text-red-500 text-xs">
-                {errors.lastName.message}
               </span>
             )}
           </div>
@@ -146,7 +150,13 @@ export default function EditProfileModal({
               name="day"
               control={control}
               render={({ field }) => (
-                <Select {...field} options={days} placeholder="روز" />
+                // <Select {...field} options={days} />
+                <Select
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={days}
+                  placeholder="روز"
+                />
               )}
             />
             {errors.day && (
@@ -159,7 +169,14 @@ export default function EditProfileModal({
               name="month"
               control={control}
               render={({ field }) => (
-                <Select {...field} options={months} placeholder="ماه" />
+                // <Select {...field} options={months}/>
+
+                <Select
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={months}
+                  placeholder="ماه"
+                />
               )}
             />
             {errors.month && (
@@ -175,7 +192,12 @@ export default function EditProfileModal({
               name="year"
               control={control}
               render={({ field }) => (
-                <Select {...field} options={years} placeholder="سال" />
+                <Select
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={years}
+                  placeholder="سال"
+                />
               )}
             />
             {errors.year && (
@@ -186,7 +208,7 @@ export default function EditProfileModal({
           </div>
         </div>
         <div className="w-full flex flex-col gap-1 py-3">
-               <div className="w-full flex flex-col gap-1 mt-2">
+          <div className="w-full flex flex-col gap-1 mt-2">
             <span className="mb-0.5">ایمیل :</span>
             <Input {...register("email")} />
             {errors.email && (
@@ -194,7 +216,7 @@ export default function EditProfileModal({
                 {errors.email.message}
               </span>
             )}
-          </div>  
+          </div>
         </div>
         <Button htmlType="submit" type="primary" className="mt-3">
           ذخیره

@@ -3,7 +3,6 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { StopOutlined } from "@ant-design/icons";
 import { UserSwitchOutlined } from "@ant-design/icons";
 export const getUserColumns = (
-  onEdit: (record: any) => void,
   onDelete: (id: string) => void,
   onToggleBan: (record: any) => void,
   onToggleRole: (record: any) => void
@@ -85,12 +84,11 @@ export const getUserColumns = (
         />
       </Popconfirm>
 
-      {/* BAN / UNBAN */}
       <Popconfirm
         title={
           record.isBanned
-            ? "آنبن کردن کاربر؟"
-            : "بن کردن کاربر؟"
+            ? "ایا می‌خواهید این کاربر را آنبن کنید؟"
+            : "ایا می‌خواهید این کاربر را بن کنید؟"
         }
         okText="تایید"
         cancelText="لغو"
@@ -103,9 +101,8 @@ export const getUserColumns = (
         />
       </Popconfirm>
 
-      {/* DELETE */}
       <Popconfirm
-        title="حذف کاربر؟"
+        title="آیا از حذف این کاربر مطمئن هستید؟"
         okText="بله"
         cancelText="نه"
         onConfirm={() => onDelete(record._id || record.id)}
