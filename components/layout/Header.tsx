@@ -4,25 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "@/services/user";
 import { UserOutlined, PoweroffOutlined  } from "@ant-design/icons";
 import { Button } from "antd";
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from "next/link";
 const HeaderDashborad = () => {
-  const [userData, setUserData] = useState<UserProfileType>();
+const pathname = usePathname();
+if (pathname === "/auth/login" || pathname === "/auth/register") return null;
 const router = useRouter();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getUserProfile();
-
-        setUserData(response.data);
-      } catch (error) {
-        console.error("خطا در دریافت داده:", error);
-      } finally {
-      }
-    };
-
-    fetchData();
-  }, []);
+const { data: userData, isLoading } = useQuery({
+  queryKey: ["profile"],
+  queryFn: getUserProfile,
+  retry: false,
+});
 
 
  const handleLogout = () => {
