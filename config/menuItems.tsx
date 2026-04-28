@@ -18,24 +18,24 @@ export const sidebarMenuItemsWithSubmenus = [
 
   {
     key: "courses-group",
-    icon: <BookOutlined />, 
+    icon: <BookOutlined />,
     label: "دوره ها",
     children: [
       {
         key: "/courses",
-        icon: <ProfileOutlined />, 
+        icon: <ProfileOutlined />,
         label: "مدیریت دوره‌ها",
       },
 
       {
         key: "/categories",
-        icon: <TagsOutlined />, 
+        icon: <TagsOutlined />,
         label: "دسته‌بندی دوره‌ها",
       },
 
       {
         key: "/sessions",
-        icon: <PlayCircleOutlined />, 
+        icon: <PlayCircleOutlined />,
         label: "جلسات دوره‌ها",
       },
     ],
@@ -49,7 +49,7 @@ export const sidebarMenuItemsWithSubmenus = [
       {
         key: "/profile",
         label: "پروفایل",
-        icon: <UserOutlined />, 
+        icon: <UserOutlined />,
       },
       {
         key: "/settings/account",
@@ -60,8 +60,20 @@ export const sidebarMenuItemsWithSubmenus = [
   },
 
   {
-    key: "/users",
-    icon: <TeamOutlined />, 
+    key: "user-group",
+    icon: <SettingOutlined />,
     label: "کاربران",
+    children: [
+      {
+        key: "/users",
+        icon: <TeamOutlined />,
+        label: "لیست کاربران",
+      },
+      // {
+      //   key: "/settings/account",
+      //   label: "لیست اساتید",
+      //   icon: <SettingOutlined />,
+      // },
+    ],
   },
 ];

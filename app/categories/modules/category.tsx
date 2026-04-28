@@ -8,8 +8,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { categorySchema } from "@/validation/category.schema";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCategoryList } from "@/services/category";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addCategory, getCategoryList } from "@/services/category";
+import { toast } from "react-toastify";
 
 type CategoryForm = {
   title: string;
@@ -34,13 +35,15 @@ export default function Category() {
     handleSubmit,
     reset,
     formState: { errors },
+    setValue, // Import setValue
   } = useForm<CategoryForm>({
     resolver: zodResolver(categorySchema),
   });
 
   const handleAdd = () => {
+    
     setEditing(null);
-    reset({ title: "", href: "" });
+    // reset({ title: "", href: "" });
     setOpen(true);
   };
 
@@ -56,27 +59,28 @@ export default function Category() {
   };
 
 
-  // const onSubmit = (formData: CategoryForm) => {
-  //   if (isEdit) {
-  //     setData((prev) =>
-  //       prev.map((item) =>
-  //         item.id === editing.id
-  //           ? { ...item, ...formData }
-  //           : item
-  //       )
-  //     );
-  //   } else {
-  //     setData((prev) => [
-  //       ...prev,
-  //       {
-  //         id: Date.now(),
-  //         ...formData,
-  //       },
-  //     ]);
-  //   }
+    const addMutation = useMutation({
+    mutationFn: (newCategory: CategoryForm) => addCategory(newCategory),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["category"] });
+      toast.success("دسته‌بندی با موفقیت اضافه شد."); 
+      setOpen(false);
+    },
+    onError: (err: any) => {
+      toast.error(`خطا در افزودن دسته‌بندی: ${err.message || 'خطای نامشخص'}`);
+    },
+  });
 
-  //   setOpen(false);
-  // };
+
+  const onSubmit = (formData: CategoryForm) => {
+
+    if (isEdit && editing?.id) {
+      // updateMutation.mutate({ id: editing.id, data: formData });
+    } else {
+      debugger
+      addMutation.mutate(formData);
+    }
+  };
 
   return (
     <section className="w-full px-10 flex flex-col">
@@ -97,7 +101,7 @@ export default function Category() {
       <Modal
         open={open}
         onCancel={() => setOpen(false)}
-        // onOk={handleSubmit(onSubmit)}
+        onOk={handleSubmit(onSubmit)}
         okText="ذخیره"
         cancelText="بستن"
         title={isEdit ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی"}
