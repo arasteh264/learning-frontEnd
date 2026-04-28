@@ -2,12 +2,13 @@
 import React from "react";
 import { useForm, Controller } from 'react-hook-form';
 import { SubmitHandler } from "react-hook-form";
-import { Input, Button, Checkbox, Form } from "antd";
+import { Input, Button, Checkbox, Form, Card } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Login } from "@/services/auth/auth.services";
 import { toast } from "react-toastify";
 import { useRouter } from 'next/navigation';
+import Link from "next/link";
 type Inputs = {
   username: string;
   password: string;
@@ -34,7 +35,7 @@ const router = useRouter();
         password: data.password,
       });
 localStorage.setItem("accessToken",resLogin.data.accessToken);
-router.push('/dashboard');
+router.push('/');
     } catch (error) {
        toast.error('نام کاربری یا رمز عبور اشتباه است.');
     }
@@ -42,6 +43,9 @@ router.push('/dashboard');
 
   return (
 <AuthLayout> 
+     <Card
+  className="w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 rounded-2xl shadow-xl"
+>
       <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">ورود به حساب کاربری</h2>
       <Form
         name="loginForm"
@@ -133,14 +137,15 @@ router.push('/dashboard');
 
         <div className="text-center text-sm text-gray-600">
           حساب کاربری ندارید؟
-          <a
+          <Link
             href="/auth/register"
             className="text-blue-500 hover:text-blue-700 ml-1"
           >
             ثبت نام کنید
-          </a>
+          </Link>
         </div>
       </Form>
+      </Card>
     </AuthLayout>
   );
 };

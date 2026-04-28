@@ -11,6 +11,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
+if (pathname === "/auth/login" || pathname === "/auth/register") return null;
   const selectedKey = '/' + pathname.split('/')[1];
 
   const items = sidebarMenuItemsWithSubmenus.map((item) => {
