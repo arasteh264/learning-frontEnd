@@ -3,8 +3,10 @@
 import { Input, Button, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useForm, Controller } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { getTeacherList } from "@/services/teacher";
+import { getCategoryList } from "@/services/category";
 type CreateCourseForm = {
   name: string;
   price: string;
@@ -19,8 +21,27 @@ type CreateCourseForm = {
 };
 
 export default function CreateCoursePage() {
-  const { control, register, handleSubmit } = useForm<CreateCourseForm>();
 
+
+
+  const { control, register, handleSubmit } = useForm<CreateCourseForm>();
+      const { data:TeacherData = [], isLoading, error } = useQuery({
+    queryKey: ["users"],
+    queryFn: getTeacherList,
+  });
+       const { data:CateoryData = []} = useQuery({
+    queryKey: ["category"],
+    queryFn: getCategoryList,
+  });
+  debugger
+  const optionsTeacher = (TeacherData?.data ?? []).map((teacher: any) => ({
+  value: teacher._id,
+  label: teacher.userId.name,
+}));
+  const optionsCategory = (CateoryData?.data ?? []).map((teacher: any) => ({
+  value: teacher._id,
+  label: teacher.userId.name,
+}));
   const mutation = useMutation({
     mutationFn: async (data: CreateCourseForm) => {
       const res = await fetch("/api/courses", {
@@ -95,11 +116,20 @@ export default function CreateCoursePage() {
 
           <div>
             <label className="block mb-1">مدرس</label>
-            <Controller
-              name="creator"
-              control={control}
-              render={({ field }) => <Select {...field} className="w-full" />}
-            />
+               <Controller
+        name="creator"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={optionsTeacher}
+            className="w-full"
+            placeholder="انتخاب مدرس"
+            onChange={(selectedOption) => field.onChange(selectedOption?.value)}
+            value={optionsTeacher.find((opt:any) => opt.value === field.value) || null}
+          />
+        )}
+      />
           </div>
         </div>
 
