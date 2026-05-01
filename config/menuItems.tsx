@@ -60,20 +60,20 @@ export const sidebarMenuItemsWithSubmenus = [
   },
 
   {
-    key: "user-group",
-    icon: <SettingOutlined />,
-    label: "کاربران",
-    children: [
-      {
-        key: "/users",
-        icon: <TeamOutlined />,
-        label: "لیست کاربران",
-      },
-      // {
-      //   key: "/settings/account",
-      //   label: "لیست اساتید",
-      //   icon: <SettingOutlined />,
-      // },
-    ],
-  },
+  key: "user-group",
+  icon: <SettingOutlined />,
+  label: "کاربران",
+  children: [
+    {
+      key: "/users",
+      icon: <TeamOutlined />,  
+      label: "لیست کاربران",
+    },
+    {
+      key: "/teacher",
+      label: "لیست اساتید",
+      icon: <UserOutlined />,  
+    },
+  ],
+}
 ];

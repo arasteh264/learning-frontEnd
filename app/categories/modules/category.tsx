@@ -3,13 +3,13 @@
 import BaseTable from "@/components/tables/BaseTable";
 import { getCategoryColumns } from "@/components/tables/tablesColumns/category.columns";
 import { Button, Modal, Input } from "antd";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { categorySchema } from "@/validation/category.schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addCategory, getCategoryList } from "@/services/category";
+import { addCategory, getCategoryList, removeCategory, updateCategory } from "@/services/category";
 import { toast } from "react-toastify";
 
 type CategoryForm = {
@@ -18,12 +18,8 @@ type CategoryForm = {
 };
 
 export default function Category() {
-    const queryClient = useQueryClient();
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["category"],
-    queryFn: getCategoryList,
-  });
-
+  const queryClient = useQueryClient();
+  const { data } = useQuery({ queryKey: ["category"], queryFn: getCategoryList });
 
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
@@ -34,62 +30,92 @@ export default function Category() {
     register,
     handleSubmit,
     reset,
+    trigger,
+    control,
     formState: { errors },
-    setValue, // Import setValue
   } = useForm<CategoryForm>({
     resolver: zodResolver(categorySchema),
+    defaultValues: { title: "", href: "" },
+    mode: "onSubmit",
   });
 
+  const modalKey = useMemo(
+    () => (isEdit ? `edit-${editing?.id ?? "x"}` : "add"),
+    [isEdit, editing?.id]
+  );
+
   const handleAdd = () => {
-    
     setEditing(null);
-    // reset({ title: "", href: "" });
+    reset({ title: "", href: "" });
     setOpen(true);
   };
 
   const handleEdit = (record: any) => {
     setEditing(record);
-    reset(record);
+    const next = {
+      title: record?.title ?? "",
+      href: record?.href ?? "",
+    };
+
+    reset(next);
+    trigger(["title", "href"]);
     setOpen(true);
   };
 
-
-  const handleDelete = (id: number) => {
-    // setData((prev) => prev.filter((c) => c.id !== id));
+  const handleDelete = (record: any) => {
+    removeMutation.mutate(record._id)
   };
 
-
-    const addMutation = useMutation({
+  const addMutation = useMutation({
     mutationFn: (newCategory: CategoryForm) => addCategory(newCategory),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["category"] });
-      toast.success("دسته‌بندی با موفقیت اضافه شد."); 
+      toast.success("دسته‌بندی با موفقیت اضافه شد.");
       setOpen(false);
     },
     onError: (err: any) => {
-      toast.error(`خطا در افزودن دسته‌بندی: ${err.message || 'خطای نامشخص'}`);
+      toast.error(`خطا در افزودن دسته‌بندی: ${err.message || "خطای نامشخص"}`);
     },
   });
 
+const updateMutation = useMutation({
+  mutationFn: (payload: { newCategory: CategoryForm; id: number }) =>
+    updateCategory(payload.newCategory, payload.id),
 
-  const onSubmit = (formData: CategoryForm) => {
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["category"] });
+    toast.success("دسته‌بندی با موفقیت ویرایش شد.");
+    setOpen(false);
+  },
+  onError: (err: any) => {
+    toast.error(`خطا در ویرایش دسته‌بندی: ${err.message || "خطای نامشخص"}`);
+  },
+});
+const removeMutation = useMutation({
+  mutationFn: (id: number) =>
+    removeCategory(id),
 
-    if (isEdit && editing?.id) {
-      // updateMutation.mutate({ id: editing.id, data: formData });
-    } else {
-      debugger
-      addMutation.mutate(formData);
-    }
-  };
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["category"] });
+    toast.success("دسته‌بندی با موفقیت حذف شد.");
+    setOpen(false);
+  },
+  onError: (err: any) => {
+    toast.error(`خطا در حذف دسته‌بندی: ${err.message || "خطای نامشخص"}`);
+  },
+});
+
+const onSubmit = (formData: CategoryForm) => {
+  if (editing?._id) {
+    updateMutation.mutate({ newCategory: formData, id: editing?._id });
+  } else {
+    addMutation.mutate(formData);
+  }
+};
 
   return (
-    <section className="w-full px-10 flex flex-col">
-
-      <Button
-        type="primary"
-        className="mb-4 self-end"
-        onClick={handleAdd}
-      >
+    <section className="w-full px-10 flex flex-col mt-6">
+      <Button type="primary" className="mb-4 self-end" onClick={handleAdd}>
         افزودن دسته‌بندی
       </Button>
 
@@ -98,39 +124,54 @@ export default function Category() {
         columns={getCategoryColumns(handleEdit, handleDelete)}
       />
 
-      <Modal
-        open={open}
-        onCancel={() => setOpen(false)}
-        onOk={handleSubmit(onSubmit)}
-        okText="ذخیره"
-        cancelText="بستن"
-        title={isEdit ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی"}
-        width={400}
-      >
-        <div className="flex flex-col gap-3">
+<Modal
+  key={modalKey}
+  open={open}
+  onCancel={() => setOpen(false)}
+  onOk={handleSubmit(onSubmit)}
+  okText="ذخیره"
+  cancelText="بستن"
+  title={isEdit ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی"}
+  width={400}
+>
+  <div className="flex flex-col gap-3">
+    <div>
+      <label>عنوان</label>
+      <Controller
+        name="title"
+        control={control}
+        defaultValue=""
+        render={({ field }) => (
+          <Input
+            {...field}
+            placeholder="مثلاً: تکنولوژی"
+          />
+        )}
+      />
+      {errors?.title && (
+        <p className="text-red-500 text-xs">{errors.title.message}</p>
+      )}
+    </div>
 
-          <div>
-            <label>عنوان</label>
-            <Input {...register("title")} />
-            {errors.title && (
-              <p className="text-red-500 text-xs">
-                {errors.title.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label>لینک</label>
-            <Input {...register("href")} />
-            {errors.href && (
-              <p className="text-red-500 text-xs">
-                {errors.href.message}
-              </p>
-            )}
-          </div>
-
-        </div>
-      </Modal>
+    <div>
+      <label>لینک</label>
+      <Controller
+        name="href"
+        control={control}
+        defaultValue=""
+        render={({ field }) => (
+          <Input
+            {...field}
+            placeholder="/tech-..."
+          />
+        )}
+      />
+      {errors?.href && (
+        <p className="text-red-500 text-xs">{errors.href.message}</p>
+      )}
+    </div>
+  </div>
+</Modal>
 
     </section>
   );

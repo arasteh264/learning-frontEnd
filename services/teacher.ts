@@ -6,3 +6,10 @@ export const getTeacherList = async () => {
 
   return response;
 };
+
+
+export const requestForTeacher = async (id :number,paylod:any) => {
+  const response = await http.post(`/teacher/request/${id}`);
+
+  return response;
+};

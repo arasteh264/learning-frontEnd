@@ -49,7 +49,7 @@ const userData = {
 const resLogin = await Register(userData);
 
 if(resLogin.status===201){
-router.push('/login');
+router.push('/auth/login');
     toast.success("ثبت نام با موفقیت انجام شد.");
 }
     } catch (error:any) {
