@@ -31,7 +31,7 @@ export const getCategoryColumns = (
           title="آیا از حذف این دسته‌بندی مطمئن هستید؟"
           okText="بله"
           cancelText="نه"
-          onConfirm={() => onDelete(record.id)}
+          onConfirm={() => onDelete(record)}
         >
           <Button
             danger

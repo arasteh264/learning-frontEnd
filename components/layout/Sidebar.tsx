@@ -42,14 +42,12 @@ if (pathname === "/auth/login" || pathname === "/auth/register") return null;
       width={260}
       className="min-h-screen bg-white border-l border-gray-100"
     >
-      {/* لوگو */}
       <div className="flex items-center justify-center h-16 border-b border-gray-100">
         <h2 className="text-xl font-bold text-white">
           سبز لرن
         </h2>
       </div>
 
-      {/* منو */}
       <Menu
         mode="inline"
         selectedKeys={[selectedKey]}

@@ -75,7 +75,6 @@ export default function EditProfileModal({
       year: "",
     },
   });
-  console.log("DATA FROM API:", data);
   useEffect(() => {
     if (open && data) {
       reset({
