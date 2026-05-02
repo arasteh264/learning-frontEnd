@@ -2,27 +2,27 @@ import { Button, Popconfirm, Tag, Tooltip } from "antd";
 import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons";
 
 export const getTeacherColumns = (
-  onEdit: (record: any) => void,
+  // onEdit: (record: any) => void,
   handleDelete: (id: string) => void,
    onVerify: (id: string) => void
 ) => [
   {
     title: "نام استاد",
-    dataIndex: "teacherName",
-    key: "teacherName",
+    dataIndex: "name",
+    key: "name",
   },
 
   {
     title: "ایمیل استاد",
-    dataIndex: "teacherEmail",
-    key: "teacherEmail",
+    dataIndex: "email",
+    key: "email",
   },
 
   {
     title: "توضیحات",
     dataIndex: "bio",
     key: "bio",
-    render: (bio: string) => bio || "—",  // نمایش "—" در صورت عدم وجود bio
+    render: (bio: string) => bio || "",
   },
 
   {
@@ -50,7 +50,7 @@ export const getTeacherColumns = (
         ))
       ) : (
         "—"
-      ),  // نمایش دوره‌ها
+      ), 
   },
 
   {
@@ -66,7 +66,7 @@ export const getTeacherColumns = (
         ))
       ) : (
         "—"
-      ),  // نمایش تخصص‌ها
+      ),  
   },
 
 {
@@ -81,7 +81,7 @@ render: (_: any, record: any) => (
         title="آیا این استاد تایید شود؟"
         okText="بله"
         cancelText="نه"
-        onConfirm={() => onVerify(record._id)}
+        onConfirm={() => onVerify(record.id)}
       >
         <Tooltip title="تایید استاد">
           <Button
@@ -93,20 +93,20 @@ render: (_: any, record: any) => (
     )}
 
     {/* EDIT */}
-    <Tooltip title="ویرایش">
+    {/* <Tooltip title="ویرایش">
       <Button
         type="text"
         icon={<EditOutlined />}
         onClick={() => onEdit(record)}
       />
-    </Tooltip>
+    </Tooltip> */}
 
     {/* DELETE */}
     <Popconfirm
       title="آیا از حذف این استاد مطمئن هستید؟"
       okText="بله"
       cancelText="نه"
-      onConfirm={() => handleDelete(record._id)}
+      onConfirm={() => handleDelete(record.id)}
     >
       <Tooltip title="حذف">
         <Button danger type="text" icon={<DeleteOutlined />} />

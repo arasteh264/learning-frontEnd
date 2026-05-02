@@ -4,7 +4,7 @@ import BaseTable from "@/components/tables/BaseTable";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteUser, RoleUser, BanUser } from "@/services/user";
 import { toast } from "react-toastify";
-import { getTeacherList, verifyTeacher } from "@/services/teacher";
+import { getTeacherList, removeTeacher, verifyTeacher } from "@/services/teacher";
 import { getTeacherColumns } from "@/components/tables/tablesColumns/teacher.columns";
 import { useMemo } from "react";
 
@@ -16,27 +16,8 @@ export default function teacherPage() {
     queryFn: getTeacherList,
   });
 
-  const { mutate: handleDeleteUUser } = useMutation({
-    mutationFn: deleteUser,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["teacher"] });
-      toast.success("کاربر حذف شد");
-    },
-  });
 
-  const { mutate: toggleBan } = useMutation({
-    mutationFn: BanUser,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["teacher"] });
-    },
-  });
 
-  const { mutate: toggleRole } = useMutation({
-    mutationFn: RoleUser,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["teacher"] });
-    },
-  });
 
   const { mutate: verifyTeacherMutate } = useMutation({
     mutationFn: verifyTeacher,
@@ -46,24 +27,37 @@ export default function teacherPage() {
     },
   });
 
-  // handlers
-  const handleDelete = (id: string) => handleDeleteUUser(id);
-  const onToggleBan = (record: any) => toggleBan(record._id);
-  const onToggleRole = (record: any) => toggleRole(record._id);
+    const{ mutate: removeMutation }  = useMutation({
+    mutationFn: (id: string) => removeTeacher(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["teacher"] });
+      toast.success("استاد مورد نظر با موفقیت حذف شد.");
+    },
+
+    onError: (err: any) => {
+      toast.error(err.response.data.message || "خطا رخ داد");
+    },
+  });
+
+
+  const handleDelete = (id: string) =>{
+    debugger
+    removeMutation(id)
+  } ;
+  // const onToggleBan = (record: any) => toggleBan(record._id);
+  // const onToggleRole = (record: any) => toggleRole(record._id);
   const handleVerify = (id: string) => verifyTeacherMutate(id);
 
-  // ✅ اینجا باید باشه (قبل از return)
   const columns = useMemo(
     () =>
       getTeacherColumns(
         handleDelete,
-        onToggleBan,
         handleVerify
       ),
-    [handleDelete, onToggleBan, handleVerify]
+    [handleDelete, handleVerify]
   );
 
-  // ✅ حالا condition
   if (isLoading) return <p>loading...</p>;
   if (error) return <p>error loading users</p>;
 
