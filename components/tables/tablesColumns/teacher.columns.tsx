@@ -1,9 +1,10 @@
-import { Button, Popconfirm, Tag } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button, Popconfirm, Tag, Tooltip } from "antd";
+import { EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons";
 
 export const getTeacherColumns = (
   onEdit: (record: any) => void,
-  handleDelete: (id: string) => void
+  handleDelete: (id: string) => void,
+   onVerify: (id: string) => void
 ) => [
   {
     title: "نام استاد",
@@ -68,28 +69,51 @@ export const getTeacherColumns = (
       ),  // نمایش تخصص‌ها
   },
 
-  {
-    title: "عملیات",
-    key: "actions",
-    render: (_: any, record: any) => (
-      <div className="flex gap-2">
-        {/* EDIT */}
-        <Button
-          type="text"
-          icon={<EditOutlined />}
-          onClick={() => onEdit(record)}
-        />
+{
+  title: "عملیات",
+  key: "actions",
+render: (_: any, record: any) => (
+  <div className="flex gap-2">
 
-        {/* DELETE */}
-        <Popconfirm
-          title="آیا از حذف این استاد مطمئن هستید؟"
-          okText="بله"
-          cancelText="نه"
-          onConfirm={() => handleDelete(record.teacherId || record.id)}
-        >
-          <Button danger type="text" icon={<DeleteOutlined />} />
-        </Popconfirm>
-      </div>
-    ),
-  },
+    {/* تایید استاد */}
+    {!record.isVerified && (
+      <Popconfirm
+        title="آیا این استاد تایید شود؟"
+        okText="بله"
+        cancelText="نه"
+        onConfirm={() => onVerify(record._id)}
+      >
+        <Tooltip title="تایید استاد">
+          <Button
+            type="text"
+            icon={<CheckOutlined style={{ color: "green" }} />}
+          />
+        </Tooltip>
+      </Popconfirm>
+    )}
+
+    {/* EDIT */}
+    <Tooltip title="ویرایش">
+      <Button
+        type="text"
+        icon={<EditOutlined />}
+        onClick={() => onEdit(record)}
+      />
+    </Tooltip>
+
+    {/* DELETE */}
+    <Popconfirm
+      title="آیا از حذف این استاد مطمئن هستید؟"
+      okText="بله"
+      cancelText="نه"
+      onConfirm={() => handleDelete(record._id)}
+    >
+      <Tooltip title="حذف">
+        <Button danger type="text" icon={<DeleteOutlined />} />
+      </Tooltip>
+    </Popconfirm>
+
+  </div>
+)
+}
 ];
