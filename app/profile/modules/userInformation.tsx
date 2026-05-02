@@ -141,7 +141,6 @@ debugger
            <TeacherRequestModal
         open={isTeacherModalOpen}
         onClose={closeTeacherModal}
-        onSubmit={handleTeacherRequestSubmit}
       />
     </section>
   );

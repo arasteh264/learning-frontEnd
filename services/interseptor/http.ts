@@ -1,4 +1,5 @@
 import axios from "axios";
+import Router from "next/router";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const apiClient = axios.create({
   baseURL: apiUrl,
@@ -18,19 +19,21 @@ apiClient.interceptors.request.use(
   },
 );
 
+const UNAUTHORIZED_STATUS = [401, 403];
+
 apiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    
-    if (error.response && error.response.status === 401 || 403) {
-      window.location.href = "/auth/login";
-    }else{
-    return Promise.reject(error);
+    const status = error?.response?.status;
+
+    if (UNAUTHORIZED_STATUS.includes(status)) {
+      localStorage.removeItem("accessToken");
+      Router.push("/auth/login");
+      return;
     }
 
-  },
+    return Promise.reject(error);
+  }
 );
 
 export default apiClient;

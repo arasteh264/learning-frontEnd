@@ -1,119 +1,83 @@
-import { Modal, Input, Button, Upload, message, Select } from "antd";
+import { Modal, Input, Select } from "antd";
 import { useState } from "react";
-import { UploadOutlined } from "@ant-design/icons";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { requestForTeacher } from "@/services/teacher";
+import { toast } from "react-toastify";
 import { getCategoryList } from "@/services/category";
-import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (formData: any) => void;
 };
 
-export default function TeacherRequestModal({ open, onClose, onSubmit }: Props) {
-  const { data } = useQuery({
+export default function TeacherRequestModal({ open, onClose }: Props) {
+  const queryClient = useQueryClient();
+
+  const { data: categories } = useQuery({
     queryKey: ["category"],
     queryFn: getCategoryList,
   });
 
   const [formData, setFormData] = useState({
-    categoryIds: [] as number[], 
-    teachingTopic: "",
     bio: "",
-    expertise: "",
-    resume: null as File | null,
+    expertise: [] as string[],
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
-    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+  // mutation
+  const requestMutation = useMutation({
+    mutationFn: (payload: any) => requestForTeacher(payload),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["teacher"] });
+      toast.success("درخواست با موفقیت ارسال شد");
+      onClose();
+      setFormData({ bio: "", expertise: [] });
+    },
+
+    onError: (err: any) => {
+      toast.error(err.response.data.message || "خطا رخ داد");
+    },
+  });
+
+  const handleChange = (field: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleCategoryChange = (values: number[]) => {
-    setFormData((prev) => ({ ...prev, categoryIds: values }));
+  const handleSubmit = () => {
+    requestMutation.mutate({
+      bio: formData.bio,
+      expertise: formData.expertise,
+    });
   };
 
-
-
-  const categories = data?.data ?? data ?? []; 
-
-  // const addMutation = useMutation({
-  //   mutationFn: (newCategory: CategoryForm) => addCategory(newCategory),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["category"] });
-  //     toast.success("دسته‌بندی با موفقیت اضافه شد.");
-  //     setOpen(false);
-  //   },
-  //   onError: (err: any) => {
-  //     toast.error(`خطا در افزودن دسته‌بندی: ${err.message || "خطای نامشخص"}`);
-  //   },
-  // });
-  const onSubmit = (formData) => {
-  // if (editing?._id) {
-  //   updateMutation.mutate({ newCategory: formData, id: editing?._id });
-  // } else {
-  //   addMutation.mutate(formData);
-  }
-};
   return (
     <Modal
       title="درخواست تدریس"
       open={open}
       onCancel={onClose}
-      width={350}
+      onOk={handleSubmit}
       okText="ارسال درخواست"
       cancelText="بستن"
       centered
-      onOk={() => onSubmit(formData)}
     >
       <div className="flex flex-col gap-3">
-        <span className="text-gray-500 text-sm">دسته‌بندی‌های تخصصی :</span>
-
-        <Select
-          mode="multiple"
-          allowClear
-          placeholder="چند دسته انتخاب کنید"
-          style={{ width: "100%" }}
-          value={formData.categoryIds}
-          onChange={handleCategoryChange}
-        >
-          {categories.map((item: any) => (
-            
-            <Select.Option key={item._id} value={item._id}>
-              {item.title}
-            </Select.Option>
-          ))}
-        </Select>
-
-        <span className="text-gray-500 text-sm">موضوع تدریسی</span>
-        <Input
-          value={formData.teachingTopic}
-          onChange={(e) => handleInputChange(e, "teachingTopic")}
-          placeholder="موضوع تدریسی"
-        />
 
         <span className="text-gray-500 text-sm">بیو</span>
         <Input
           value={formData.bio}
-          onChange={(e) => handleInputChange(e, "bio")}
-          placeholder="بیو"
+          onChange={(e) => handleChange("bio", e.target.value)}
+          placeholder="بیو شما"
         />
 
-        <span className="text-gray-500 text-sm">تخصص (Expertise)</span>
-        <Input
+        <span className="text-gray-500 text-sm">تخصص‌ها</span>
+        <Select
+          mode="tags"
+          style={{ width: "100%" }}
+          placeholder="مثلاً React, Nodejs"
           value={formData.expertise}
-          onChange={(e) => handleInputChange(e, "expertise")}
-          placeholder="تخصص"
+          onChange={(values) => handleChange("expertise", values)}
         />
 
-        {/* <span className="text-gray-500 text-sm">رزومه</span> */}
-        {/* <Upload
-          name="resume"
-          accept=".pdf,.doc,.docx"
-          showUploadList={false}
-          onChange={handleFileChange}
-        >
-          <Button icon={<UploadOutlined />}>بارگذاری رزومه</Button>
-        </Upload> */}
       </div>
     </Modal>
   );

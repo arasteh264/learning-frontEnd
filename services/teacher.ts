@@ -8,8 +8,12 @@ export const getTeacherList = async () => {
 };
 
 
-export const requestForTeacher = async (id :number,paylod:any) => {
-  const response = await http.post(`/teacher/request/${id}`);
+export const requestForTeacher = async (payload: any) => {
+  const response = await http.post("/teacher/request", payload);
+  return response.data;
+};
 
-  return response;
+export const verifyTeacher = async (id: string) => {
+  const res = await http.post(`/teacher/verify/${id}`);
+  return res.data;
 };

@@ -2,67 +2,70 @@
 
 import BaseTable from "@/components/tables/BaseTable";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, getUsers, RoleUser, BanUser } from "@/services/user";
+import { deleteUser, RoleUser, BanUser } from "@/services/user";
 import { toast } from "react-toastify";
-import { getTeacherList } from "@/services/teacher";
+import { getTeacherList, verifyTeacher } from "@/services/teacher";
 import { getTeacherColumns } from "@/components/tables/tablesColumns/teacher.columns";
+import { useMemo } from "react";
 
 export default function teacherPage() {
   const queryClient = useQueryClient();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["teacher"],
     queryFn: getTeacherList,
   });
+
   const { mutate: handleDeleteUUser } = useMutation({
     mutationFn: deleteUser,
-
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("کاربر با موفقیت حذف شد.");
-    },
-    onError: (err) => {
-      toast.error("خطا در حذف کاربر.");
+      queryClient.invalidateQueries({ queryKey: ["teacher"] });
+      toast.success("کاربر حذف شد");
     },
   });
 
-const { mutate: toggleBan } = useMutation({
-  mutationFn: BanUser,
+  const { mutate: toggleBan } = useMutation({
+    mutationFn: BanUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["teacher"] });
+    },
+  });
 
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["users"] });
-    toast.success("وضعیت کاربر با موفقیت تغییر کرد.");
-  },
-  onError: (err) => {
-    toast.error("خطا در تغییر وضعیت کاربر.");
-  }
-});
-const { mutate: toggleRole } = useMutation({
-  mutationFn: RoleUser,
+  const { mutate: toggleRole } = useMutation({
+    mutationFn: RoleUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["teacher"] });
+    },
+  });
 
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["users"] });
-    toast.success("نقش کاربر تغییر کرد");
-  },
+  const { mutate: verifyTeacherMutate } = useMutation({
+    mutationFn: verifyTeacher,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["teacher"] });
+      toast.success("استاد تایید شد");
+    },
+  });
 
-  onError: () => {
-    toast.error("خطا در تغییر نقش");
-  },
-});
+  // handlers
+  const handleDelete = (id: string) => handleDeleteUUser(id);
+  const onToggleBan = (record: any) => toggleBan(record._id);
+  const onToggleRole = (record: any) => toggleRole(record._id);
+  const handleVerify = (id: string) => verifyTeacherMutate(id);
+
+  // ✅ اینجا باید باشه (قبل از return)
+  const columns = useMemo(
+    () =>
+      getTeacherColumns(
+        handleDelete,
+        onToggleBan,
+        handleVerify
+      ),
+    [handleDelete, onToggleBan, handleVerify]
+  );
+
+  // ✅ حالا condition
   if (isLoading) return <p>loading...</p>;
   if (error) return <p>error loading users</p>;
-
-
-  const handleDelete = (id: string) => {
-    handleDeleteUUser(id);
-  };
-
-  const onToggleBan = (record: any) => {
-    toggleBan(record._id || record.id);
-  };
-
- const onToggleRole = (record: any) => {
-  toggleRole(record._id);
-};
 
   return (
     <section className="w-full px-10 flex flex-col">
@@ -72,10 +75,7 @@ const { mutate: toggleRole } = useMutation({
 
       <BaseTable
         data={data?.data ?? []}
-        columns={getTeacherColumns(
-          handleDelete,
-          onToggleBan,
-        )}
+        columns={columns}
       />
     </section>
   );
