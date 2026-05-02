@@ -1,7 +1,7 @@
 import { Modal, Input, Select } from "antd";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { requestForTeacher } from "@/services/teacher";
+import { removeTeacher, requestForTeacher } from "@/services/teacher";
 import { toast } from "react-toastify";
 import { getCategoryList } from "@/services/category";
 
@@ -23,7 +23,6 @@ export default function TeacherRequestModal({ open, onClose }: Props) {
     expertise: [] as string[],
   });
 
-  // mutation
   const requestMutation = useMutation({
     mutationFn: (payload: any) => requestForTeacher(payload),
 
@@ -38,6 +37,7 @@ export default function TeacherRequestModal({ open, onClose }: Props) {
       toast.error(err.response.data.message || "خطا رخ داد");
     },
   });
+
 
   const handleChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));

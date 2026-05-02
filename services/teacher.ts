@@ -17,3 +17,8 @@ export const verifyTeacher = async (id: string) => {
   const res = await http.post(`/teacher/verify/${id}`);
   return res.data;
 };
+
+export const removeTeacher = async (id: string) => {
+  const res = await http.delete(`/teacher/${id}`);
+  return res.data;
+};
