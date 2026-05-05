@@ -1,5 +1,7 @@
 import BaseTable from "@/components/tables/BaseTable";
 import { getCourseColumns } from "@/components/tables/tablesColumns/course.columns";
+import { getAllCourse } from "@/services/course";
+import { useQuery } from "@tanstack/react-query";
 import { Button, Modal } from "antd";
 
 import { useRouter } from "next/navigation";
@@ -19,6 +21,16 @@ export default function Courses() {
       cover:"/images/young-man.webp"
     },
   ]);
+const {
+  data: courseData = [],
+  isLoading: courseLoading,
+  error: courseError,
+} = useQuery({
+  queryKey: ["courses"],
+  queryFn: getAllCourse,
+});
+
+debugger
 
   const handleEdit = (record: any) => {
     console.log("edit:", record);
@@ -38,7 +50,7 @@ export default function Courses() {
         افزودن دوره
       </Button>
 <BaseTable
-  data={data}
+  data={courseData?.data}
   columns={getCourseColumns(
     handleEdit,
     handleDelete,
