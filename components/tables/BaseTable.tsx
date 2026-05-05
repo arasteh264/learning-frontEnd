@@ -9,7 +9,7 @@ type Props = {
 export default function BaseTable({ columns, data, loading }: Props) {
   return (
     <Table
-    
+     
       direction="rtl"
       columns={columns}
       dataSource={data}

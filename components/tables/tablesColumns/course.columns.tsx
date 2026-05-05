@@ -2,24 +2,34 @@ import { Button, Popconfirm } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 export const getCourseColumns = (
-  onEdit: any,
-  onDelete: any,
-  onPreview: (cover: string) => void
+  onEdit?: any,
+  onDelete?: any,
+  onPreview?: (cover: string) => void
 ) => [
   {
     title: "عنوان دوره",
-    dataIndex: "title",
-    key: "title",
+    dataIndex: "name",
+    key: "name",
   },
   {
     title: "مدرس",
-    dataIndex: "teacher",
-    key: "teacher",
+    dataIndex: "creator",
+    key: "creator",
+  },
+    {
+    title: "دسته بندی",
+    dataIndex: "category",
+    key: "category",
   },
   {
     title: "قیمت",
     dataIndex: "price",
     key: "price",
+  },
+    {
+    title: "تخفیف",
+    dataIndex: "discount",
+    key: "discount",
   },
 {
   title: "کاور",
@@ -28,7 +38,7 @@ export const getCourseColumns = (
   render: (cover: string) => (
     <span
       className="text-blue-500 cursor-pointer hover:underline"
-      onClick={() => onPreview(cover)}
+      onClick={() => onPreview?.(cover)}
     >
       پیش‌نمایش
     </span>
