@@ -1,47 +1,49 @@
 import BaseTable from "@/components/tables/BaseTable";
 import { getCourseColumns } from "@/components/tables/tablesColumns/course.columns";
-import { getAllCourse } from "@/services/course";
-import { useQuery } from "@tanstack/react-query";
+import { getAllCourse, removeCourse } from "@/services/course";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Modal } from "antd";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Courses() {
+  const queryClient = useQueryClient();
+
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const router = useRouter();
-  const [data, setData] = useState([
-    {
-      id: 1,
-      title: "React Next",
-      teacher: "Ali",
-      price: "500,000",
-      status: true,
-      cover:"/images/young-man.webp"
-    },
-  ]);
-const {
-  data: courseData = [],
-  isLoading: courseLoading,
-  error: courseError,
-} = useQuery({
-  queryKey: ["courses"],
-  queryFn: getAllCourse,
-});
 
-debugger
+  const { data: courseData = [], isLoading } = useQuery({
+    queryKey: ["courses"],
+    queryFn: getAllCourse,
+  });
 
-  const handleEdit = (record: any) => {
-    console.log("edit:", record);
+  const handleEdit = (id: string) => {
+     router.push(`/courses/edit/${id}`);
   };
 
-  const handleDelete = (id: number) => {
-    setData((prev) => prev.filter((c) => c.id !== id));
+
+
+  const { mutate: handleDeleteUCourse } = useMutation({
+    mutationFn: removeCourse,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("کاربر با موفقیت حذف شد.");
+    },
+    onError: (err) => {
+      toast.error(`خطا در حذف: ${err.message || "خطای نامشخص"}`);
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    handleDeleteUCourse(id);
   };
 
   return (
-    <section className="w-full px-10 flex flex-col">
+    <section className="w-full px-10 flex flex-col py-5">
       <Button
         type="primary"
         className="mb-4 self-end"
@@ -49,28 +51,27 @@ debugger
       >
         افزودن دوره
       </Button>
-<BaseTable
-  data={courseData?.data}
-  columns={getCourseColumns(
-    handleEdit,
-    handleDelete,
-    (cover) => {
-      setPreviewImage(cover);
-      setPreviewOpen(true);
-    }
-  )}
-/>
-<Modal
-  open={previewOpen}
-  footer={null}
-  onCancel={() => setPreviewOpen(false)}
-  centered
-  width={300}
->
-  {previewImage && (
-    <img src={previewImage} className="w-full rounded-lg" />
-  )}
-</Modal>
+      <BaseTable
+        data={courseData}
+        columns={getCourseColumns(handleEdit, handleDelete, (cover) => {
+          setPreviewImage(cover);
+          setPreviewOpen(true);
+        })}
+      />
+      <Modal
+        open={previewOpen}
+        footer={null}
+        onCancel={() => setPreviewOpen(false)}
+        centered
+        width={600}
+      >
+        {previewImage && (
+          <img
+            src={previewImage}
+            className="w-full rounded-lg   py-6 border border-gray-200"
+          />
+        )}
+      </Modal>
     </section>
   );
 }
