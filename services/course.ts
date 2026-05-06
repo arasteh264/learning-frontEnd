@@ -13,9 +13,14 @@ export type CreateCourseForm = {
 };
 export const getAllCourse=async (data:any)=>{
   const response = await http.get("/course");
-  return response;
+  return response.data;
 }
 
+
+export const getCourseDetail=async (id:string)=>{
+  const response = await http.get(`/course/${id}`);
+  return response.data;
+}
 
 export const createCourseApi = async (data: any) => {
 
@@ -26,4 +31,21 @@ export const createCourseApi = async (data: any) => {
   });
 
   return response.data;
+};
+
+export const updateCourseApi = async ({data,id}:any ) => {
+
+  const response = await http.patch(`/course/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};
+
+
+export const removeCourse = async (id: string) => {
+  const res = await http.delete(`/course/${id}`);
+  return res.data;
 };
