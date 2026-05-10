@@ -63,7 +63,7 @@ export default function Category() {
   };
 
   const handleDelete = (record: any) => {
-    removeMutation.mutate(record._id)
+    removeMutation.mutate(record.id)
   };
 
   const addMutation = useMutation({
@@ -106,8 +106,8 @@ const removeMutation = useMutation({
 });
 
 const onSubmit = (formData: CategoryForm) => {
-  if (editing?._id) {
-    updateMutation.mutate({ newCategory: formData, id: editing?._id });
+  if (editing?.id) {
+    updateMutation.mutate({ newCategory: formData, id: editing?.id });
   } else {
     addMutation.mutate(formData);
   }

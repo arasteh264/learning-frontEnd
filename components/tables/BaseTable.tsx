@@ -9,11 +9,10 @@ type Props = {
 export default function BaseTable({ columns, data, loading }: Props) {
   return (
     <Table
-     
+      rowKey="id"
       direction="rtl"
       columns={columns}
       dataSource={data}
-      rowKey="id"
       loading={loading}
       pagination={{ pageSize: 10 }}
     />

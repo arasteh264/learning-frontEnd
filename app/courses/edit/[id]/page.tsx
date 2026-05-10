@@ -11,6 +11,7 @@ import { getCourseDetail, updateCourseApi } from "@/services/course";
 import { getTeacherList } from "@/services/teacher";
 import { getCategoryList } from "@/services/category";
 import { useEffect } from "react";
+import { PriceInput } from "@/components/base/PriceInput";
 
 export default function EditCoursePage() {
   const router = useRouter();
@@ -30,25 +31,8 @@ export default function EditCoursePage() {
     queryFn: () => getCourseDetail(courseId),
   });
 
-  useEffect(() => {
-    if (!data) return;
-
-    reset({
-      name: data.name,
-      price: data.price,
-      discount: data.discount,
-      description: data.description,
-      support: data.support,
-      href: data.href,
-      status: data.status,
-      category: data.categoryId,
-      creator: data.creatorId,
-      cover: data.cover,
-    });
-  }, [data, reset]);
-
   const { data: TeacherData = [] } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["teacher"],
     queryFn: getTeacherList,
   });
 
@@ -63,9 +47,26 @@ export default function EditCoursePage() {
   }));
 
   const optionsCategory = (CategoryData ?? []).map((i: any) => ({
-    value: i._id,
+    value: i.id,
     label: i.title,
   }));
+
+  useEffect(() => {
+    if (!data) return;
+
+    reset({
+      name: data.name,
+      price: data.price,
+      discount: data.discount,
+      description: data.description,
+      support: data.support,
+      href: data.href,
+      status: data.status,
+      category: data.categoryId,
+      creator: data.creator._id,
+      cover: data.cover,
+    });
+  }, [data, reset, TeacherData]);
 
   const updateMutation = useMutation({
     mutationFn: updateCourseApi,
@@ -82,12 +83,14 @@ export default function EditCoursePage() {
     const formData = new FormData();
 
     formData.append("name", data.name);
-    formData.append("price", data.price);
-    formData.append("discount", String(data.discount || 0));
+    formData.append("price", String(Number(data.price)));
+    formData.append("discount", String(Number(data.discount || 0)));
     formData.append("description", data.description || "");
     formData.append("support", data.support || "");
     formData.append("href", data.href || "");
-    formData.append("status", String(data.status));
+
+    formData.append("status", String(data.status === true));
+
     formData.append("category", data.category);
     formData.append("creator", data.creator);
 
@@ -109,12 +112,14 @@ export default function EditCoursePage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 px-10">
-        <div className="w-full flex gap-5">
+        className="flex flex-col gap-4 px-10"
+        dir="rtl"
+      >
+        <div className="w-full flex gap-5 py-3">
           <div className="w-full flex flex-col gap-2 ">
             <span className="font-medium">تخفیف</span>
             <Controller
-              name="price"
+              name="discount"
               control={control}
               render={({ field }) => (
                 <Input {...field} type="number" placeholder="تخفیف" />
@@ -127,7 +132,10 @@ export default function EditCoursePage() {
               name="price"
               control={control}
               render={({ field }) => (
-                <Input {...field} type="number" placeholder="قیمت" />
+                <PriceInput
+                  value={field.value || ""}
+                  onChange={field.onChange}
+                />
               )}
             />
           </div>
@@ -188,7 +196,7 @@ export default function EditCoursePage() {
           <div className="w-full flex flex-col gap-2">
             <span className="font-medium">مدرس</span>
             <Controller
-              name="creator"
+              name="support"
               control={control}
               render={({ field }) => (
                 <Select
@@ -253,7 +261,8 @@ export default function EditCoursePage() {
                     return false;
                   }}
                   onRemove={() => field.onChange(null)}
-                  fileList={fileList}>
+                  fileList={fileList}
+                >
                   {fileList.length === 0 && (
                     <Button icon={<UploadOutlined />}>تغییر تصویر</Button>
                   )}
@@ -267,7 +276,14 @@ export default function EditCoursePage() {
           <Controller
             name="description"
             control={control}
-            render={({ field }) => <Input.TextArea rows={4} {...field} />}
+            render={({ field }) => (
+              <Input.TextArea
+                rows={4}
+                dir="rtl"
+                className="text-right"
+                {...field}
+              />
+            )}
           />
         </div>
         <div className="flex justify-end gap-3">

@@ -9,6 +9,7 @@ import { getTeacherList } from "@/services/teacher";
 import { getCategoryList } from "@/services/category";
 import { createCourseApi, CreateCourseForm } from "@/services/course";
 import { toast } from "react-toastify";
+import { PriceInput } from "@/components/base/PriceInput";
 
 export default function CreateCoursePage() {
   const router = useRouter();
@@ -51,7 +52,7 @@ export default function CreateCoursePage() {
 
   const optionsCategory =
     (CategoryData ?? []).map((item: any) => ({
-      value: item._id,
+      value: item.id,
       label: item.title,
     })) ?? [];
   const addMutation = useMutation({
@@ -95,7 +96,8 @@ export default function CreateCoursePage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 px-10">
+        className="flex flex-col gap-4 px-10"
+      >
         <div className="grid grid-cols-3 gap-4 py-3">
           <div>
             <label className="block mb-1">نام دوره</label>
@@ -131,8 +133,12 @@ export default function CreateCoursePage() {
             <Controller
               name="price"
               control={control}
-              rules={{ required: "قیمت الزامی است" }}
-              render={({ field }) => <Input type="number" {...field} />}
+              render={({ field }) => (
+                <PriceInput
+                  value={field.value || ""}
+                  onChange={field.onChange}
+                />
+              )}
             />
           </div>
         </div>
@@ -188,7 +194,7 @@ export default function CreateCoursePage() {
           <Controller
             name="description"
             control={control}
-            render={({ field }) => <Input.TextArea rows={4} {...field} />}
+            render={({ field }) => <Input.TextArea dir="rtl" className="text-right"  rows={4} {...field} />}
           />
         </div>
 
@@ -289,7 +295,8 @@ export default function CreateCoursePage() {
                         } as any,
                       ]
                     : []
-                }>
+                }
+              >
                 <Button icon={<UploadOutlined />}>آپلود تصویر</Button>
               </Upload>
             )}

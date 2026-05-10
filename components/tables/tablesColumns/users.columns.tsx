@@ -105,7 +105,7 @@ export const getUserColumns = (
         title="آیا از حذف این کاربر مطمئن هستید؟"
         okText="بله"
         cancelText="نه"
-        onConfirm={() => onDelete(record._id || record.id)}
+        onConfirm={() => onDelete(record.id || record.id)}
       >
         <Button
           danger

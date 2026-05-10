@@ -3,7 +3,8 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 export const getSessionColumns = (
   onEdit: (record: any) => void,
-  handleDelete: (id: string) => void
+  handleDelete: (id: string) => void,
+  onPreview?: (video: string) => void
 ) => [
   {
     title: "عنوان جلسه",
@@ -19,10 +20,8 @@ export const getSessionColumns = (
 
   {
     title: "دوره",
-    dataIndex: "course",
-    key: "course",
-    render: (course: any) =>
-      course?.title ? course.title : "—",
+    dataIndex: "courseName",
+    key: "courseName",
   },
 
   {
@@ -36,21 +35,19 @@ export const getSessionColumns = (
         <Tag color="gold">غیر رایگان</Tag>
       ),
   },
-
-  {
-    title: "ویدیو",
-    dataIndex: "video",
-    key: "video",
-    render: (video: string) => (
-      <a
-        href={video}
-        target="_blank"
-        className="text-blue-500 hover:underline"
-      >
-        مشاهده
-      </a>
-    ),
-  },
+{
+  title: "ویدیو",
+  dataIndex: "video",
+  key: "video",
+  render: (video: string) => (
+    <span
+      className="text-blue-500 cursor-pointer hover:underline"
+      onClick={() => onPreview?.(video)}
+    >
+      مشاهده ویدیو
+    </span>
+  ),
+},
 
   {
     title: "عملیات",
@@ -58,19 +55,17 @@ export const getSessionColumns = (
     render: (_: any, record: any) => (
       <div className="flex gap-2">
 
-        {/* EDIT */}
         <Button
           type="text"
           icon={<EditOutlined />}
           onClick={() => onEdit(record)}
         />
 
-        {/* DELETE */}
         <Popconfirm
           title="آیا از حذف این جلسه مطمئن هستید؟"
           okText="بله"
           cancelText="نه"
-          onConfirm={() => handleDelete(record._id || record.id)}
+          onConfirm={() => handleDelete(record.id || record.id)}
         >
           <Button
             danger
