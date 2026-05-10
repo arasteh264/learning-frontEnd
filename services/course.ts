@@ -33,8 +33,13 @@ export const createCourseApi = async (data: any) => {
   return response.data;
 };
 
-export const updateCourseApi = async ({data,id}:any ) => {
-
+export const updateCourseApi = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: FormData;
+}) => {
   const response = await http.patch(`/course/${id}`, data, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -49,3 +54,4 @@ export const removeCourse = async (id: string) => {
   const res = await http.delete(`/course/${id}`);
   return res.data;
 };
+
