@@ -73,7 +73,7 @@ export const getCourseColumns = (
           <Button
             type="text"
             icon={<EditOutlined />}
-            onClick={() => onEdit?.(record._id)}
+            onClick={() => onEdit?.(record.id)}
           />
 
           <Popconfirm
@@ -84,7 +84,7 @@ export const getCourseColumns = (
             }
             okText="بله"
             cancelText="نه"
-            onConfirm={() => onDelete?.(record._id)}
+            onConfirm={() => onDelete?.(record.id)}
           >
             <Button
               danger

@@ -45,8 +45,7 @@ export default function teacherPage() {
     debugger
     removeMutation(id)
   } ;
-  // const onToggleBan = (record: any) => toggleBan(record._id);
-  // const onToggleRole = (record: any) => toggleRole(record._id);
+
   const handleVerify = (id: string) => verifyTeacherMutate(id);
 
   const columns = useMemo(
@@ -68,7 +67,7 @@ export default function teacherPage() {
       </div>
 
       <BaseTable
-        data={data?.data ?? []}
+        data={data ?? []}
         columns={columns}
       />
     </section>

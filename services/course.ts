@@ -16,11 +16,12 @@ export const getAllCourse=async (data:any)=>{
   return response.data;
 }
 
-
-export const getCourseDetail=async (id:string)=>{
-  const response = await http.get(`/course/${id}`);
+export const getAllSession=async (data:any)=>{
+  const response = await http.get("/course/session");
   return response.data;
 }
+
+
 
 export const createCourseApi = async (data: any) => {
 
@@ -55,3 +56,32 @@ export const removeCourse = async (id: string) => {
   return res.data;
 };
 
+
+
+export const getCourseDetail=async (id:string)=>{
+  const response = await http.get(`/course/${id}`);
+  return response.data;
+}
+
+
+export const createSessionApi = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: FormData;
+}) => {
+  const response = await http.post(`/course/${id}/session`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};
+
+
+export const removeSession = async (id: string) => {
+  const res = await http.delete(`/course/session/${id}`);
+  return res.data;
+};

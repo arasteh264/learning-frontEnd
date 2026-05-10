@@ -3,8 +3,10 @@
 import { Input, Button, Select, Upload, Switch } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useForm, Controller } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { createSessionApi, getAllCourse } from "@/services/course";
+import { toast } from "react-toastify";
 
 type CreateSessionForm = {
   title: string;
@@ -15,9 +17,18 @@ type CreateSessionForm = {
 };
 
 export default function CreateSessionPage() {
+  const { data: courses = [], isLoading } = useQuery({
+    queryKey: ["courses"],
+    queryFn: getAllCourse,
+  });
+
+  const courseOptions = courses.map((c: any) => ({
+    label: c.name,
+    value: c.id,
+  }));
   const { control, register, handleSubmit } = useForm<CreateSessionForm>({
     defaultValues: {
-      free: 1, // پیشفرض غیر رایگان
+      free: 1,
     },
   });
 
@@ -30,18 +41,27 @@ export default function CreateSessionPage() {
       formData.append("title", data.title);
       formData.append("time", data.time);
       formData.append("free", String(data.free));
-      formData.append("course", data.course);
-      formData.append("video", data.video);
 
-      const res = await fetch("/api/sessions", {
-        method: "POST",
-        body: formData,
+      formData.append("video", data.video?.originFileObj || data.video);
+
+      return createSessionApi({
+        id: data.course,
+        data: formData,
       });
-
-      return res.json();
     },
-    onSuccess: () => {
+
+    onSuccess: (res) => {
+      toast.success(res?.message || "جلسه با موفقیت ایجاد شد 🎉");
+
       router.push("/sessions");
+    },
+
+    onError: (error: any) => {
+      console.log(error);
+
+      const message = error?.response?.data?.message || "خطا در ایجاد جلسه";
+
+      toast.error(message);
     },
   });
 
@@ -63,11 +83,19 @@ export default function CreateSessionPage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block mb-1">مدت زمان</label>
-            <Input placeholder="مثلاً 12:30" {...register("time")} />
+            <Controller
+              name="time"
+              control={control}
+              render={({ field }) => <Input {...field} />}
+            />{" "}
           </div>
           <div>
             <label className="block mb-1">عنوان جلسه</label>
-            <Input {...register("title")} />
+            <Controller
+              name="title"
+              control={control}
+              render={({ field }) => <Input {...field} />}
+            />
           </div>
         </div>
 
@@ -96,13 +124,12 @@ export default function CreateSessionPage() {
             control={control}
             render={({ field }) => (
               <Select
-                {...field}
+                value={field.value}
+                onChange={field.onChange}
                 className="w-full"
                 placeholder="انتخاب دوره"
-                options={[
-                  { label: "React Next", value: "1" },
-                  { label: "Node.js", value: "2" },
-                ]}
+                options={courseOptions}
+                loading={isLoading}
               />
             )}
           />

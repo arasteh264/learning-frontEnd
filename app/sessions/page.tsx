@@ -2,49 +2,80 @@
 
 import BaseTable from "@/components/tables/BaseTable";
 import { getSessionColumns } from "@/components/tables/tablesColumns/sessions.columns";
-import { Button } from "antd";
-import { useState } from "react";
+import { Button, Modal } from "antd";
 import { useRouter } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAllSession, removeSession } from "@/services/course";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
 export default function SessionsPage() {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      title: "مقدمه React",
-      time: "12:30",
-      free: 0,
-      video: "https://example.com/video",
-      course: { title: "React Next" },
-    },
-  ]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewVideo, setPreviewVideo] = useState<string | null>(null);
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useQuery({
+    queryKey: ["sessions"],
+    queryFn: getAllSession,
+  });
+
   const handleEdit = (record: any) => {
     console.log("edit:", record);
   };
 
-  const handleDelete = (id: any) => {
-    setData((prev) => prev.filter((s) => s.id !== id));
+  const { mutate: handleDeleteSession } = useMutation({
+    mutationFn: removeSession,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sessions"] });
+      toast.success("جلسه با موفقیت حذف شد.");
+    },
+    onError: (err) => {
+      toast.error(`خطا در حذف: ${err.message || "خطای نامشخص"}`);
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    handleDeleteSession(id);
   };
 
   return (
-    <section className="w-full px-10 flex flex-col">
-
+    <section className="w-full px-10 flex flex-col py-5">
       <div className="flex justify-between items-center mb-4">
-
-        <h2 className="text-xl font-bold">
-          لیست جلسات
-        </h2>
-
-        <Button type="primary" onClick={() => router.push("/sessions/create")}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => router.push("/sessions/create")}
+        >
           افزودن جلسه
         </Button>
 
+        <h2 className="text-xl font-bold">لیست جلسات</h2>
       </div>
 
       <BaseTable
-        data={data}
-        columns={getSessionColumns(handleEdit, handleDelete)}
+        data={data ?? []}
+        columns={getSessionColumns(handleEdit, handleDelete, (cover) => {
+          setPreviewVideo(cover);
+          setPreviewOpen(true);
+        })}
+        loading={isLoading}
       />
-
+      <Modal
+        open={previewOpen}
+        footer={null}
+        onCancel={() => setPreviewOpen(false)}
+        centered
+        width={600}
+      >
+        {previewVideo && (
+          <video
+            src={previewVideo}
+            controls
+            className="w-full rounded-lg py-6 border border-gray-200"
+          />
+        )}
+      </Modal>
     </section>
   );
 }

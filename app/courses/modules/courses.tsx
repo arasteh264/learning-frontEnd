@@ -21,16 +21,14 @@ export default function Courses() {
   });
 
   const handleEdit = (id: string) => {
-     router.push(`/courses/edit/${id}`);
+    router.push(`/courses/edit/${id}`);
   };
-
-
 
   const { mutate: handleDeleteUCourse } = useMutation({
     mutationFn: removeCourse,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["courses"] });
       toast.success("کاربر با موفقیت حذف شد.");
     },
     onError: (err) => {

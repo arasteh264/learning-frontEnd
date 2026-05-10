@@ -56,11 +56,11 @@ const { mutate: toggleRole } = useMutation({
   };
 
   const onToggleBan = (record: any) => {
-    toggleBan(record._id || record.id);
+    toggleBan(record.id || record.id);
   };
 
  const onToggleRole = (record: any) => {
-  toggleRole(record._id);
+  toggleRole(record.id);
 };
 
   return (
