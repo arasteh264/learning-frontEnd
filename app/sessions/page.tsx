@@ -19,8 +19,8 @@ export default function SessionsPage() {
     queryFn: getAllSession,
   });
 
-  const handleEdit = (record: any) => {
-    console.log("edit:", record);
+  const handleEdit = (id: string) => {
+    router.push(`/sessions/edite/${id}`);
   };
 
   const { mutate: handleDeleteSession } = useMutation({

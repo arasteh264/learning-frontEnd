@@ -85,3 +85,37 @@ export const removeSession = async (id: string) => {
   const res = await http.delete(`/course/session/${id}`);
   return res.data;
 };
+
+
+
+export const getSessionDetail = async (
+  id: string
+) => {
+  const response = await http.get(
+    `/course/session/${id}`
+  );
+
+  return response.data;
+};
+
+
+export const updateSessionApi = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: FormData;
+}) => {
+  const response = await http.put(
+    `/course/session/${id}`,
+    data,
+    {
+      headers: {
+        "Content-Type":
+          "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+};

@@ -10,6 +10,7 @@ import { getCategoryList } from "@/services/category";
 import { createCourseApi, CreateCourseForm } from "@/services/course";
 import { toast } from "react-toastify";
 import { PriceInput } from "@/components/base/PriceInput";
+import FileUploader from "@/components/base/FileUploader";
 
 export default function CreateCoursePage() {
   const router = useRouter();
@@ -194,7 +195,14 @@ export default function CreateCoursePage() {
           <Controller
             name="description"
             control={control}
-            render={({ field }) => <Input.TextArea dir="rtl" className="text-right"  rows={4} {...field} />}
+            render={({ field }) => (
+              <Input.TextArea
+                dir="rtl"
+                className="text-right"
+                rows={4}
+                {...field}
+              />
+            )}
           />
         </div>
 
@@ -274,31 +282,12 @@ export default function CreateCoursePage() {
             control={control}
             rules={{ required: "تصویر الزامی است" }}
             render={({ field }) => (
-              <Upload
-                maxCount={1}
-                beforeUpload={(file) => {
-                  field.onChange(file);
-                  return false;
-                }}
-                onRemove={() => {
-                  field.onChange(null);
-                }}
-                fileList={
-                  field.value
-                    ? [
-                        {
-                          uid: "-1",
-                          name: field.value.name,
-                          status: "done",
-                          // @ts-ignore
-                          originFileObj: field.value,
-                        } as any,
-                      ]
-                    : []
-                }
-              >
-                <Button icon={<UploadOutlined />}>آپلود تصویر</Button>
-              </Upload>
+              <FileUploader
+                value={field.value}
+                onChange={field.onChange}
+                type="image"
+                buttonText="آپلود تصویر"
+              />
             )}
           />
           {errors.cover && (

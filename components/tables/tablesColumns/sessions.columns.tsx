@@ -58,7 +58,7 @@ export const getSessionColumns = (
         <Button
           type="text"
           icon={<EditOutlined />}
-          onClick={() => onEdit(record)}
+          onClick={() => onEdit(record.id)}
         />
 
         <Popconfirm

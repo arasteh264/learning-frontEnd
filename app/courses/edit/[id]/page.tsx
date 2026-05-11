@@ -12,6 +12,7 @@ import { getTeacherList } from "@/services/teacher";
 import { getCategoryList } from "@/services/category";
 import { useEffect } from "react";
 import { PriceInput } from "@/components/base/PriceInput";
+import FileUploader from "@/components/base/FileUploader";
 
 export default function EditCoursePage() {
   const router = useRouter();
@@ -231,44 +232,14 @@ export default function EditCoursePage() {
           <Controller
             name="cover"
             control={control}
-            render={({ field }) => {
-              const fileList: any[] = [];
-
-              if (typeof field.value === "string" && field.value) {
-                fileList.push({
-                  uid: "-1",
-                  name: "cover",
-                  status: "done",
-                  url: field.value,
-                });
-              }
-
-              if (field.value && typeof field.value !== "string") {
-                fileList.push({
-                  uid: "-1",
-                  name: field.value.name,
-                  status: "done",
-                  originFileObj: field.value,
-                });
-              }
-
-              return (
-                <Upload
-                  listType="picture-card"
-                  maxCount={1}
-                  beforeUpload={(file) => {
-                    field.onChange(file);
-                    return false;
-                  }}
-                  onRemove={() => field.onChange(null)}
-                  fileList={fileList}
-                >
-                  {fileList.length === 0 && (
-                    <Button icon={<UploadOutlined />}>تغییر تصویر</Button>
-                  )}
-                </Upload>
-              );
-            }}
+            render={({ field }) => (
+              <FileUploader
+                value={field.value}
+                onChange={field.onChange}
+                type="image"
+                buttonText="تغییر تصویر"
+              />
+            )}
           />
         </div>
         <div>
