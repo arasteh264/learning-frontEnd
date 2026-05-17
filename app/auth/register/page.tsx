@@ -2,23 +2,23 @@
 import React from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { Form, Input, Button, Card, Typography, Checkbox } from "antd";
-import { AuthLayout } from "@/components/layout/AuthLayout";
-import {  Register } from "@/services/auth/auth.services";
+import { AuthLayout } from "@/components/admin/layout/AuthLayout";
+import { Register } from "@/services/auth/auth.services";
 import { toast } from "react-toastify";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { RegisterType } from "@/types/auth";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const { Title } = Typography;
 const RegisterPage: React.FC = () => {
-const router = useRouter();
+  const router = useRouter();
 
   const {
-    control: registerControl, 
+    control: registerControl,
     handleSubmit: handleRegisterSubmit,
     formState: { errors: registerErrors },
-    watch, 
+    watch,
   } = useForm<RegisterType>({
     defaultValues: {
       userName: "",
@@ -30,47 +30,43 @@ const router = useRouter();
     },
   });
 
-
-
   const password = watch("password");
 
   const handleRegister = async (data: RegisterType) => {
     try {
+      const userData = {
+        userName: data.userName,
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        phone: data.phone,
+        confirmPassword: data.confirmPassword,
+      };
 
-const userData = {
-  userName: data.userName,
-  name: data.name,
-  email: data.email,
-  password: data.password,
-  phone: data.phone,
-  confirmPassword:data.confirmPassword
-};
+      const resLogin = await Register(userData);
 
-const resLogin = await Register(userData);
-
-if(resLogin.status===201){
-router.push('/auth/login');
-    toast.success("ثبت نام با موفقیت انجام شد.");
-}
-    } catch (error:any) {
-
-      const errorMessage = error.response?.data?.message || 'خطا در ثبت نام. لطفا دوباره تلاش کنید.';
+      if (resLogin.status === 201) {
+        router.push("/auth/login");
+        toast.success("ثبت نام با موفقیت انجام شد.");
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "خطا در ثبت نام. لطفا دوباره تلاش کنید.";
       toast.error(errorMessage);
     }
   };
 
-
-
   return (
     <AuthLayout>
-      <Card  className="w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 rounded-2xl shadow-xl">
+      <Card className="w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 rounded-2xl shadow-xl">
         <Title level={3} className="text-center mb-6 text-gray-800">
           ثبت نام حساب کاربری
         </Title>
         <Form
           name="registerForm"
           layout="vertical"
-          onFinish={handleRegisterSubmit(handleRegister)} 
+          onFinish={handleRegisterSubmit(handleRegister)}
           autoComplete="on"
           className="space-y-4"
         >
@@ -87,7 +83,7 @@ router.push('/auth/login');
                 <Input
                   {...field}
                   placeholder="نام کاربری خود را وارد کنید"
-                  prefix={<UserOutlined className="site-form-item-icon" />} 
+                  prefix={<UserOutlined className="site-form-item-icon" />}
                 />
               </Form.Item>
             )}
@@ -127,10 +123,7 @@ router.push('/auth/login');
                 validateStatus={registerErrors.email ? "error" : ""}
                 help={registerErrors.email?.message}
               >
-                <Input
-                  {...field}
-                  placeholder="example@domain.com"
-                />
+                <Input {...field} placeholder="example@domain.com" />
               </Form.Item>
             )}
           />
@@ -151,7 +144,7 @@ router.push('/auth/login');
                 <Input.Password
                   {...field}
                   placeholder="رمز عبور خود را وارد کنید"
-                  prefix={<LockOutlined className="site-form-item-icon" />} 
+                  prefix={<LockOutlined className="site-form-item-icon" />}
                 />
               </Form.Item>
             )}
@@ -168,7 +161,7 @@ router.push('/auth/login');
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    new Error("رمز عبور و تایید آن مطابقت ندارند.")
+                    new Error("رمز عبور و تایید آن مطابقت ندارند."),
                   );
                 },
               }),
@@ -203,16 +196,12 @@ router.push('/auth/login');
                 validateStatus={registerErrors.phone ? "error" : ""}
                 help={registerErrors.phone?.message}
               >
-                <Input
-                  {...field}
-                  placeholder="09123456789"
-                />
+                <Input {...field} placeholder="09123456789" />
               </Form.Item>
             )}
           />
 
-         
-                    <Form.Item>
+          <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
@@ -222,15 +211,15 @@ router.push('/auth/login');
               ثبت نام
             </Button>
           </Form.Item>
-             <div className="text-center text-sm text-gray-600 ">
-          حساب کاربری دارید؟
-          <Link
-            href="/auth/login"
-            className="text-blue-500 hover:text-blue-700 ml-1 px-2"
-          >
-            ورود
-          </Link>
-        </div>
+          <div className="text-center text-sm text-gray-600 ">
+            حساب کاربری دارید؟
+            <Link
+              href="/auth/login"
+              className="text-blue-500 hover:text-blue-700 ml-1 px-2"
+            >
+              ورود
+            </Link>
+          </div>
         </Form>
       </Card>
     </AuthLayout>

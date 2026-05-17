@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ededed;
+  --foreground: #171717;
+  --menubackground:#1eb35b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+}
+
+@media (prefers-color-scheme: dark) {
+ :root[data-theme="dark"] {
+  --foreground: #ededed;
+  --background: #ededed;
+  --menubackground:#1eb35b;}
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-iranyekan), sans-serif;
+}
+html, body {
+  font-family: var(--font-iranyekan), sans-serif !important;
+}
+.ant-table-thead > tr > th {
+  background-color: #1eb35b !important;
+  color: white !important;
+  font-weight: bold;
+}
+.ant-table-thead > tr > th:hover {
+  background-color: #169a4a !important;
+}
+.ant-table-pagination {
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+.Toastify__toast {
+  font-family: var(--font-iranyekan), sans-serif !important;
+}
