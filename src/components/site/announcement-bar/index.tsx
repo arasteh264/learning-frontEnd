@@ -41,25 +41,62 @@ export default function AnnouncementBar({ text, endDate }: Props) {
   }, [endDate]);
 
   return (
-    <div className="w-full bg-black/90 text-white flex items-center justify-center gap-3 text-center">
-      <div className="container  flex justify-center flex-col md:flex-row items-center   py-3 gap-2 md:py-0 md:h-20 px-4 md:gap-x-9 lg:gap-x-8">
+    <div className="w-full bg-black/90 text-white flex items-center justify-center">
+      <div className="container-custom flex justify-between flex-col md:flex-row items-center py-3 gap-2 md:py-0 md:h-20 md:gap-x-9 lg:gap-x-8">
         {endDate && (
-          <div className="flex gap-2.5 select-none">
-
-            <Box label="ثانیه" value={time.seconds} opacity="bg-white/5 border-white/20" />
-            <Box label="دقیقه" value={time.minutes} opacity="bg-white/10 border-white/25" />
-            <Box label="ساعت" value={time.hours} opacity="bg-white/15 border-white/30" />
-            <Box label="روز" value={time.days} opacity="bg-white/20 border-white/35" />
-
+          <div className="hidden md:flex  gap-2.5 select-none">
+            <Box
+              label="ثانیه"
+              value={time.seconds}
+              opacity="bg-white/5 border-white/20"
+            />
+            <Box
+              label="دقیقه"
+              value={time.minutes}
+              opacity="bg-white/10 border-white/25"
+            />
+            <Box
+              label="ساعت"
+              value={time.hours}
+              opacity="bg-white/15 border-white/30"
+            />
+            <Box
+              label="روز"
+              value={time.days}
+              opacity="bg-white/20 border-white/35"
+            />
           </div>
         )}
-        <div className="flex items-center gap-x-5 select-none ">
-          <span className="animate-pulse text-xl">🔔</span>
-          <span className="text-sm md:text-base font-medium text-center sm:text-right leading-6">
+        <div className="flex items-center gap-x-2 select-none ">
+          <span className="text-sm  md:text-2md font-semibold text-center sm:text-right leading-8">
             {text}
           </span>
+          <span className="hidden md:flex animate-pulse text-xl">🔔</span>
         </div>
-
+        {endDate && (
+          <div className="flex  md:hidden gap-2.5 select-none">
+            <Box
+              label="ثانیه"
+              value={time.seconds}
+              opacity="bg-white/5 border-white/20"
+            />
+            <Box
+              label="دقیقه"
+              value={time.minutes}
+              opacity="bg-white/10 border-white/25"
+            />
+            <Box
+              label="ساعت"
+              value={time.hours}
+              opacity="bg-white/15 border-white/30"
+            />
+            <Box
+              label="روز"
+              value={time.days}
+              opacity="bg-white/20 border-white/35"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

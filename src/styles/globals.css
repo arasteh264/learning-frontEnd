@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ededed;
+  --background: #ffffff;
   --foreground: #171717;
   --menubackground:#1eb35b;
 }
@@ -14,8 +14,8 @@
 
 @media (prefers-color-scheme: dark) {
  :root[data-theme="dark"] {
-  --foreground: #ededed;
-  --background: #ededed;
+  --foreground: #ffffff;
+  --background: #ffffff;
   --menubackground:#1eb35b;}
 }
 
@@ -41,4 +41,10 @@ html, body {
 }
 .Toastify__toast {
   font-family: var(--font-iranyekan), sans-serif !important;
+}
+.container-custom {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 16px;
 }

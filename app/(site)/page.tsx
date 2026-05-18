@@ -1,5 +1,5 @@
-import AnnouncementBar from "@/components/site/announcement-bar";
-import Navbar from "@/components/site/layout/navbar/Navbar";
+import AnnouncementBar from "@/src/components/site/announcement-bar";
+import Navbar from "@/src/components/site/layout/navbar/Navbar";
 
 export default function Page() {
   const mockBanner = {
@@ -7,7 +7,7 @@ export default function Page() {
   endDate: "2026-05-21T23:59:59",
 };
   return (
-    <div>
+    <div >
       <AnnouncementBar text={mockBanner.text} endDate={mockBanner.endDate} />
       <Navbar />
     </div>

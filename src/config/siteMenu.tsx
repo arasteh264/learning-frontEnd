@@ -8,44 +8,13 @@ export const navItems = [
       { title: "بک‌اند", href: "/category/backend" },
     ],
   },
-    {
-    title: "برنامه‌نویسی2",
-    href: "/category/programming",
+ {
+    title: "تست دو",
+    href: "/category/programmingw",
     children: [
-      { title: "فرانت‌اند", href: "/category/frontend" },
-      { title: "بک‌اند", href: "/category/backend" },
+      { title: "فرانت‌اند", href: "/category/frontendw" },
+      { title: "بک‌اند", href: "/category/backendw" },
     ],
   },
-    {
-    title: "برنامه‌نویسی3",
-    href: "/category/programming",
-    children: [
-      { title: "فرانت‌اند", href: "/category/frontend" },
-      { title: "بک‌اند", href: "/category/backend" },
-    ],
-  },
-    {
-    title: "برنامه‌نویسی4",
-    href: "/category/programming",
-    children: [
-      { title: "فرانت‌اند", href: "/category/frontend" },
-      { title: "بک‌اند", href: "/category/backend" },
-    ],
-  },
-    {
-    title: "برنامه‌نویسی5",
-    href: "/category/programming",
-    children: [
-      { title: "فرانت‌اند", href: "/category/frontend" },
-      { title: "بک‌اند", href: "/category/backend" },
-    ],
-  },
-  {
-    title: "طراحی UI",
-    href: "/category/ui",
-    children: [
-      { title: "فیگما", href: "/category/figma" },
-      { title: "UX", href: "/category/ux" },
-    ],
-  },
+
 ];
