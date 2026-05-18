@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import http from "@/services/interseptor/http";
+import http from "@/src/services/interseptor/http";
 
 const handler = NextAuth({
   providers: [

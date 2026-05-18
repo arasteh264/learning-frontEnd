@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { navItems } from "@/config/siteMenu";
+import { navItems } from "@/src/config/siteMenu";
 
 export default function NavLinks() {
   return (
@@ -9,7 +9,6 @@ export default function NavLinks() {
       {navItems.map((item) => (
         <div key={item.href} className="relative group">
           
-          {/* main link */}
           <Link
             href={item.href}
             className="text-sm hover:text-green-600 py-2 block"
@@ -17,7 +16,6 @@ export default function NavLinks() {
             {item.title}
           </Link>
 
-          {/* dropdown wrapper FIX */}
           {item.children?.length > 0 && (
             <div className="absolute top-full right-0 pt-2 z-50">
               
