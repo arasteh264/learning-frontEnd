@@ -25,14 +25,15 @@ export default function NavLinks() {
               transition
             "
           >
-            {item.title}
-
-            {item.megaMenu && (
+                        {item.megaMenu && (
               <ChevronDown
                 size={16}
                 className="transition group-hover:rotate-180"
               />
             )}
+            {item.title}
+
+
           </Link>
 
           {/* mega menu */}
