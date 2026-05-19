@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProp) {
   return (
-    <html lang="fa" className={`${iranYekan.variable} h-full antialiased`}>
+    <html lang="fa" suppressHydrationWarning className={`${iranYekan.variable} h-full antialiased`}>
       <body className="w-full min-h-full">
         <Providers>
           <ConfigProvider

@@ -1,21 +1,42 @@
-'use client'
+"use client";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { SessionProvider } from 'next-auth/react'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState } from "react";
+
+import { SessionProvider } from "next-auth/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { ConfigProvider } from "antd";
+import faIR from "antd/locale/fa_IR";
+
+import { ToastContainer } from "react-toastify";
 
 export default function Providers({
   children,
 }: {
-  children: ReactNode
+  children: ReactNode;
 }) {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(
+    () => new QueryClient()
+  );
 
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        {children}
+        <ConfigProvider
+          direction="rtl"
+          locale={faIR}
+          theme={{
+            token: {
+              fontFamily:
+                "var(--font-iranyekan), sans-serif",
+            },
+          }}
+        >
+          {children}
+
+          <ToastContainer />
+        </ConfigProvider>
       </QueryClientProvider>
     </SessionProvider>
-  )
+  );
 }
