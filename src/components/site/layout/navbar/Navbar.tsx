@@ -13,24 +13,24 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="w-full border-b  border-b-gray-200 bg-white flex justify-center py-2">
-      <div className="container-custom flex justify-between items-center h-16">
-        <div className="hidden w-full md:flex justify-between items-center gap-4">
+<header className="w-full border-b border-b-gray-200 bg-white flex justify-center">
+  <div className="container-custom w-full flex justify-center py-2">
+        <div className="hidden  md:flex w-full justify-between items-center gap-4 ">
           <div className="flex items-center gap-3">
-          <UserActions />
-          <Link
-            href="/cart"
-            className="
+            <UserActions />
+            <Link
+              href="/cart"
+              className="
               relative flex items-center justify-center
               w-10 h-10 rounded-xl
                hover:bg-gray-100
               transition
             "
-          >
-            <ShoppingCartOutlined className="text-xl" />
+            >
+              <ShoppingCartOutlined className="text-xl" />
 
-            <span
-              className="
+              <span
+                className="
                 absolute -top-1 -left-1
                 bg-green-600 text-white
                 text-[10px]
@@ -38,22 +38,19 @@ export default function Navbar() {
                 flex items-center justify-center
                 rounded-full px-1
               "
-            >
-              2
-            </span>
-
-
-          </Link>
+              >
+                2
+              </span>
+            </Link>
           </div>
           <div className="flex items-center gap-8">
-                      <nav className="hidden md:flex items-center gap-6">
+            <nav className="hidden md:flex items-center gap-6">
               <NavLinks />
             </nav>
-          <Link href="/" className="font-bold text-lg">
-            SABZLEARN
-          </Link>
+            <Link href="/" className="font-bold text-lg">
+              SABZLEARN
+            </Link>
           </div>
-
         </div>
 
         <div className="md:hidden w-full flex justify-between items-center ">
