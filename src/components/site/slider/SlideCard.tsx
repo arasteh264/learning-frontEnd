@@ -8,48 +8,38 @@ type Props = {
   href: string;
 };
 
-export default function SlideCard({
-  title,
-  image,
-  level,
-  href,
-}: Props) {
+export default function SlideCard({ title, image, level, href }: Props) {
   return (
     <Link
       href={href}
       className="
-        block bg-white rounded-xl overflow-hidden
+        block bg-white rounded-xl overflow-hidden h-full
         shadow-sm hover:shadow-xl
         transition-all duration-300
-        hover:-translate-y-1
       "
     >
       {/* image */}
-      <div className="relative w-full h-40">
+      <div className="relative w-full h-45 md:h-120">
         <Image
           src={image}
           alt={title}
           fill
           className="
             object-cover
-            transition-transform duration-300
+            transition-transform duration-300 
             hover:scale-105
           "
         />
       </div>
 
       {/* content */}
-      <div className="p-3">
+      {/* <div className="p-3">
         <h3 className="font-bold text-sm line-clamp-1">
           {title}
         </h3>
 
-        {level && (
-          <span className="text-xs text-gray-500">
-            {level}
-          </span>
-        )}
-      </div>
+        {level && <span className="text-xs text-gray-500">{level}</span>}
+      </div> */}
     </Link>
   );
 }

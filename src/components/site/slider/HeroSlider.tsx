@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Autoplay } from "swiper/modules";
+import { FreeMode, Autoplay, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -20,21 +20,24 @@ export default function CardSlider() {
   }, []);
 
   return (
-    <div className="container-custom">
+    <div className="container-custom mt-5">
       <Swiper
-        modules={[FreeMode, Autoplay]}
+        modules={[FreeMode, Autoplay,Pagination]}
         freeMode
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,
         }}
+        pagination={{
+          clickable: true,
+        }}
         spaceBetween={16}
         slidesPerView={1.2}
         breakpoints={{
-          0: { slidesPerView: 1.2 }, 
-          640: { slidesPerView: 2 }, 
+          0: { slidesPerView: 1.2 },
+          640: { slidesPerView: 2 },
           768: { slidesPerView: 2.5 },
-          1024: { slidesPerView: 1 }, 
+          1024: { slidesPerView: 1 },
         }}
       >
         {(loading ? Array(6).fill(0) : sliderData).map(
