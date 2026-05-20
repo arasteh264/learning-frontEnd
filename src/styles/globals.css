@@ -50,3 +50,7 @@ html, body {
   margin-inline: auto;
   padding-inline: 16px;
 }
+.swiper-pagination {
+  margin-top: 12px;
+  position: relative !important;
+}

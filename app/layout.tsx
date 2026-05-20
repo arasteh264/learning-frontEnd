@@ -9,19 +9,19 @@ import { ToastContainer } from "react-toastify";
 const iranYekan = localFont({
   src: [
     {
-      path: "../src/public/fonts/iranyekanwebregular.b95439c1.b95439c1.woff",
+      path: "../public/fonts/iranyekanwebregular.b95439c1.b95439c1.woff",
       weight: "400",
     },
     {
-      path: "../src/public/fonts/iranyekanwebmedium.2d4f96e5.2d4f96e5.woff",
+      path: "../public/fonts/iranyekanwebmedium.2d4f96e5.2d4f96e5.woff",
       weight: "500",
     },
     {
-      path: "../src/public/fonts/iranyekanwebbold.e298fdc6.e298fdc6.woff",
+      path: "../public/fonts/iranyekanwebbold.e298fdc6.e298fdc6.woff",
       weight: "700",
     },
     {
-      path: "../src/public/fonts/iranyekanwebextrabold.9346e9a2.9346e9a2.woff",
+      path: "../public/fonts/iranyekanwebextrabold.9346e9a2.9346e9a2.woff",
       weight: "800",
     },
   ],

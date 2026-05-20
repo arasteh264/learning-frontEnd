@@ -14,13 +14,12 @@ export default function NavLinks() {
     <nav className="flex items-center gap-8">
       {navItems.map((item) => (
         <div key={item.href} className="relative group">
-          {/* main nav item */}
 
           <Link
             href={item.href}
             className="
               flex items-center gap-1
-              py-2 text-sm
+              py-2 text-1xl 
               hover:text-green-600
               transition
             "
@@ -36,7 +35,6 @@ export default function NavLinks() {
 
           </Link>
 
-          {/* mega menu */}
           {item.megaMenu && (
             <div
               className="
@@ -58,10 +56,9 @@ export default function NavLinks() {
                   shadow-xl
                   p-5
                   gap-3
-                  min-w-[560px]
+                  min-w-[200px]
                 "
               >
-                {/* left courses panel */}
                 <div
                   className="
                     w-72

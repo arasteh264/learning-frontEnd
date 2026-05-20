@@ -14,8 +14,8 @@ export default function Navbar() {
 
   return (
 <header className="w-full border-b border-b-gray-200 bg-white flex justify-center">
-  <div className="container-custom w-full flex justify-center py-2">
-        <div className="hidden  md:flex w-full justify-between items-center gap-4 ">
+  <div className="container-custom w-full flex justify-center py-2  ">
+        <div className="hidden  md:flex w-full justify-between items-center gap-4 py-3 ">
           <div className="flex items-center gap-3">
             <UserActions />
             <Link
