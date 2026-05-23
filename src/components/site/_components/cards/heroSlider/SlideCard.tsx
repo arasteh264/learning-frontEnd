@@ -31,15 +31,6 @@ export default function SlideCard({ title, image, level, href }: Props) {
           "
         />
       </div>
-
-      {/* content */}
-      {/* <div className="p-3">
-        <h3 className="font-bold text-sm line-clamp-1">
-          {title}
-        </h3>
-
-        {level && <span className="text-xs text-gray-500">{level}</span>}
-      </div> */}
     </Link>
   );
 }

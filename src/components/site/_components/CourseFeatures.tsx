@@ -1,6 +1,6 @@
 export default function CourseFeatures() {
   return (
-    <div className="mt-8 flex items-center justify-around select-none  gap-1 px-4 text-xs">
+    <div className="py-10 mt-5 flex items-center justify-around select-none  gap-1 px-4 text-xs">
 
       <div className="flex flex-col sm:flex-row gap-y-2.5 items-center gap-x-2.5 text-center">
         <svg className="size-5 sm:size-6" viewBox="0 0 24 24" fill="none">

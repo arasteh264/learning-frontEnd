@@ -4,6 +4,11 @@ import Navbar from "@/src/components/site/layout/navbar/Navbar";
 import SearchBox from "@/src/components/site/search/SearchBox";
 import HeroSlider from "@/src/components/site/slider/HeroSlider";
 import CourseFeatures from "@/src/components/site/_components/CourseFeatures";
+import LatestCourses from "@/src/components/site/_components/latestCourses";
+import CourseCategory from "@/src/components/site/_components/courseCategory";
+import LatestCoursesSlider from "@/src/components/site/_components/LatestCoursesSlider/LatestCoursesSlider";
+import SocialBanners from "@/src/components/site/_components/SocialBanners";
+import LatestArticles from "@/src/components/site/_components/LatestArticles";
 export default function Page() {
   const mockBanner = {
     text: "⏳ فقط تا ۳۱ اردیبهشت! | آخرین فرصت خرید با ۷۰٪ تخفیف و قیمت سال قبل 🔥 | افزایش قیمت دوره‌ها از اول خرداد 🚨 | همین امروز ثبت‌نام کن",
@@ -16,7 +21,33 @@ export default function Page() {
       <HeroSlider />
       <HeroSearchSection />
       <SearchBox />
-      <CourseFeatures/>
+      <CourseFeatures />
+      <LatestCourses />
+      <CourseCategory />
+      <LatestCoursesSlider />
+      <SocialBanners
+        items={[
+          {
+            href: "https://t.me/sabzlearn",
+            image: "/images/telegram-logo-4.png",
+            alt: "کانال تلگرام سبزلرن",
+            ariaLabel: "کانال تلگرام سبزلرن",
+            title: "کانال تلگرام سبزلرن",
+            subtitle: "به‌روزترین نکات آموزشی",
+            titleColor: "#229ED9",
+          },
+          {
+            href: "https://www.instagram.com/sabzlearn_",
+            image: "/images/instagram.png",
+            alt: "پیج اینستاگرام سبزلرن",
+            ariaLabel: "پیج اینستاگرام سبزلرن",
+            title: "صفحه اینستاگرام سبزلرن",
+            subtitle: "به‌روزترین نکات آموزشی",
+            titleColor: "#E1306C",
+          },
+        ]}
+      />
+      <LatestArticles/>
     </main>
   );
 }
