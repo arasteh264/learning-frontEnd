@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,7 +23,7 @@ export default function ArticleCard({
   readTime,
 }: ArticleCardProps) {
   return (
-    <div className="flex flex-col gap-y-3 h-full rounded-xl bg-white shadow-base group/blog text-right">
+    <div className="flex flex-col gap-y-3 h-full rounded-xl bg-white shadow-base group/blog text-right shadow-2xl">
       <Link href={href} className="block">
         <Image
           src={image}
@@ -48,7 +49,13 @@ export default function ArticleCard({
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+
+
+          <span className="text-xs text-gray-400">
+            {readTime} دقیقه 
+          </span>
+                    <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-500">{author.name}</span>
             <Image
               src={author.avatar}
               alt={author.name}
@@ -56,18 +63,15 @@ export default function ArticleCard({
               height={24}
               className="rounded-full size-6"
             />
-            <span className="text-xs text-gray-500">{author.name}</span>
-          </div>
 
-          <span className="text-xs text-gray-400">
-            {readTime} دقیقه مطالعه
-          </span>
+          </div>
         </div>
 
         <Link
           href={href}
-          className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-brand text-white text-sm px-6 py-2 rounded-xl hover:bg-brand-100 transition"
+          className=" flex items-center  absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[#1eb35b] text-white text-sm px-6 py-2 rounded-xl hover:bg-brand-100 transition"
         >
+            <ArrowLeft className="size-4" />
           مطالعه
         </Link>
       </div>
