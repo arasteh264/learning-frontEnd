@@ -6,6 +6,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --menubackground:#1eb35b;
+  --color-brand: #1eb35b;
 }
 
 @theme inline {
@@ -18,7 +19,9 @@
  :root[data-theme="dark"] {
   --foreground: #ffffff;
   --background: #ffffff;
-  --menubackground:#1eb35b;}
+  --menubackground:#1eb35b;
+  --color-brand: #1eb35b;
+}
 }
 
 body {
