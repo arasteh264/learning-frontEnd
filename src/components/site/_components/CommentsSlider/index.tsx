@@ -13,7 +13,7 @@ const comments = [
   {
     id: 1,
     name: "علی رضایی",
-    avatar: "/avatars/user-1.jpg",
+    avatar: "/slider/1.webp",
     job: "برنامه نویس فرانت‌اند",
     rate: 1,
     comment:
@@ -23,7 +23,7 @@ const comments = [
   {
     id: 2,
     name: "نگار محمدی",
-    avatar: "/avatars/user-2.jpg",
+    avatar: "/slider/1.webp",
     job: "دانشجوی مهندسی نرم افزار",
     rate: 2,
     comment:
@@ -33,7 +33,7 @@ const comments = [
   {
     id: 3,
     name: "محمد کریمی",
-    avatar: "/avatars/user-3.jpg",
+    avatar: "/slider/1.webp",
     job: "توسعه دهنده Next.js",
     rate: 3,
     comment:
@@ -43,7 +43,7 @@ const comments = [
   {
     id: 4,
     name: "زهرا اکبری",
-    avatar: "/avatars/user-4.jpg",
+    avatar: "/slider/1.webp",
     job: "طراح رابط کاربری",
     rate: 4,
     comment:

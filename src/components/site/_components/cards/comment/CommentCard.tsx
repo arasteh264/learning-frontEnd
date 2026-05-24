@@ -23,14 +23,7 @@ export default function CommentCard({ item }: { item: CommentItem }) {
       <div className="flex items-center justify-between">
                 <Quote className="size-7 text-gray-200" />
         <div className="flex items-center gap-3">
-          <div className="relative size-14">
-            <Image
-              src={item.avatar}
-              alt={item.name}
-              fill
-              className="rounded-full object-cover"
-            />
-          </div>
+
 
           <div className="flex flex-col">
             <h3 className="text-sm font-bold text-gray-800">
@@ -40,6 +33,14 @@ export default function CommentCard({ item }: { item: CommentItem }) {
             <span className="text-xs text-gray-500">
               {item.job}
             </span>
+          </div>
+                    <div className="relative size-8">
+            <Image
+              src={item.avatar}
+              alt={item.name}
+              fill
+              className="rounded-full object-cover"
+            />
           </div>
         </div>
 

@@ -31,9 +31,9 @@ export default function CourseCard({
   discount,
 }: CourseCardProps) {
   return (
-<div className="group flex flex-col  sm:flex-row gap-3 sm:gap-4 rounded-xl shadow-base bg-white overflow-hidden border border-gray-100 text-right h-full">
-        <Link href={href} className="block sm:w-40 w-full">
-        <div className="relative w-full aspect-video sm:aspect-auto sm:h-full">
+<div className="group flex flex-col   gap-3 sm:gap-4 rounded-xl shadow-base bg-white overflow-hidden border border-gray-100 text-right h-full">
+        <Link href={href} className="block  w-full">
+        <div className="relative w-full aspect-video sm:w-full sm:h-full">
           <Image
             src={image}
             alt={title}

@@ -20,7 +20,7 @@ type SocialBannersProps = {
 export default function SocialBanners({ items }: SocialBannersProps) {
   return (
     <div className="container-custom  py-10 sm:py-16 lg:py-20">
-      <section className="flex flex-col gap-5">
+      <section className="flex flex-col sm:flex-row gap-5">
         {items.map((item, i) => (
           <Link
             key={i}
