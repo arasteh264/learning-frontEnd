@@ -69,7 +69,7 @@ export default function ArticleCard({
 
         <Link
           href={href}
-          className=" flex items-center  absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[#1eb35b] text-white text-sm px-6 py-2 rounded-xl hover:bg-brand-100 transition"
+          className=" flex items-center text-xs absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[#1eb35b] text-white  px-6 py-2 rounded-xl hover:bg-brand-100 transition"
         >
             <ArrowLeft className="size-4" />
           مطالعه

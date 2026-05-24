@@ -9,6 +9,7 @@ import CourseCategory from "@/src/components/site/_components/courseCategory";
 import LatestCoursesSlider from "@/src/components/site/_components/LatestCoursesSlider/LatestCoursesSlider";
 import SocialBanners from "@/src/components/site/_components/SocialBanners";
 import LatestArticles from "@/src/components/site/_components/LatestArticles";
+import CommentsSlider from "@/src/components/site/_components/CommentsSlider";
 export default function Page() {
   const mockBanner = {
     text: "⏳ فقط تا ۳۱ اردیبهشت! | آخرین فرصت خرید با ۷۰٪ تخفیف و قیمت سال قبل 🔥 | افزایش قیمت دوره‌ها از اول خرداد 🚨 | همین امروز ثبت‌نام کن",
@@ -48,6 +49,7 @@ export default function Page() {
         ]}
       />
       <LatestArticles/>
+      <CommentsSlider/>
     </main>
   );
 }
