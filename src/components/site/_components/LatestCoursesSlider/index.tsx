@@ -84,7 +84,7 @@ export default function LatestCoursesSlider() {
         highlight="دوره‌ها"
         action={
           <Link
-            href="/courses?sort_by=updated_at"
+            href="/courses"
             className="flex items-center gap-x-2 text-label sm:text-caption hover:text-brand transition-colors"
           >
             <ArrowLeft className="size-4" />

@@ -80,7 +80,7 @@ export default function PopularFreeCourses() {
         highlight="دوره‌های رایگان"
         action={
           <Link
-            href="/courses?type=free&sort_by=popular"
+            href="/courses"
             className="flex items-center gap-x-2 text-label sm:text-caption hover:text-brand transition-colors"
           >
             <ArrowLeft className="size-4" />
