@@ -39,6 +39,41 @@ export const categories = [
    image: "/slider/1.webp",
     count: 6,
   },
+    {
+    id: 6,
+    title: "تایپ اسکریپت",
+    href: "/courses/typescript",
+   image: "/slider/1.webp",
+    count: 6,
+  },
+    {
+    id: 7,
+    title: "تایپ اسکریپت",
+    href: "/courses/typescript",
+   image: "/slider/1.webp",
+    count: 6,
+  },
+    {
+    id: 8,
+    title: "تایپ اسکریپت",
+    href: "/courses/typescript",
+   image: "/slider/1.webp",
+    count: 6,
+  },
+    {
+    id: 9,
+    title: "تایپ اسکریپت",
+    href: "/courses/typescript",
+   image: "/slider/1.webp",
+    count: 6,
+  },
+    {
+    id:10,
+    title: "تایپ اسکریپت",
+    href: "/courses/typescript",
+   image: "/slider/1.webp",
+    count: 6,
+  },
 ];
 
 export default function CourseCategory() {

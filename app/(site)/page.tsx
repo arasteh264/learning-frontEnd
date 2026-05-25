@@ -6,9 +6,12 @@ import HeroSlider from "@/src/components/site/slider/HeroSlider";
 import CourseFeatures from "@/src/components/site/_components/CourseFeatures";
 import LatestCourses from "@/src/components/site/_components/latestCourses";
 import CourseCategory from "@/src/components/site/_components/courseCategory";
-import LatestCoursesSlider from "@/src/components/site/_components/LatestCoursesSlider/LatestCoursesSlider";
+import LatestCoursesSlider from "@/src/components/site/_components/LatestCoursesSlider";
 import SocialBanners from "@/src/components/site/_components/SocialBanners";
 import LatestArticles from "@/src/components/site/_components/LatestArticles";
+import CommentsSlider from "@/src/components/site/_components/CommentsSlider";
+import PopularFreeCourses from "@/src/components/site/_components/freePopularCourses";
+import Footer from "@/src/components/site/layout/footer";
 export default function Page() {
   const mockBanner = {
     text: "⏳ فقط تا ۳۱ اردیبهشت! | آخرین فرصت خرید با ۷۰٪ تخفیف و قیمت سال قبل 🔥 | افزایش قیمت دوره‌ها از اول خرداد 🚨 | همین امروز ثبت‌نام کن",
@@ -48,6 +51,9 @@ export default function Page() {
         ]}
       />
       <LatestArticles/>
+      <CommentsSlider/>
+      <PopularFreeCourses/>
+      <Footer/>
     </main>
   );
 }
