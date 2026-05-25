@@ -20,7 +20,7 @@ export default function Page() {
   return (
     <main>
       <AnnouncementBar text={mockBanner.text} endDate={mockBanner.endDate} />
-      <Navbar />
+      
       <HeroSlider />
       <HeroSearchSection />
       <SearchBox />
@@ -53,7 +53,6 @@ export default function Page() {
       <LatestArticles/>
       <CommentsSlider/>
       <PopularFreeCourses/>
-      <Footer/>
     </main>
   );
 }

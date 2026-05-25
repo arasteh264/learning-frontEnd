@@ -5,15 +5,15 @@ import Link from "next/link";
 export default function Footer() {
   return (
 <footer className=" container-custom text-right py-5 mt-10">
-  <div className=" bg-[#242424] py-5 flex justify-end md:justify-between flex-wrap   gap-x-5 xl:gap-x-12 rounded-xl px-5">
+  <div className=" bg-[#242424] py-5 flex justify-end sm:flex-row-reverse md:justify-between flex-wrap   gap-x-5 xl:gap-x-12 rounded-xl px-5">
 
         {/* About */}
         <div className="flex flex-col gap-y-3 sm:gap-y-6 w-full lg:w-70 xl:w-90 mb-5">
-          <span className="font-demibold text-caption text-xs xl:text-t3 text-white">
+          <span className="font-demibold text-caption text-xs sm:text-sm xl:text-t3 text-white">
             درباره ما
           </span>
 
-          <p className="font-regular text-label text-xs text-gray-300 leading-6">
+          <p className="font-regular text-label text-xs sm:text-sm text-gray-300 leading-6">
             شروع هرچیزی سخته، ولی وقتی مسیر درستی رو انتخاب کنی، با خیال راحت و بدون استرس میتونی از مسیر لذت ببری.
             ما در سبزلرن، توی سفر به دنیای برنامه نویسی کنارت هستیم تا باهم رشد کنیم.
           </p>
@@ -21,7 +21,7 @@ export default function Footer() {
 
         {/* Links */}
         <div className="flex flex-col gap-y-3 sm:gap-y-6 ">
-          <h3 className="font-demibold text-caption text-xs xl:text-t3 text-white">
+          <h3 className="font-demibold text-caption text-xs sm:text-sm xl:text-t3 text-white">
             لینک های مفید
           </h3>
 
@@ -35,7 +35,7 @@ export default function Footer() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="text-white inline-flex items-center gap-x-1.5 font-regular text-label  text-[10px]"
+                  className="text-white inline-flex items-center gap-x-1.5 font-regular text-label  text-[10px] "
                 >
 
                   {item.label}
@@ -48,7 +48,7 @@ export default function Footer() {
 
         {/* Courses */}
         <div className="flex flex-col gap-y-3 sm:gap-y-6">
-          <h3 className="font-demibold text-caption text-xs xl:text-t3 text-white">
+          <h3 className="font-demibold text-caption text-xs xl:text-t3 text-white sm:text-sm">
             دوره های پیشنهادی
           </h3>
 
@@ -75,23 +75,23 @@ export default function Footer() {
 
         {/* Contact */}
         <div className="flex flex-col gap-y-3 pt-3 w-full sm:w-70 xl:w-80">
-          <h3 className="font-demibold text-caption text-sm xl:text-t3 text-white">
+          <h3 className="font-demibold text-caption text-sm xl:text-t3 text-white sm:text-sm">
             ارتباط با ما
           </h3>
 
-          <div className="flex flex-col justify-between h-full gap-y-8">
+          <div className="flex flex-col justify-between h-full gap-y-8 ">
 
             {/* info */}
             <div className="flex flex-col gap-y-3 text-label text-xs text-white">
               <div className="flex justify-between flex-wrap gap-x-3 gap-y-1.5">
-                <a className=" hover:text-brand" href="https://t.me/sabzlearn_support">
+                <a className=" hover:text-brand sm:text-sm" href="https://t.me/sabzlearn_support">
                   @sabzlearn_support
                 </a>
                                 <span >پشتیبان تلگرام</span>
               </div>
 
               <div className="flex justify-between flex-wrap gap-x-3 gap-y-1.5">
-                <a className=" hover:text-brand" href="mailto:info@sabzlearn.ir">
+                <a className=" hover:text-brand sm:text-sm" href="mailto:info@sabzlearn.ir">
                   info@sabzlearn.ir
                 </a>
                                 <span>ایمیل</span>
@@ -140,7 +140,7 @@ export default function Footer() {
         </div>
 
 
-              <div className="flex justify-end bg-[#fdfffd44]  py-5  flex-wrap   text-white text-label sm:text-caption  mt-5 rounded-2xl">
+              <div className="w-full flex items-center  justify-end sm:justify-between sm:flex-row-reverse bg-[#fdfffd44]  py-5  flex-wrap   text-white text-label sm:text-caption  mt-5 rounded-2xl">
         <p>
           کلیه حقوق برای <span className="text-brand">سبزلرن</span> محفوظ است.
         </p>
