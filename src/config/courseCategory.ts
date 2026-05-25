@@ -1,0 +1,28 @@
+export const categories = [
+  { id: 19, label: "HTML & CSS" },
+  { id: 1, label: "ارتقای مهارت ها" },
+  { id: 2, label: "امنیت" },
+  { id: 21, label: "برنامه نویسی" },
+  { id: 3, label: "بک اند" },
+  { id: 4, label: "پایتون" },
+  { id: 5, label: "پی اچ پی" },
+  { id: 15, label: "جاوااسکریپت" },
+  { id: 6, label: "دسکتاپ" },
+  { id: 17, label: "ری اکت جی اس" },
+  { id: 7, label: "سیستم عامل" },
+  { id: 8, label: "شبکه" },
+  { id: 9, label: "فرانت اند" },
+  { id: 10, label: "فلاتر" },
+  { id: 11, label: "مهارت های نرم" },
+  { id: 20, label: "موبایل و آی او اس" },
+  { id: 12, label: "نود جی اس" },
+  { id: 13, label: "هوش مصنوعی" },
+  { id: 18, label: "وردپرس" },
+  { id: 16, label: "ویو جی اس" },
+];
+export const updateSortOptions = [
+  { id: "default", label: "پیشفرض" },
+  { id: "popular", label: "پرطرفدار ترین" },
+  { id: "newest", label: "جدید ترین" },
+  { id: "latest", label: "آخرین آپدیت" },
+]

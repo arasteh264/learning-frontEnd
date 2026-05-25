@@ -13,7 +13,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-<header className="w-full border-b border-b-gray-200 bg-white flex justify-center">
+<header className="w-full border-b border-b-gray-200 bg-white flex justify-center mb-7">
   <div className="container-custom w-full flex justify-center py-2  ">
         <div className="hidden  md:flex w-full justify-between items-center gap-4 py-3 ">
           <div className="flex items-center gap-3">

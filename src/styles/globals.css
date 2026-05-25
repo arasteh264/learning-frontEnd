@@ -59,4 +59,33 @@ html, body {
 }
 .footer-container{
   background-color: #169a4a;
+
+
+/* globals.css */
+
+.custom-responsive-drawer .ant-drawer-content {
+  overflow: hidden;
 }
+
+/* Mobile Bottom Sheet */
+@media (max-width: 768px) {
+  .custom-responsive-drawer .ant-drawer-content-wrapper {
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+  }
+
+  .filter-sheet .ant-drawer-content-wrapper {
+    height: 100vh !important;
+  }
+
+  .updates-sheet .ant-drawer-content-wrapper {
+    height: 55vh !important;
+  }
+}
+
+/* 💻 Desktop */
+@media (min-width: 768px) {
+  .custom-responsive-drawer .ant-drawer-content-wrapper {
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.06);
+  }
+}}
