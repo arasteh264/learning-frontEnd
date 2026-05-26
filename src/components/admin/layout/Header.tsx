@@ -2,24 +2,23 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "@/services/user";
-import { UserOutlined, PoweroffOutlined  } from "@ant-design/icons";
+import { UserOutlined, PoweroffOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 const HeaderDashborad = () => {
-const pathname = usePathname();
-if (pathname === "/auth/login" || pathname === "/auth/register") return null;
-const router = useRouter();
-// const { data: userData, isLoading } = useQuery({
-//   queryKey: ["profile"],
-//   queryFn: getUserProfile,
-//   retry: false,
-// });
+  const pathname = usePathname();
+  if (pathname === "/auth/login" || pathname === "/auth/register") return null;
+  const router = useRouter();
+  // const { data: userData, isLoading } = useQuery({
+  //   queryKey: ["profile"],
+  //   queryFn: getUserProfile,
+  //   retry: false,
+  // });
 
-
- const handleLogout = () => {
-  localStorage.removeItem("accessToken")
-  router.push('/auth/login');
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    router.push("/auth/login");
   };
 
   return (
@@ -31,14 +30,14 @@ const router = useRouter();
             icon={<PoweroffOutlined />}
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out" // کلاس‌های Tailwind
             onClick={handleLogout}
-            danger></Button>
-<Link href={"/profile"}>
-          <Button
-            type="primary"
-            icon={<UserOutlined />}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out" // کلاس‌های Tailwind
-           
+            danger
           ></Button>
+          <Link href={"/admin/profile"}>
+            <Button
+              type="primary"
+              icon={<UserOutlined />}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out" // کلاس‌های Tailwind
+            ></Button>
           </Link>
         </div>
         <div>

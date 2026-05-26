@@ -1,16 +1,15 @@
 "use client";
 
 import { Input, Button, Select, Upload, Switch } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { getTeacherList } from "@/services/teacher";
-import { getCategoryList } from "@/services/category";
-import { createCourseApi, CreateCourseForm } from "@/services/course";
+import { getTeacherList } from "@/src/services/teacher";
+import { getCategoryList } from "@/src/services/category";
+import { createCourseApi, CreateCourseForm } from "@/src/services/course";
 import { toast } from "react-toastify";
-import { PriceInput } from "@/components/base/PriceInput";
-import FileUploader from "@/components/admin/FileUploader";
+import { PriceInput } from "@/src/components/base/PriceInput";
+import FileUploader from "@/src/components/admin/FileUploader";
 
 export default function CreateCoursePage() {
   const router = useRouter();
@@ -61,7 +60,7 @@ export default function CreateCoursePage() {
 
     onSuccess: (data) => {
       toast.success("دوره با موفقیت ثبت شد 🎉");
-      router.push("/courses");
+      router.push("/admin/courses");
     },
 
     onError: (error: any) => {

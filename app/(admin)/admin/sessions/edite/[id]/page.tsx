@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Input, Button, Select, Upload, Switch, Modal } from "antd";
+import { Input, Button, Select,  Switch, Modal } from "antd";
 
-import { UploadOutlined } from "@ant-design/icons";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -17,8 +16,8 @@ import {
   getAllCourse,
   getSessionDetail,
   updateSessionApi,
-} from "@/services/course";
-import FileUploader from "@/components/admin/FileUploader";
+} from "@/src/services/course";
+import FileUploader from "@/src/components/admin/FileUploader";
 
 type EditSessionForm = {
   title: string;
@@ -92,7 +91,7 @@ export default function EditSessionPage() {
     onSuccess: (res) => {
       toast.success(res?.message || "جلسه با موفقیت ویرایش شد 🎉");
 
-      router.push("/sessions");
+      router.push("/admin/sessions");
     },
 
     onError: (error: any) => {

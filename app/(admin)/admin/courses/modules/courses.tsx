@@ -1,6 +1,6 @@
-import BaseTable from "@/components/admin/tables/BaseTable";
-import { getCourseColumns } from "@/components/admin/tables/tablesColumns/course.columns";
-import { getAllCourse, removeCourse } from "@/services/course";
+import BaseTable from "@/src/components/admin/tables/BaseTable";
+import { getCourseColumns } from "@/src/components/admin/tables/tablesColumns/course.columns";
+import { getAllCourse, removeCourse } from "@/src/services/course";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Modal } from "antd";
 
@@ -21,7 +21,7 @@ export default function Courses() {
   });
 
   const handleEdit = (id: string) => {
-    router.push(`/courses/edit/${id}`);
+    router.push(`/admin/courses/edit/${id}`);
   };
 
   const { mutate: handleDeleteUCourse } = useMutation({
@@ -45,7 +45,7 @@ export default function Courses() {
       <Button
         type="primary"
         className="mb-4 self-end"
-        onClick={() => router.push("/courses/create")}
+        onClick={() => router.push("/admin/courses/create")}
       >
         افزودن دوره
       </Button>

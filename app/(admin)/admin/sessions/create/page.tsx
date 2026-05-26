@@ -1,13 +1,12 @@
 "use client";
 
 import { Input, Button, Select, Upload, Switch } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { createSessionApi, getAllCourse } from "@/services/course";
+import { createSessionApi, getAllCourse } from "@/src/services/course";
 import { toast } from "react-toastify";
-import FileUploader from "@/components/admin/FileUploader";
+import FileUploader from "@/src/components/admin/FileUploader";
 
 type CreateSessionForm = {
   title: string;
@@ -54,7 +53,7 @@ export default function CreateSessionPage() {
     onSuccess: (res) => {
       toast.success(res?.message || "جلسه با موفقیت ایجاد شد 🎉");
 
-      router.push("/sessions");
+      router.push("/admin/sessions");
     },
 
     onError: (error: any) => {

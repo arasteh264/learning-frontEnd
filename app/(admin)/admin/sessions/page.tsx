@@ -20,7 +20,7 @@ export default function SessionsPage() {
   });
 
   const handleEdit = (id: string) => {
-    router.push(`/sessions/edite/${id}`);
+    router.push(`/admin/sessions/edite/${id}`);
   };
 
   const { mutate: handleDeleteSession } = useMutation({
@@ -45,9 +45,7 @@ export default function SessionsPage() {
         <Button
           type="primary"
           size="large"
-          onClick={() => router.push("/sessions/create")}
-        >
-          افزودن جلسه
+      onClick={() => router.push("/admin/sessions/create")}
         </Button>
 
         <h2 className="text-xl font-bold">لیست جلسات</h2>
