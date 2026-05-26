@@ -1,18 +1,17 @@
 "use client";
 
 import { Input, Button, Select, Upload, Switch } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "react-toastify";
 
-import { getCourseDetail, updateCourseApi } from "@/services/course";
-import { getTeacherList } from "@/services/teacher";
-import { getCategoryList } from "@/services/category";
+import { getCourseDetail, updateCourseApi } from "@/src/services/course";
+import { getTeacherList } from "@/src/services/teacher";
+import { getCategoryList } from "@/src/services/category";
 import { useEffect } from "react";
-import { PriceInput } from "@/components/base/PriceInput";
-import FileUploader from "@/components/admin/FileUploader";
+import { PriceInput } from "@/src/components/base/PriceInput";
+import FileUploader from "@/src/components/admin/FileUploader";
 
 export default function EditCoursePage() {
   const router = useRouter();
@@ -73,7 +72,7 @@ export default function EditCoursePage() {
     mutationFn: updateCourseApi,
     onSuccess: () => {
       toast.success("دوره با موفقیت ویرایش شد 🎉");
-      router.push("/courses");
+      router.push("/admin/courses");
     },
     onError: (err: any) => {
       toast.error(err?.response?.data?.message || "خطا در ویرایش");

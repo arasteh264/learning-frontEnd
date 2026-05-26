@@ -1,20 +1,20 @@
 "use client";
 
-import BaseTable from "@/components/admin/tables/BaseTable";
-import { getCategoryColumns } from "@/components/admin/tables/tablesColumns/category.columns";
+import BaseTable from "@/src/components/admin/tables/BaseTable";
+import { getCategoryColumns } from "@/src/components/admin/tables/tablesColumns/category.columns";
 import { Button, Modal, Input } from "antd";
 import { useMemo, useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { categorySchema } from "@/validation/category.schema";
+import { categorySchema } from "@/src/validation/category.schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addCategory,
   getCategoryList,
   removeCategory,
   updateCategory,
-} from "@/services/category";
+} from "@/src/services/category";
 import { toast } from "react-toastify";
 
 type CategoryForm = {
