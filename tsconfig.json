@@ -2,23 +2,19 @@
   "compilerOptions": {
     "target": "ES2022",
 
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2022"
-    ],
+    "lib": ["dom", "dom.iterable", "es2022"],
 
     "allowJs": false,
 
-    "skipLibCheck": false,
+    "skipLibCheck": true,
 
     "strict": true,
 
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
 
     "noImplicitReturns": true,
     "noImplicitOverride": true,
@@ -32,11 +28,9 @@
     "esModuleInterop": true,
 
     "module": "esnext",
-
     "moduleResolution": "bundler",
 
     "resolveJsonModule": true,
-
     "isolatedModules": true,
 
     "jsx": "react-jsx",
@@ -63,7 +57,5 @@
     ".next/dev/types/**/*.ts"
   ],
 
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

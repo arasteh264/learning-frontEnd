@@ -3,7 +3,7 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { usePathname, useRouter } from 'next/navigation';
-import { sidebarMenuItemsWithSubmenus } from '@/config/menuItems';
+import { sidebarMenuItemsWithSubmenus } from '@/src/config/menuItems';
 
 const { Sider } = Layout;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Button, Select, Upload, Switch } from "antd";
+import { Input, Button, Select,  Switch } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter, useParams } from "next/navigation";
@@ -20,7 +20,7 @@ export default function EditCoursePage() {
 
   const {
     control,
-    register,
+  
     handleSubmit,
     reset,
     formState: { errors },

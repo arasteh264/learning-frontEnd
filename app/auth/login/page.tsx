@@ -4,12 +4,11 @@ import { useForm, Controller } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form";
 import { Input, Button, Checkbox, Form, Card } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { AuthLayout } from "@/components/admin/layout/AuthLayout";
+import { AuthLayout } from "@/src/components/admin/layout/AuthLayout";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getSession, signIn } from "next-auth/react";
-import { de } from "zod/v4/locales";
 type Inputs = {
   username: string;
   password: string;

@@ -1,9 +1,9 @@
 "use client";
 
-import BaseTable from "@/components/admin/tables/BaseTable";
-import { getUserColumns } from "@/components/admin/tables/tablesColumns/users.columns";
+import BaseTable from "@/src/components/admin/tables/BaseTable";
+import { getUserColumns } from "@/src/components/admin/tables/tablesColumns/users.columns";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, getUsers, RoleUser, BanUser } from "@/services/user";
+import { deleteUser, getUsers, RoleUser, BanUser } from "@/src/services/user";
 import { toast } from "react-toastify";
 
 export default function UsersPage() {

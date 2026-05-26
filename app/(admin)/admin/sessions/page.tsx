@@ -1,11 +1,11 @@
 "use client";
 
-import BaseTable from "@/components/admin/tables/BaseTable";
-import { getSessionColumns } from "@/components/admin/tables/tablesColumns/sessions.columns";
+import BaseTable from "@/src/components/admin/tables/BaseTable";
+import { getSessionColumns } from "@/src/components/admin/tables/tablesColumns/sessions.columns";
 import { Button, Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAllSession, removeSession } from "@/services/course";
+import { getAllSession, removeSession } from "@/src/services/course";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -20,7 +20,7 @@ export default function SessionsPage() {
   });
 
   const handleEdit = (id: string) => {
-    router.push(`/admin/sessions/edite/${id}`);
+    router.push(`/sessions/edite/${id}`);
   };
 
   const { mutate: handleDeleteSession } = useMutation({
@@ -45,7 +45,9 @@ export default function SessionsPage() {
         <Button
           type="primary"
           size="large"
-      onClick={() => router.push("/admin/sessions/create")}
+          onClick={() => router.push("/sessions/create")}
+        >
+          افزودن جلسه
         </Button>
 
         <h2 className="text-xl font-bold">لیست جلسات</h2>

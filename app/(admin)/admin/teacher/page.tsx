@@ -1,15 +1,15 @@
 "use client";
 
-import BaseTable from "@/components/admin/tables/BaseTable";
+import BaseTable from "@/src/components/admin/tables/BaseTable";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, RoleUser, BanUser } from "@/services/user";
+import { deleteUser, RoleUser, BanUser } from "@/src/services/user";
 import { toast } from "react-toastify";
 import {
   getTeacherList,
   removeTeacher,
   verifyTeacher,
-} from "@/services/teacher";
-import { getTeacherColumns } from "@/components/admin/tables/tablesColumns/teacher.columns";
+} from "@/src/services/teacher";
+import { getTeacherColumns } from "@/src/components/admin/tables/tablesColumns/teacher.columns";
 import { useMemo } from "react";
 
 export default function teacherPage() {

@@ -35,7 +35,6 @@ export default function Category() {
   const isEdit = !!editing?.id;
 
   const {
-    register,
     handleSubmit,
     reset,
     trigger,
