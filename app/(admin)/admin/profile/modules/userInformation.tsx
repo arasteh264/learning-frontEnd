@@ -3,7 +3,7 @@ import { useState } from "react";
 import { EditOutlined } from "@ant-design/icons";
 import EditProfileModal from "./modals/editProfileModal";
 import { useQuery } from "@tanstack/react-query";
-import { getUserProfile } from "@/services/user";
+import { getUserProfile } from "@/src/services/user";
 import TeacherRequestModal from "./modals/teacherRequest";
 
 type ProfileItemProps = {

@@ -1,5 +1,5 @@
-import { getUserProfile } from "@/services/user";
-import { profileSchema } from "@/validation/profile.schema";
+import { getUserProfile } from "@/src/services/user";
+import { profileSchema } from "@/src/validation/profile.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal, Input, Button, Select } from "antd";
 import { useEffect, useState } from "react";

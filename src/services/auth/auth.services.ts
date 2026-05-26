@@ -1,4 +1,4 @@
-import { LoginType, RegisterType } from '@/types/auth';
+import { LoginType, RegisterType } from '@/src/types/auth';
 import http from '../interseptor/http';
 
 export const Login = async ({ identifier, password }:LoginType) => {

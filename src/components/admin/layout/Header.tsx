@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getUserProfile } from "@/services/user";
+import { getUserProfile } from "@/src/services/user";
 import { UserOutlined, PoweroffOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { usePathname, useRouter } from "next/navigation";

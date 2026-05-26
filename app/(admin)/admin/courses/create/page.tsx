@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Button, Select, Upload, Switch } from "antd";
+import { Input, Button, Select, Switch } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,7 @@ export default function CreateCoursePage() {
   const {
     data: TeacherData = [],
     isLoading: teacherLoading,
-    error: teacherError,
+    // error: teacherError,
   } = useQuery({
     queryKey: ["users"],
     queryFn: getTeacherList,
@@ -38,7 +38,7 @@ export default function CreateCoursePage() {
   const {
     data: CategoryData = [],
     isLoading: categoryLoading,
-    error: categoryError,
+    // error: categoryError,
   } = useQuery({
     queryKey: ["category"],
     queryFn: getCategoryList,
@@ -58,7 +58,7 @@ export default function CreateCoursePage() {
   const addMutation = useMutation({
     mutationFn: createCourseApi,
 
-    onSuccess: (data) => {
+    onSuccess: ( ) => {
       toast.success("دوره با موفقیت ثبت شد 🎉");
       router.push("/admin/courses");
     },

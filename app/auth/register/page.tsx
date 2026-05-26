@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { Form, Input, Button, Card, Typography, Checkbox } from "antd";
-import { AuthLayout } from "@/components/admin/layout/AuthLayout";
-import { Register } from "@/services/auth/auth.services";
+import { useForm, Controller } from "react-hook-form";
+import { Form, Input, Button, Card, Typography } from "antd";
+import { AuthLayout } from "@/src/components/admin/layout/AuthLayout";
+import { Register } from "@/src/services/auth/auth.services";
 import { toast } from "react-toastify";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { RegisterType } from "@/types/auth";
+import { RegisterType } from "@/src/types/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -110,13 +110,13 @@ const RegisterPage: React.FC = () => {
           <Controller
             name="email"
             control={registerControl}
-            rules={[
-              { required: true, message: "ایمیل الزامی است." },
-              {
-                type: "email",
+            rules={{
+              required: "ایمیل الزامی است.",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                 message: "فرمت ایمیل نامعتبر است.",
               },
-            ]}
+            }}
             render={({ field }) => (
               <Form.Item
                 label="ایمیل"
@@ -131,10 +131,13 @@ const RegisterPage: React.FC = () => {
           <Controller
             name="password"
             control={registerControl}
-            rules={[
-              { required: true, message: "رمز عبور الزامی است." },
-              { min: 8, message: "رمز عبور باید حداقل 8 کاراکتر باشد." },
-            ]}
+            rules={{
+              required: "رمز عبور الزامی است.",
+              minLength: {
+                value: 8,
+                message: "رمز عبور باید حداقل 8 کاراکتر باشد.",
+              },
+            }}
             render={({ field }) => (
               <Form.Item
                 label="رمز عبور"
@@ -153,19 +156,11 @@ const RegisterPage: React.FC = () => {
           <Controller
             name="confirmPassword"
             control={registerControl}
-            rules={[
-              { required: true, message: "تایید رمز عبور الزامی است." },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(
-                    new Error("رمز عبور و تایید آن مطابقت ندارند."),
-                  );
-                },
-              }),
-            ]}
+            rules={{
+              required: "تایید رمز عبور الزامی است.",
+              validate: (value) =>
+                value === password || "رمز عبور و تایید آن مطابقت ندارند.",
+            }}
             render={({ field }) => (
               <Form.Item
                 label="تایید رمز عبور"
@@ -183,13 +178,13 @@ const RegisterPage: React.FC = () => {
           <Controller
             name="phone"
             control={registerControl}
-            rules={[
-              { required: true, message: "شماره تلفن الزامی است." },
-              {
-                pattern: /^09\d{9}$/,
+            rules={{
+              required: "شماره تلفن الزامی است.",
+              pattern: {
+                value: /^09\d{9}$/,
                 message: "فرمت شماره تلفن نامعتبر است (مثال: 09123456789).",
               },
-            ]}
+            }}
             render={({ field }) => (
               <Form.Item
                 label="شماره تلفن"

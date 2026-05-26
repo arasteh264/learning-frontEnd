@@ -1,9 +1,9 @@
 import { Modal, Input, Select } from "antd";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { removeTeacher, requestForTeacher } from "@/services/teacher";
+import { removeTeacher, requestForTeacher } from "@/src/services/teacher";
 import { toast } from "react-toastify";
-import { getCategoryList } from "@/services/category";
+import { getCategoryList } from "@/src/services/category";
 
 type Props = {
   open: boolean;
