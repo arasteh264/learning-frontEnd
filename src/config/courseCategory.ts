@@ -93,3 +93,190 @@ export const courses = [
     discount: 60,
   },
 ];
+
+
+import {
+  CalendarDays,
+  Clock3,
+  MonitorPlay,
+  Star,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+
+export const courseDetails = {
+  breadcrumb: [
+    { title: "خانه", href: "/" },
+    { title: "دوره ها", href: "/courses" },
+    { title: "وردپرس", href: "/courses/wordpress" },
+  ],
+
+  hero: {
+    title: "آموزش جامع توسعه وردپرس",
+
+    description:
+      "آموزش وردپرس یکی از بهترین مسیرها برای ورود به دنیای طراحی سایت است، چرا که وردپرس پرکاربردترین و محبوب‌ترین سیستم مدیریت محتوا است که در دنیای طراحی سایت حرف اول را می‌زند.",
+
+    image:
+      "/slider/4.webp",
+
+    discountTitle: "50% تخفیف شگفت انگیز",
+
+    countdown: {
+      hours: 6,
+      minutes: 4,
+      seconds: 52,
+    },
+
+    oldPrice: 7500000,
+    price: 3750000,
+  },
+
+  stats: [
+    {
+      id: 1,
+      title: "منتشر شده",
+      label: "وضعیت دوره",
+      icon: TrendingUp,
+    },
+
+    {
+      id: 2,
+      title: "33 ساعت",
+      label: "مدت زمان دوره",
+      icon: Clock3,
+    },
+
+    {
+      id: 3,
+      title: "214",
+      label: "تعداد ثبت نامی",
+      icon: Users,
+    },
+
+    {
+      id: 4,
+      title: "5",
+      label: "امتیاز دوره",
+      icon: Star,
+    },
+
+    {
+      id: 5,
+      title: "1405/03/01",
+      label: "بروزرسانی شده",
+      icon: CalendarDays,
+    },
+
+    {
+      id: 6,
+      title: "فقط آنلاین",
+      label: "نحوه مشاهده",
+      icon: MonitorPlay,
+    },
+  ],
+};
+
+
+
+export const courseSessionsMock = [
+  {
+    id: 1,
+    title: "جلسه ۱: مقدمه و آشنایی با دوره",
+    duration: "12 دقیقه",
+    isFree: true,
+  },
+  {
+    id: 2,
+    title: "جلسه ۲: نصب ابزارهای مورد نیاز",
+    duration: "18 دقیقه",
+    isFree: true,
+  },
+  {
+    id: 3,
+    title: "جلسه ۳: ساخت اولین پروژه",
+    duration: "35 دقیقه",
+    isFree: false,
+  },
+  {
+    id: 4,
+    title: "جلسه ۴: مفاهیم پایه React",
+    icon: "Layers",
+    isFree: false,
+  },
+  {
+    id: 5,
+    title: "جلسه ۵: مدیریت state در پروژه واقعی",
+    duration: "50 دقیقه",
+    isFree: false,
+  },
+];
+export const courseComments = [
+  {
+    id: "1",
+    user: {
+      name: "Taha_DevLab",
+      role: "دانشجو",
+      avatar: "/slider/1.webp",
+    },
+    date: "1405/02/03",
+    content:
+      "میخواستم بدونم دوره روی حالت منتشر شده هست ولی یک سری سرفصل ها خالیه!!! آیا دوره آپدیت میشه ؟",
+    reply: {
+      user: {
+        name: "معین باغشیخی",
+        role: "مدرس",
+        avatar: "/slider/1.webp",
+      },
+      date: "1405/02/05",
+      content: "بله. دوره همچنان آپدیت میشه تا سرفصل های باقی مونده تکمیل بشن",
+    },
+  },
+
+  {
+    id: "2",
+    user: {
+      name: "Ali_React",
+      role: "دانشجو",
+      avatar: "/slider/1.webp",
+    },
+    date: "1405/02/10",
+    content:
+      "این دوره برای کسی که صفره مناسبه یا باید قبلش JS قوی بلد باشیم؟",
+    reply: null,
+  },
+
+  {
+    id: "3",
+    user: {
+      name: "Sara_Web",
+      role: "دانشجو",
+      avatar: "/slider/1.webp",
+    },
+    date: "1405/02/12",
+    content:
+      "پروژه‌های واقعی هم داخل دوره هست یا فقط آموزش تئوریه؟",
+    reply: {
+      user: {
+        name: "مدرس",
+        role: "مدرس",
+        avatar: "/slider/1.webp",
+      },
+      date: "1405/02/13",
+      content:
+        "بله، کل دوره پروژه‌محوره و چندین پروژه واقعی مثل قالب فروشگاهی و افزونه اختصاصی داریم.",
+    },
+  },
+
+  {
+    id: "4",
+    user: {
+      name: "FrontEnd_Builder",
+      role: "دانشجو",
+      avatar: "/slider/1.webp",
+    },
+    date: "1405/02/15",
+    content: "آپدیت‌ها رایگان هستن یا باید دوباره خرید کنیم؟",
+    reply: null,
+  },
+];
