@@ -1,13 +1,17 @@
 "use client";
 
+import { useGetAnnouncement } from "@/src/services/announcement";
+
 import { useEffect, useState } from "react";
 
-type Props = {
-  text: string;
-  endDate?: string;
-};
+export default function AnnouncementBar() {
+  const { data } = useGetAnnouncement();
+  
+  const item = data?.[0];
 
-export default function AnnouncementBar({ text, endDate }: Props) {
+  const endDate = item?.end_date;
+  const text = item?.text;
+
   const [time, setTime] = useState({
     days: 0,
     hours: 0,
@@ -21,8 +25,7 @@ export default function AnnouncementBar({ text, endDate }: Props) {
     const target = new Date(endDate).getTime();
 
     const tick = () => {
-      const now = Date.now();
-      const diff = target - now;
+      const diff = target - Date.now();
 
       if (diff <= 0) return;
 
@@ -40,11 +43,13 @@ export default function AnnouncementBar({ text, endDate }: Props) {
     return () => clearInterval(interval);
   }, [endDate]);
 
+  if (!data) return null;
+
   return (
     <div className="w-full bg-black/90 text-white flex items-center justify-center">
-      <div className="container-custom flex justify-between flex-col md:flex-row items-center py-3 gap-2 md:py-0 md:h-20 md:gap-x-9 lg:gap-x-8">
+      <div className="container-custom flex justify-center flex-col md:flex-row items-center py-3 gap-2 md:py-0 md:h-20 md:gap-x-9 lg:gap-x-8">
         {endDate && (
-          <div className="hidden md:flex  gap-2.5 select-none">
+          <div className="hidden md:flex gap-2.5 select-none">
             <Box
               label="ثانیه"
               value={time.seconds}
@@ -67,14 +72,17 @@ export default function AnnouncementBar({ text, endDate }: Props) {
             />
           </div>
         )}
-        <div className="flex items-center gap-x-2 select-none ">
-          <span className="text-sm  md:text-2md font-semibold text-center sm:text-right leading-8">
+
+        <div className="flex items-center gap-x-2 select-none">
+          <span className="hidden md:flex animate-pulse text-xl">🔔</span>
+          <span className="text-sm md:text-2md font-semibold leading-8">
             {text}
           </span>
           <span className="hidden md:flex animate-pulse text-xl">🔔</span>
         </div>
+
         {endDate && (
-          <div className="flex  md:hidden gap-2.5 select-none">
+          <div className="flex md:hidden gap-2.5 select-none">
             <Box
               label="ثانیه"
               value={time.seconds}
@@ -101,7 +109,6 @@ export default function AnnouncementBar({ text, endDate }: Props) {
     </div>
   );
 }
-
 function Box({
   value,
   label,
