@@ -21,8 +21,8 @@ export const update = async (id: string, data: any) => {
   return res.data;
 };
 
-export const patch = async (id: string, data: any) => {
-  const res = await http.patch(`/announcement/${id}`, data);
+export const onChangeStatus = async (id: string) => {
+  const res = await http.patch(`/announcement/${id}/status`);
   return res.data;
 };
 

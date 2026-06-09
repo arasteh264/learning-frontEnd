@@ -9,11 +9,17 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { create, getAll, remove, update } from "@/src/services/announcement";
+import { create, getAll, onChangeStatus, remove, update } from "@/src/services/announcement";
+import TextArea from "antd/lib/input/TextArea";
+
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 type AnnouncementForm = {
-  title: string;
-  href: string;
+  text: string;
+  end_date: string;
 };
 
 export default function AnnouncementPage() {
@@ -34,7 +40,7 @@ export default function AnnouncementPage() {
     control,
     formState: { errors },
   } = useForm<AnnouncementForm>({
-    defaultValues: { title: "", href: "" },
+    defaultValues: { text: "", end_date: "" },
   });
 
   const modalKey = useMemo(
@@ -48,7 +54,7 @@ export default function AnnouncementPage() {
       queryClient.invalidateQueries({ queryKey: ["announcement"] });
       toast.success("با موفقیت اضافه شد");
       setOpen(false);
-      reset({ title: "", href: "" });
+      reset({ text: "", end_date: "" });
     },
     onError: (err: any) => {
       toast.error(err?.message || "خطا در ایجاد");
@@ -81,17 +87,28 @@ export default function AnnouncementPage() {
     },
   });
 
+const toggleMutation = useMutation({
+  mutationFn: (id: string) => onChangeStatus(id),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["announcement"] });
+    toast.success("وضعیت تغییر کرد");
+  },
+  onError: (err: any) => {
+    toast.error(err?.message || "خطا در تغییر وضعیت");
+  },
+});
+
   const handleAdd = () => {
     setEditing(null);
-    reset({ title: "", href: "" });
+    reset({ text: "", end_date: "" });
     setOpen(true);
   };
 
   const handleEdit = (record: any) => {
     setEditing(record);
     reset({
-      title: record?.title || "",
-      href: record?.href || "",
+      text: record?.text || "",
+      end_date: record?.end_date || "",
     });
     setOpen(true);
   };
@@ -99,7 +116,9 @@ export default function AnnouncementPage() {
   const handleDelete = (record: any) => {
     deleteMutation.mutate(record.id);
   };
-
+const onToggleStatus = (record: any) => {
+  toggleMutation.mutate(record.id);
+};
   const onSubmit = (formData: AnnouncementForm) => {
     if (isEdit) {
       updateMutation.mutate({
@@ -107,7 +126,12 @@ export default function AnnouncementPage() {
         data: formData,
       });
     } else {
-      createMutation.mutate(formData);
+      const addData={
+        text:formData.text,
+        end_date:formData.end_date,
+        is_active:false
+      }
+      createMutation.mutate(addData);
     }
   };
 
@@ -120,7 +144,7 @@ export default function AnnouncementPage() {
       <BaseTable
         data={data}
         loading={isLoading}
-        columns={getannouncementColumns(handleEdit, handleDelete)}
+        columns={getannouncementColumns(handleEdit, handleDelete,onToggleStatus)}
       />
 
       <Modal
@@ -131,37 +155,66 @@ export default function AnnouncementPage() {
         okText="ذخیره"
         cancelText="بستن"
         title={isEdit ? "ویرایش اعلان" : "افزودن اعلان"}
-        width={420}
+        width={520}
       >
         <div className="flex flex-col gap-3">
-          {/* TITLE */}
           <div>
-            <label>عنوان</label>
+            <label>متن اعلان:</label>
             <Controller
-              name="title"
+              name="text"
               control={control}
               render={({ field }) => (
-                <Input {...field} placeholder="مثلاً: اخبار تکنولوژی" />
+                <TextArea {...field} placeholder="مثلاً: اخبار تکنولوژی" />
               )}
             />
-            {errors.title && (
-              <p className="text-red-500 text-xs">{errors.title.message}</p>
+            {errors.text && (
+              <p className="text-red-500 text-xs">{errors.text.message}</p>
             )}
           </div>
 
-          {/* HREF */}
-          <div>
-            <label>لینک</label>
-            <Controller
-              name="href"
-              control={control}
-              render={({ field }) => (
-                <Input {...field} placeholder="/tech-news" />
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-600">
+              تاریخ پایان:
+            </label>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-gray-600">
+                تاریخ پایان:
+              </label>
+
+              <div className="relative rounded-xl border border-gray-200 bg-white px-3 py-2 transition-all duration-300 hover:border-blue-400 focus-within:border-blue-500 focus-within:shadow-md">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                  📅
+                </div>
+
+                <Controller
+                  name="end_date"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="w-full pr-6">
+                      <DatePicker
+                        calendar={persian}
+                        locale={persian_fa}
+                        value={field.value}
+                        onChange={(date) =>
+                          field.onChange(date?.toDate?.().toISOString())
+                        }
+                        inputClass="w-full outline-none bg-transparent text-gray-700 placeholder-gray-400"
+                        containerClassName="w-full"
+                        format="YYYY/MM/DD HH:mm"
+                        plugins={[<TimePicker position="bottom" />]}
+                      />
+                    </div>
+                  )}
+                />
+              </div>
+
+              {errors.end_date && (
+                <p className="text-red-500 text-xs">
+                  {errors.end_date.message}
+                </p>
               )}
-            />
-            {errors.href && (
-              <p className="text-red-500 text-xs">{errors.href.message}</p>
-            )}
+            </div>
           </div>
         </div>
       </Modal>
