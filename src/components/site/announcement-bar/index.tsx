@@ -5,9 +5,10 @@ import { useGetAnnouncement } from "@/src/services/announcement";
 import { useEffect, useState } from "react";
 
 export default function AnnouncementBar() {
+  
   const { data } = useGetAnnouncement();
   
-  const item = data?.[0];
+  const item = data;
 
   const endDate = item?.end_date;
   const text = item?.text;

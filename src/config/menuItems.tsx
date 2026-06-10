@@ -7,6 +7,7 @@ import {
   PlayCircleOutlined,
   TeamOutlined,
   ProfileOutlined,
+  TagOutlined,
 } from "@ant-design/icons";
 
 export const sidebarMenuItemsWithSubmenus = [
@@ -16,6 +17,23 @@ export const sidebarMenuItemsWithSubmenus = [
     label: "داشبورد اصلی",
   },
 
+  {
+  key: "user-group",
+  icon: <SettingOutlined />,
+  label: "کاربران",
+  children: [
+    {
+      key: "/admin/users",
+      icon: <TeamOutlined />,  
+      label: "لیست کاربران",
+    },
+    {
+      key: "/admin/teachers",
+      label: "لیست اساتید",
+      icon: <UserOutlined />,  
+    },
+  ],
+},
   {
     key: "courses-group",
     icon: <BookOutlined />,
@@ -40,7 +58,19 @@ export const sidebarMenuItemsWithSubmenus = [
       },
     ],
   },
+  {
+    key: "settings-group-stie",
+    icon: <SettingOutlined />,
+    label: "تنظیمات سایت",
+    children: [
+      {
+        key: "/admin/announcement",
+        label: "اطلاعیه تخفیف",
+        icon: <TagOutlined  />,
+      },
 
+    ],
+  },
   {
     key: "settings-group",
     icon: <SettingOutlined />,
@@ -59,21 +89,4 @@ export const sidebarMenuItemsWithSubmenus = [
     ],
   },
 
-  {
-  key: "user-group",
-  icon: <SettingOutlined />,
-  label: "کاربران",
-  children: [
-    {
-      key: "/admin/users",
-      icon: <TeamOutlined />,  
-      label: "لیست کاربران",
-    },
-    {
-      key: "/admin/teachers",
-      label: "لیست اساتید",
-      icon: <UserOutlined />,  
-    },
-  ],
-}
 ];
