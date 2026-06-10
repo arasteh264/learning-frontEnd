@@ -25,7 +25,10 @@ export const onChangeStatus = async (id: string) => {
   const res = await http.patch(`/announcement/${id}/status`);
   return res.data;
 };
-
+export const getById  = async (id: string) => {
+  const res = await http.get(`/announcement/${id}`);
+  return res.data;
+};
 export const remove = async (id: string) => {
   const res = await http.delete(`/announcement/${id}`);
   return res.data;
