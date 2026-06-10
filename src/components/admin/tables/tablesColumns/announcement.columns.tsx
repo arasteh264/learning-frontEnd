@@ -34,15 +34,15 @@ export const getannouncementColumns = (
       size="small"
       onClick={() => onToggleStatus(record)}
       style={{
-        backgroundColor: record.is_active ? "#ff4d4f" : "#52c41a",
-        borderColor: record.is_active ? "#ff4d4f" : "#52c41a",
+        backgroundColor: record.is_active ? "#52c41a" : "#ff4d4f",
+        borderColor: record.is_active ? "#52c41a" : "#ff4d4f",
         color: "#fff",
         fontWeight: 600,
-        borderRadius: 20,
+        borderRadius: 5,
         padding: "0 14px",
       }}
     >
-      {record.is_active ? "غیرفعال" : "فعال"}
+      {record.is_active ? "فعال" : "غیرفعال"}
     </Button>
   ),
 },

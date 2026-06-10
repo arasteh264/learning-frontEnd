@@ -3,13 +3,20 @@
 import BaseTable from "@/src/components/admin/tables/BaseTable";
 import { getannouncementColumns } from "@/src/components/admin/tables/tablesColumns/announcement.columns";
 import { Button, Modal, Input } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { create, getAll, onChangeStatus, remove, update } from "@/src/services/announcement";
+import {
+  create,
+  getAll,
+  getById,
+  onChangeStatus,
+  remove,
+  update,
+} from "@/src/services/announcement";
 import TextArea from "antd/lib/input/TextArea";
 
 import DatePicker from "react-multi-date-picker";
@@ -25,13 +32,13 @@ type AnnouncementForm = {
 export default function AnnouncementPage() {
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetching  } = useQuery({
     queryKey: ["announcement"],
     queryFn: getAll,
   });
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
-
+  const [editingId, setEditingId] = useState<string | null>(null);
   const isEdit = !!editing?.id;
 
   const {
@@ -76,6 +83,12 @@ export default function AnnouncementPage() {
     },
   });
 
+  const { data: detailData } = useQuery({
+    queryKey: ["announcement", editingId],
+    queryFn: () => getById(editingId!),
+    enabled: !!editingId,
+  });
+
   const deleteMutation = useMutation({
     mutationFn: remove,
     onSuccess: () => {
@@ -87,16 +100,16 @@ export default function AnnouncementPage() {
     },
   });
 
-const toggleMutation = useMutation({
-  mutationFn: (id: string) => onChangeStatus(id),
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["announcement"] });
-    toast.success("وضعیت تغییر کرد");
-  },
-  onError: (err: any) => {
-    toast.error(err?.message || "خطا در تغییر وضعیت");
-  },
-});
+  const toggleMutation = useMutation({
+    mutationFn: (id: string) => onChangeStatus(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["announcement"] });
+      toast.success("وضعیت تغییر کرد");
+    },
+    onError: (err: any) => {
+      toast.error(err?.message || "خطا در تغییر وضعیت");
+    },
+  });
 
   const handleAdd = () => {
     setEditing(null);
@@ -104,21 +117,26 @@ const toggleMutation = useMutation({
     setOpen(true);
   };
 
-  const handleEdit = (record: any) => {
-    setEditing(record);
+const handleEdit = async (record: any) => {
+  setEditing(record);
+  try {
+    const detail = await getById(record.id);
     reset({
-      text: record?.text || "",
-      end_date: record?.end_date || "",
+      text: detail?.text || "",
+      end_date: detail?.end_date || "",
     });
     setOpen(true);
-  };
+  } catch {
+    toast.error("خطا در دریافت اطلاعات");
+  }
+};
 
   const handleDelete = (record: any) => {
     deleteMutation.mutate(record.id);
   };
-const onToggleStatus = (record: any) => {
-  toggleMutation.mutate(record.id);
-};
+  const onToggleStatus = (record: any) => {
+    toggleMutation.mutate(record.id);
+  };
   const onSubmit = (formData: AnnouncementForm) => {
     if (isEdit) {
       updateMutation.mutate({
@@ -126,15 +144,22 @@ const onToggleStatus = (record: any) => {
         data: formData,
       });
     } else {
-      const addData={
-        text:formData.text,
-        end_date:formData.end_date,
-        is_active:false
-      }
+      const addData = {
+        text: formData.text,
+        end_date: formData.end_date,
+        is_active: false,
+      };
       createMutation.mutate(addData);
     }
   };
 
+
+const cansleModal=()=>{
+setOpen(false)
+  setEditingId(null); 
+  setEditing(null);
+}
+console.log("isLoading:", isLoading, "data:", data);
   return (
     <section className="w-full px-10 flex flex-col mt-6">
       <Button type="primary" className="mb-4 self-end" onClick={handleAdd}>
@@ -143,14 +168,18 @@ const onToggleStatus = (record: any) => {
 
       <BaseTable
         data={data}
-        loading={isLoading}
-        columns={getannouncementColumns(handleEdit, handleDelete,onToggleStatus)}
+         loading={isLoading || isFetching}
+        columns={getannouncementColumns(
+          handleEdit,
+          handleDelete,
+          onToggleStatus,
+        )}
       />
 
       <Modal
         key={modalKey}
         open={open}
-        onCancel={() => setOpen(false)}
+        onCancel={cansleModal}
         onOk={handleSubmit(onSubmit)}
         okText="ذخیره"
         cancelText="بستن"
@@ -195,7 +224,7 @@ const onToggleStatus = (record: any) => {
                       <DatePicker
                         calendar={persian}
                         locale={persian_fa}
-                        value={field.value}
+                        value={field.value ? new Date(field.value) : null} 
                         onChange={(date) =>
                           field.onChange(date?.toDate?.().toISOString())
                         }

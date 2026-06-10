@@ -1,14 +1,11 @@
 "use client";
 
-import Category from "./modules/category";
-
+import AnnouncementPage from "./modules/Announcement";
 
 export default function CategoryPage() {
-
   return (
-
- <div className="w-full flex flex-col flex-1 items-center justify-center bg-white  ">
-<Category/>
+    <div className="w-full flex flex-col flex-1 items-center justify-center bg-white  ">
+      <AnnouncementPage />
     </div>
   );
 }
