@@ -1,3 +1,4 @@
+
 import AnnouncementBar from "@/src/components/site/announcement-bar";
 import HeroSearchSection from "@/src/components/site/_components/HeroSearchSection";
 import SearchBox from "@/src/components/site/search/SearchBox";
@@ -10,6 +11,7 @@ import SocialBanners from "@/src/components/site/_components/SocialBanners";
 import LatestArticles from "@/src/components/site/_components/LatestArticles";
 import CommentsSlider from "@/src/components/site/_components/CommentsSlider";
 import PopularFreeCourses from "@/src/components/site/_components/freePopularCourses";
+
 export default function Page() {
 
 
@@ -21,7 +23,7 @@ export default function Page() {
       
       <HeroSlider />
       <HeroSearchSection />
-      <SearchBox />
+        <SearchBox />
       <CourseFeatures />
       <LatestCourses />
       <CourseCategory />

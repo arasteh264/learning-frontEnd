@@ -1,10 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import http from "./interseptor/http";
 
 export const getCategoryList = async () => {
   const response = await http.get("/category");
   return response.data;
 };
-
+export const useCategoryList = () => {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategoryList,
+    staleTime: 1000 * 60 * 5,
+  });
+};
 
 export const addCategory = async (newCategory: { title: string; href: string }) => {
   const response = await http.post("/category",newCategory);
@@ -25,3 +32,4 @@ export const removeCategory = async (
   const response = await http.delete(`/category/${id}`);
   return response;
 };
+
