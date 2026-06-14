@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import http from "./interseptor/http";
 export type CreateCourseForm = {
   name: string;
@@ -118,4 +119,35 @@ export const updateSessionApi = async ({
   );
 
   return response.data;
+};
+
+
+export const searchCourseApi = async (query: string) => {
+  const response = await http.get("/course/search", {
+    params: { q: query },
+  });
+  return response.data;
+};
+export const useSearchCourse = (query: string) => {
+  return useQuery({
+    queryKey: ["course-search", query],
+    queryFn: () => searchCourseApi(query),
+    enabled: query.trim().length >= 3,
+    staleTime: 1000 * 30,
+  });
+};
+
+
+
+export const getLatestCourses = async (limit: number = 8) => {
+  const response = await http.get("/course/latest", {
+    params: { limit },
+  });
+  return response.data;
+};
+export const useGetLatestCourses = (limit: number = 8) => {
+  return useQuery({
+    queryKey: ["course-latest", limit],
+    queryFn: () => getLatestCourses(limit),
+  });
 };

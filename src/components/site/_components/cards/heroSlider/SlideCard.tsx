@@ -1,17 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type Props = {
+export type SlideProps = {
+  link: string;
+  image_url: string;
   title: string;
-  image: string;
-  level?: string;
-  href: string;
+  order: string;
 };
 
-export default function SlideCard({ title, image, level, href }: Props) {
+export default function SlideCard({ link, image_url, title, order }: SlideProps) {
   return (
     <Link
-      href={href}
+      href={link }
       className="
         block bg-white rounded-xl overflow-hidden h-full
         shadow-sm hover:shadow-xl
@@ -21,7 +21,7 @@ export default function SlideCard({ title, image, level, href }: Props) {
       {/* image */}
       <div className="relative w-full h-45 md:h-120">
         <Image
-          src={image}
+          src={image_url}
           alt={title}
           fill
           className="

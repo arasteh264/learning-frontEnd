@@ -1,31 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import BaseSlider from "@/src/components/base/BaseSlider";
 
-import { sliderData } from "@/src/config/slider";
 
-import SlideCard from "../_components/cards/heroSlider/SlideCard";
+import SlideCard, { SlideProps } from "../_components/cards/heroSlider/SlideCard";
 import SkeletonCard from "../_components/cards/heroSlider/skeletonCard";
+import { useQuery } from "@tanstack/react-query";
+import { getAll } from "@/src/services/slider";
 
 export default function CardSlider() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 1200);
-
-    return () => clearTimeout(t);
-  }, []);
+  const { data, isLoading,isFetching } = useQuery({
+    queryKey: ["sliders"],
+    queryFn: getAll,
+  });
 
   return (
     <section className="mt-5">
-<BaseSlider
-  data={sliderData}
-  loading={loading}
-  renderItem={(course) =>
-    course ? <SlideCard {...course} /> : <SkeletonCard />
-  }
+<BaseSlider<SlideProps>
+  data={data ?? []}
+  loading={isLoading||isFetching}
+renderItem={(course) =>
+  course ? (
+    <SlideCard
+      link={course.link}
+      image_url={course.image_url}
+      title={course.title}
+      order={course.order}
+    />
+  ) : (
+    <SkeletonCard />
+  )
+}
    autoplay
     breakpoints={{
           0: { slidesPerView: 1 },

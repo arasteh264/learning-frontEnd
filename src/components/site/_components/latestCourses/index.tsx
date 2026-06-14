@@ -2,11 +2,11 @@ import SectionHeader from "../ContentSectionHeader";
 import Link from "next/link";
 import CourseCard from "../cards/course/CoursesCarsd";
 import { ArrowLeft } from "lucide-react";
-import { courses } from "@/src/config/courseCategory";
+import { getAllCourse } from "@/src/services/course";
 
+export default async function LatestCourses() {
+  const courses = await getAllCourse({});
 
-
-export default function LatestCourses() {
   return (
     <section className="container-custom flex flex-col gap-6">
       <SectionHeader
@@ -24,8 +24,23 @@ export default function LatestCourses() {
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {courses.map((course) => (
-          <CourseCard key={course.id} {...course} />
+        {courses.map((course: any) => (
+          <CourseCard
+            key={course.id}
+            title={course.name}
+            href={course.href}
+            image={course.cover}
+            description={course.description}
+            author={{
+              name: course.teachers?.bio ?? "",
+              avatar: "/img/avatar-placeholder.png",
+            }}
+            rating={course.teachers?.rating ?? 0}
+            students={0}
+            price={course.price}
+            oldPrice={course.price + (course.price * course.discount) / 100}
+            discount={course.discount}
+          />
         ))}
       </div>
     </section>
