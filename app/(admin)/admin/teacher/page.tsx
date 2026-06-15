@@ -15,7 +15,7 @@ import { useMemo } from "react";
 export default function teacherPage() {
   const queryClient = useQueryClient();
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error,isFetching } = useQuery({
     queryKey: ["teacher"],
     queryFn: getTeacherList,
   });
@@ -58,7 +58,7 @@ export default function teacherPage() {
         <h2 className="text-xl font-bold">لیست اساتید</h2>
       </div>
 
-      <BaseTable data={data ?? []} columns={columns} />
+      <BaseTable data={data} columns={columns} loading={isLoading||isFetching} />
     </section>
   );
 }

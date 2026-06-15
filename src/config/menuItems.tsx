@@ -28,7 +28,7 @@ export const sidebarMenuItemsWithSubmenus = [
       label: "لیست کاربران",
     },
     {
-      key: "/admin/teachers",
+      key: "/admin/teacher",
       label: "لیست اساتید",
       icon: <UserOutlined />,  
     },
