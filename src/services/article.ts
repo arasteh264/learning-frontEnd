@@ -5,8 +5,8 @@ export const getAllArticles = async (status?: string) => {
   return response.data;
 };
 
-export const getArticleBySlug = async (slug: string) => {
-  const response = await http.get(`/article/${slug}`);
+export const getArticleById = async (id: string) => {
+  const response = await http.get(`/article/${id}`);
   return response.data;
 };
 
