@@ -11,8 +11,9 @@ export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-if (pathname === "/auth/login" || pathname === "/auth/register") return null;
-  const selectedKey = '/' + pathname.split('/')[1];
+  if (pathname === "/auth/login" || pathname === "/auth/register") return null;
+
+  const selectedKey = pathname;
 
   const items = sidebarMenuItemsWithSubmenus.map((item) => {
     if (item.children) {
@@ -39,24 +40,31 @@ if (pathname === "/auth/login" || pathname === "/auth/register") return null;
 
   return (
     <Sider
-      width={260}
-      className="min-h-screen bg-white border-l border-gray-100"
+      width={280}
+      className="min-h-screen border-l border-gray-200"
+      style={{
+        background: "linear-gradient(180deg, #0f172a 0%, #111827 100%)",
+      }}
     >
-      <div className="flex items-center justify-center h-16 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-white">
+      <div className="flex items-center gap-2 px-5 h-16 border-b border-white/10">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-400" />
+        <span className="text-white font-semibold text-base tracking-wide">
           سبز لرن
-        </h2>
+        </span>
       </div>
-
-      <Menu
-        mode="inline"
-        selectedKeys={[selectedKey]}
-        items={items}
-        style={{
-          border: 'none',
-          height: '100%',
-        }}
-      />
+<Menu
+  mode="inline"
+  items={items}
+  selectedKeys={[selectedKey]}
+  onClick={(e) => router.push(e.key)}
+  style={{
+    background: "transparent",
+    border: "none",
+    padding: "12px 8px",
+    color: "#cbd5e1",
+  }}
+  className="custom-sidebar-menu"
+/>
     </Sider>
   );
 }

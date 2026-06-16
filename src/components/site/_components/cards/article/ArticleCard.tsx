@@ -12,6 +12,7 @@ type ArticleCardProps = {
     avatar: string;
   };
   readTime: number;
+  id:string
 };
 
 export default function ArticleCard({
@@ -21,6 +22,7 @@ export default function ArticleCard({
   description,
   author,
   readTime,
+  id
 }: ArticleCardProps) {
   return (
     <div className="flex flex-col gap-y-3 h-full rounded-xl bg-white shadow-base group/blog text-right shadow-2xl">
@@ -68,7 +70,7 @@ export default function ArticleCard({
         </div>
 
         <Link
-          href={href}
+          href={`blog/${id}`}
           className=" flex items-center text-xs absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[#1eb35b] text-white  px-6 py-2 rounded-xl hover:bg-brand-100 transition"
         >
             <ArrowLeft className="size-4" />
