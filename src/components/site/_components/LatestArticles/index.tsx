@@ -2,17 +2,17 @@
 
 import SectionHeader from "../ContentSectionHeader";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Newspaper } from "lucide-react";
 import ArticleCard from "../cards/article/ArticleCard";
-
+import EmptyState from "@/src/components/base/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { getAllArticles } from "@/src/services/article";
 
 export default function LatestArticles() {
-const { data, isLoading } = useQuery({
-  queryKey: ["articles", "published"],
-  queryFn: () => getAllArticles("published"),
-});
+  const { data, isLoading } = useQuery({
+    queryKey: ["articles", "published"],
+    queryFn: () => getAllArticles("published"),
+  });
 
   const articles = data ?? [];
 
@@ -35,12 +35,11 @@ const { data, isLoading } = useQuery({
       {isLoading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={i}
-              className="h-64 rounded-xl bg-gray-100 animate-pulse"
-            />
+            <div key={i} className="h-64 rounded-xl bg-gray-100 animate-pulse" />
           ))}
         </div>
+      ) : articles.length === 0 ? (
+        <EmptyState message="مقاله‌ای موجود نیست" icon={Newspaper} />
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {articles.map((article: any) => (

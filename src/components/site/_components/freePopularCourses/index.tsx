@@ -3,76 +3,17 @@
 import SectionHeader from "../ContentSectionHeader";
 import Link from "next/link";
 import CourseCard from "../cards/course/CoursesCarsd";
-import { ArrowLeft } from "lucide-react";
-
-const freePopularCourses = [
-  {
-    id: 1,
-    title: "آموزش React از صفر تا ورود به بازار کار",
-    href: "/course/react",
-    image: "/slider/1.webp",
-    description: "یادگیری React به صورت پروژه محور و کاملاً کاربردی.",
-    author: {
-      name: "محمدامین سعیدی راد",
-      avatar: "/slider/1.webp",
-    },
-    rating: 4.8,
-    students: 1200,
-    price: 0,
-    oldPrice: 0,
-    discount: 100,
-  },
-  {
-    id: 2,
-    title: "Next.js حرفه‌ای برای پروژه‌های واقعی",
-    href: "/course/nextjs",
-    image: "/slider/2.webp",
-    description: "ساخت اپلیکیشن‌های SSR و Fullstack با Next.js",
-    author: {
-      name: "علی رضایی",
-      avatar: "/slider/2.webp",
-    },
-    rating: 4.7,
-    students: 980,
-    price: 0,
-    oldPrice: 0,
-    discount: 100,
-  },
-  {
-    id: 3,
-    title: "JavaScript پیشرفته",
-    href: "/course/js",
-    image: "/slider/3.webp",
-    description: "درک عمیق از JS و مفاهیم پیشرفته",
-    author: {
-      name: "سارا محمدی",
-      avatar: "/slider/3.webp",
-    },
-    rating: 4.6,
-    students: 1500,
-    price: 0,
-    oldPrice: 0,
-    discount: 100,
-  },
-  {
-    id: 4,
-    title: "TypeScript از صفر تا حرفه‌ای",
-    href: "/course/ts",
-    image: "/slider/4.webp",
-    description: "تایپ‌اسکریپت برای پروژه‌های واقعی",
-    author: {
-      name: "رضا کریمی",
-      avatar: "/slider/4.webp",
-    },
-    rating: 4.9,
-    students: 1100,
-    price: 0,
-    oldPrice: 0,
-    discount: 100,
-  },
-];
+import CourseCardSkeleton from "../cards/course/CourseCardSkeleton";
+import { ArrowLeft, BookOpen, Newspaper, PackageX } from "lucide-react";
+import { mapCourseToCardProps } from "@/src/utils/mapCourse";
+import { usePopularFreeCourses } from "@/src/services/course";
+import EmptyState from "@/src/components/base/EmptyState";
 
 export default function PopularFreeCourses() {
+  const { data, isLoading } = usePopularFreeCourses();
+
+  const mapped: any[] = (data || []).map(mapCourseToCardProps);
+
   return (
     <section className="container-custom flex flex-col gap-6">
       <SectionHeader
@@ -89,11 +30,21 @@ export default function PopularFreeCourses() {
         }
       />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {freePopularCourses.map((course) => (
-          <CourseCard key={course.id} {...course} />
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <CourseCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : mapped.length === 0 ? (
+        <EmptyState message="دوره موجود نیست" icon={BookOpen} />
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {mapped.map((course: any, i: number) => (
+            <CourseCard key={i} {...course} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
