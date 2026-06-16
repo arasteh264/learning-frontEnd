@@ -1,6 +1,6 @@
-// components/admin/article/CoverUpload.tsx
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { Upload, message } from "antd";
 import type { UploadProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -8,13 +8,19 @@ import { PlusOutlined } from "@ant-design/icons";
 export default function CoverUpload({
   value,
   onChange,
+  existingUrl,
 }: {
-  value?: File | string | null;
+  value?: File | null;
   onChange: (file: File | null) => void;
+  existingUrl?: string | undefined;
 }) {
-  const [preview, setPreview] = useState<string | null>(
-    typeof value === "string" ? value : null
-  );
+  const [preview, setPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!value && existingUrl) {
+      setPreview(existingUrl);
+    }
+  }, [existingUrl, value]);
 
   const props: UploadProps = {
     beforeUpload: (file) => {
@@ -23,12 +29,10 @@ export default function CoverUpload({
         message.error("فقط فایل تصویری مجاز است");
         return false;
       }
-
       const url = URL.createObjectURL(file);
       setPreview(url);
       onChange(file);
-
-      return false; 
+      return false;
     },
     showUploadList: false,
     accept: "image/*",
@@ -37,11 +41,16 @@ export default function CoverUpload({
   return (
     <Upload.Dragger {...props} className="!p-0">
       {preview ? (
-        <img
-          src={preview}
-          alt="cover preview"
-          className="w-full h-48 object-cover rounded-lg"
-        />
+        <div className="relative group">
+          <img
+            src={preview}
+            alt="cover preview"
+            className="w-full h-48 object-cover rounded-lg"
+          />
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+            <p className="text-white text-sm">برای تغییر کلیک کنید</p>
+          </div>
+        </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-10">
           <PlusOutlined className="text-2xl text-gray-400 mb-2" />

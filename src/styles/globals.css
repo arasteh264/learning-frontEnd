@@ -2,11 +2,34 @@
 @import "swiper/css";
 @import "swiper/css/pagination";
 @import "swiper/css/navigation";
+@plugin "@tailwindcss/typography";
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --menubackground:#1eb35b;
-  --color-brand: #1eb35b;
+  /* 🎯 Brand */
+  --brand: #4f7cff;
+
+  /* 🌿 Background system */
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --surface-2: #f1f5f9;
+
+  /* ✍️ Text */
+  --text: #0f172a;
+  --muted: #64748b;
+
+  /* 🧱 Borders */
+  --border: #e2e8f0;
+
+  /* 🌈 Status */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+
+  /* ✨ Effects */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 10px 30px rgba(0,0,0,0.06);
+
+  --radius: 14px;
 }
 
 @theme inline {
@@ -32,14 +55,7 @@ body {
 html, body {
   font-family: var(--font-iranyekan), sans-serif !important;
 }
-.ant-table-thead > tr > th {
-  background-color: #1eb35b !important;
-  color: white !important;
-  font-weight: bold;
-}
-.ant-table-thead > tr > th:hover {
-  background-color: #169a4a !important;
-}
+
 .ant-table-pagination {
   display: flex !important;
   justify-content: flex-start !important;
@@ -61,7 +77,6 @@ html, body {
   background-color: #169a4a;
 
 
-/* globals.css */
 
 .custom-responsive-drawer .ant-drawer-content {
   overflow: hidden;
@@ -158,4 +173,96 @@ html, body {
 }
 .rmdp-time-picker {
     align-self: anchor-center !important;
+}
+
+
+
+.ant-table {
+  background: var(--bg) !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.ant-table-container {
+  border-radius: 16px !important;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+
+.ant-table-tbody > tr {
+  transition: all 0.2s ease;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--surface-2) !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--border) !important;
+}
+.ant-pagination {
+  display: flex !important;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+
+.ant-pagination-item-active {
+  background: var(--brand) !important;
+  border-color: var(--brand) !important;
+}
+
+.ant-pagination-item-active a {
+  color: white !important;
+}
+.ant-table {
+  backdrop-filter: blur(10px);
+}
+.ant-table-tbody > tr:hover {
+  box-shadow: 0 4px 20px rgba(30, 179, 91, 0.15);
+}
+
+
+
+.custom-sidebar-menu {
+  color: #cbd5e1 !important;
+}
+
+.custom-sidebar-menu .ant-menu-item {
+  color: #cbd5e1 !important;
+  border-radius: 10px;
+  margin: 6px 8px;
+}
+
+.custom-sidebar-menu .ant-menu-item:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.custom-sidebar-menu .ant-menu-item-selected {
+  color: white !important;
+  background: linear-gradient(90deg, #10b98120, #06b6d420) !important;
+}
+
+.custom-sidebar-menu .ant-menu-submenu-title {
+  color: #cbd5e1 !important;
+}
+
+.custom-sidebar-menu .ant-menu-submenu-title:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* icon color */
+.custom-sidebar-menu .anticon {
+  color: inherit;
+}
+.ant-menu-title-content{
+  color: #ffffff;
 }

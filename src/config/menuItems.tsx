@@ -8,6 +8,7 @@ import {
   TeamOutlined,
   ProfileOutlined,
   TagOutlined,
+  FileTextOutlined,
 } from "@ant-design/icons";
 
 export const sidebarMenuItemsWithSubmenus = [
@@ -58,6 +59,18 @@ export const sidebarMenuItemsWithSubmenus = [
       },
     ],
   },
+  {
+  key: "content-group",
+  icon: <FileTextOutlined />,
+  label: "محتوا",
+  children: [
+    {
+      key: "/admin/articles",
+      icon: <FileTextOutlined />,
+      label: "مقاله‌ها",
+    },
+  ],
+},
   {
     key: "settings-group-stie",
     icon: <SettingOutlined />,

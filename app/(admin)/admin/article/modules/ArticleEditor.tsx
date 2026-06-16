@@ -1,4 +1,3 @@
-// components/admin/article/ArticleEditor.tsx
 "use client";
 import dynamic from "next/dynamic";
 import { useRef, useState } from "react";

@@ -18,6 +18,7 @@ export const createArticleApi = async (data: FormData) => {
 };
 
 export const updateArticleApi = async ({ id, data }: { id: string; data: FormData }) => {
+  debugger
   const response = await http.put(`/article/${id}`, data, {
     headers: { "Content-Type": "multipart/form-data" },
   });

@@ -1,15 +1,31 @@
-export default function Loading() {
-  return (
-    <div className="flex items-center justify-center h-screen bg-white">
+import { BookOpen, PlayCircle, GraduationCap } from "lucide-react";
+
+export default function LoadingPage() {
+return ( <div className="h-[70vh] flex items-center justify-center"> <div className="relative"> <div className="absolute inset-0 blur-3xl bg-blue-500/20 animate-pulse rounded-full" />
+    <div className="relative flex gap-8 items-center">
+      <BookOpen
+        size={48}
+        className="text-blue-500 animate-bounce"
+      />
+
       <div className="relative">
-        <div className="absolute inset-0 rounded-full bg-green-400 opacity-20 blur-xl animate-pulse" />
+        <GraduationCap
+          size={72}
+          className="text-indigo-600 animate-pulse"
+        />
 
-        <div className="w-14 h-14 rounded-full border-4 border-green-200 border-t-green-600 animate-spin" />
-
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-3 h-3 bg-green-600 rounded-full animate-bounce" />
-        </div>
+        <div className="absolute -inset-6 border-4 border-indigo-200 rounded-full animate-spin" />
       </div>
+
+      <PlayCircle
+        size={48}
+        className="text-violet-500 animate-bounce"
+        style={{ animationDelay: "0.4s" }}
+      />
     </div>
-  );
+  </div>
+</div>
+
+
+);
 }
