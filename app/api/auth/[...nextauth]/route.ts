@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import http from "@/src/services/interseptor/http";
 
-const secret = process.env.NEXTAUTH_SECRET  as string
+const secret = process.env.NEXTAUTH_SECRET as string;
 
 if (!secret) {
   throw new Error("NEXTAUTH_SECRET is missing");
@@ -13,8 +13,8 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        username: {},
-        password: {},
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         try {
@@ -29,7 +29,7 @@ const handler = NextAuth({
 
           return {
             id: data.id || "1",
-            name: data.userName || "",
+            name: data.name || "",
             accessToken: data.accessToken,
             role: data.user.role || "user",
           };
