@@ -57,7 +57,7 @@ export default function ProfileInfo() {
   };
 
   const handleTeacherRequestSubmit = (formData: any) => {
-debugger
+
    closeTeacherModal(); 
   };
 

@@ -29,7 +29,7 @@ export default function Courses() {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["courses"] });
-      toast.success("کاربر با موفقیت حذف شد.");
+      toast.success("دوره با موفقیت حذف شد.");
     },
     onError: (err) => {
       toast.error(`خطا در حذف: ${err.message || "خطای نامشخص"}`);

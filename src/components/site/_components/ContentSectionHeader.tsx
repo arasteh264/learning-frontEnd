@@ -10,7 +10,7 @@ export default function SectionHeader({
   action,
 }: SectionHeaderProps) {
   return (
-    <div className="flex items-center justify-end sm:justify-between gap-x-3 gap-y-2 sm:gap-x-7 flex-wrap sm:flex-nowrap py-2 mt-5 mb-2 px-1 text-right">
+    <div className="flex items-center  justify-between gap-x-3 gap-y-2 sm:gap-x-7 flex-wrap sm:flex-nowrap py-2 mt-5 mb-2 px-1 text-right">
       <div className="hidden  w-full h-px bg-strong" />
 
       {action && <div className="shrink-0 mr-auto text-sm">{action}</div>}

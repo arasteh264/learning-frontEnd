@@ -25,7 +25,7 @@ const mapped: CategoryCardProps[] = (data || []).map((c: Category) => ({
 }));
 
   return (
-    <section className="container-custom flex flex-col gap-2 mt-10">
+    <section dir="rtl" className="container-custom flex flex-col gap-2 mt-10">
       <SectionHeader title="دسته بندی" highlight="دوره ها" />
 
       <BaseSlider
