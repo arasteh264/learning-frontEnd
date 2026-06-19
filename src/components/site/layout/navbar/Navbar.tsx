@@ -8,6 +8,7 @@ import NavLinks from "./NavLinks";
 import UserActions from "./UserActions";
 import MobileMenu from "./MobileMenu";
 import { AlignRight, ShoppingBag } from "lucide-react";
+import CartIcon from "@/app/(site)/cart/CartIcon";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -18,30 +19,7 @@ export default function Navbar() {
         <div className="hidden  md:flex w-full justify-between items-center gap-4 py-3 ">
           <div className="flex items-center gap-3">
             <UserActions />
-            <Link
-              href="/cart"
-              className="
-              relative flex items-center justify-center
-              w-10 h-10 rounded-xl
-               hover:bg-gray-100
-              transition
-            "
-            >
-              <ShoppingCartOutlined className="text-xl" />
-
-              <span
-                className="
-                absolute -top-1 -left-1
-                bg-green-600 text-white
-                text-[10px]
-                min-w-5 h-5
-                flex items-center justify-center
-                rounded-full px-1
-              "
-              >
-                2
-              </span>
-            </Link>
+            <CartIcon />
           </div>
           <div className="flex items-center gap-8">
             <nav className="hidden md:flex items-center gap-6">

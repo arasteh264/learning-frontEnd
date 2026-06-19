@@ -31,7 +31,7 @@ export default function PopularFreeCourses() {
       />
 
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div dir="rtl" className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <CourseCardSkeleton key={i} />
           ))}
@@ -39,7 +39,7 @@ export default function PopularFreeCourses() {
       ) : mapped.length === 0 ? (
         <EmptyState message="دوره موجود نیست" icon={BookOpen} />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div dir="rtl" className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {mapped.map((course: any, i: number) => (
             <CourseCard key={i} {...course} />
           ))}

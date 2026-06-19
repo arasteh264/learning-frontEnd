@@ -1,11 +1,13 @@
 import SectionHeader from "../ContentSectionHeader";
 import Link from "next/link";
 import CourseCard from "../cards/course/CoursesCarsd";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, BookOpen } from "lucide-react";
 import { getAllCourse } from "@/src/services/course";
+import EmptyState from "@/src/components/base/EmptyState";
 
 export default async function LatestCourses() {
   const courses = await getAllCourse({});
+console.log(courses);
 
   return (
     <section className="container-custom flex flex-col gap-6">
@@ -23,26 +25,37 @@ export default async function LatestCourses() {
         }
       />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {courses.map((course: any) => (
-          <CourseCard
-            key={course.id}
-            title={course.name}
-            href={course.href}
-            image={course.cover}
-            description={course.description}
-            author={{
-              name: course.teachers?.bio ?? "",
-              avatar: "/img/avatar-placeholder.png",
-            }}
-            rating={course.teachers?.rating ?? 0}
-            students={0}
-            price={course.price}
-            oldPrice={course.price + (course.price * course.discount) / 100}
-            discount={course.discount}
-          />
-        ))}
-      </div>
+      {courses.length === 0 ? (
+        <EmptyState
+          message="دوره‌ای برای نمایش وجود ندارد"
+          icon={BookOpen}
+        />
+      ) : (
+        <div dir="rtl" className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+          {courses.map((course: any) => (
+            <CourseCard
+              id={course.id}
+              key={course.id}
+              title={course.name}
+              href={course.href}
+              image={course.cover}
+              description={course.description}
+              author={{
+                name: course.teachers?.bio ?? "",
+                avatar: "/img/avatar-placeholder.png",
+              }}
+              rating={course.teachers?.rating ?? 0}
+              students={0}
+              price={course.price}
+              oldPrice={
+                course.price +
+                (course.price * course.discount) / 100
+              }
+              discount={course.discount}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

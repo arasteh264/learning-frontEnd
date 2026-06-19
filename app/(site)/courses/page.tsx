@@ -31,5 +31,3 @@ export default function Page() {
     </section>
   );
 }
-
-//اینجا infinite load بزار 

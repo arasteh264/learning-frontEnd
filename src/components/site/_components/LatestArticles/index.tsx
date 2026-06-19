@@ -33,7 +33,7 @@ export default function LatestArticles() {
       />
 
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div dir="rtl" className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-64 rounded-xl bg-gray-100 animate-pulse" />
           ))}
@@ -41,7 +41,7 @@ export default function LatestArticles() {
       ) : articles.length === 0 ? (
         <EmptyState message="مقاله‌ای موجود نیست" icon={Newspaper} />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div dir="rtl" className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {articles.map((article: any) => (
             <ArticleCard
               key={article.id}
