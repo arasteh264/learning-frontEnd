@@ -1,7 +1,7 @@
 import { Modal, Input, Select } from "antd";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { removeTeacher, requestForTeacher } from "@/src/services/teacher";
+import { requestForTeacher } from "@/src/services/teacher";
 import { toast } from "react-toastify";
 import { getCategoryList } from "@/src/services/category";
 
@@ -25,19 +25,16 @@ export default function TeacherRequestModal({ open, onClose }: Props) {
 
   const requestMutation = useMutation({
     mutationFn: (payload: any) => requestForTeacher(payload),
-
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["teacher"] });
       toast.success("درخواست با موفقیت ارسال شد");
       onClose();
       setFormData({ bio: "", expertise: [] });
     },
-
     onError: (err: any) => {
-      toast.error(err.response.data.message || "خطا رخ داد");
+      toast.error(err?.response?.data?.message || "خطا رخ داد");
     },
   });
-
 
   const handleChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -58,26 +55,38 @@ export default function TeacherRequestModal({ open, onClose }: Props) {
       onOk={handleSubmit}
       okText="ارسال درخواست"
       cancelText="بستن"
+      okButtonProps={{
+        className: "!bg-[#1EB35B] !border-[#1EB35B] hover:!bg-[#17914a]",
+        loading: requestMutation.isPending,
+      }}
       centered
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 pt-1">
+        <span className="text-gray-400 text-sm leading-6">
+          چند خط درباره خودتان و حوزه تخصصی‌تان بنویسید تا تیم ما درخواست شما
+          را بررسی کند.
+        </span>
 
-        <span className="text-gray-500 text-sm">بیو</span>
-        <Input
-          value={formData.bio}
-          onChange={(e) => handleChange("bio", e.target.value)}
-          placeholder="بیو شما"
-        />
+        <div className="flex flex-col gap-1">
+          <span className="text-sm text-[#1C2B27]">بیو</span>
+          <Input.TextArea
+            value={formData.bio}
+            onChange={(e) => handleChange("bio", e.target.value)}
+            placeholder="درباره تجربه و سابقه تدریس خود بنویسید"
+            rows={3}
+          />
+        </div>
 
-        <span className="text-gray-500 text-sm">تخصص‌ها</span>
-        <Select
-          mode="tags"
-          style={{ width: "100%" }}
-          placeholder="مثلاً React, Nodejs"
-          value={formData.expertise}
-          onChange={(values) => handleChange("expertise", values)}
-        />
-
+        <div className="flex flex-col gap-1">
+          <span className="text-sm text-[#1C2B27]">تخصص‌ها</span>
+          <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            placeholder="مثلاً React, Nodejs"
+            value={formData.expertise}
+            onChange={(values) => handleChange("expertise", values)}
+          />
+        </div>
       </div>
     </Modal>
   );

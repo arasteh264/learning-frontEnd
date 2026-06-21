@@ -143,3 +143,107 @@ export const usePopularFreeCourses = (limit: number = 8) => {
     staleTime: 1000 * 60 * 5,
   });
 };
+
+
+
+export type CourseCountdown = {
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+export type CourseHero = {
+  title: string;
+  description: string;
+  image: string;
+  discountTitle: string;
+  countdown: CourseCountdown;
+  oldPrice: number;
+  price: number;
+};
+
+export type CourseStat = {
+  id: string | number;
+  icon: string; 
+  title: string;
+  label: string;
+};
+
+export type CourseSessionChild = {
+  id: string | number;
+  title: string;
+  duration: string;
+  videoUrl?: string;
+};
+
+export type CourseSession = {
+  id: string | number;
+  title: string;
+  duration: string;
+  isFree: boolean;
+  children: CourseSessionChild[];
+};
+
+export type CourseUser = {
+  name: string;
+  role: string;
+  avatar: string;
+};
+
+export type CourseCommentReply = {
+  user: CourseUser;
+  date: string;
+  content: string;
+};
+
+export type CourseComment = {
+  id: string;
+  user: CourseUser;
+  date: string;
+  content: string;
+  reply?: CourseCommentReply | null;
+};
+
+export type CourseBreadcrumbItem = {
+  label: string;
+  href?: string;
+};
+
+export type CourseDetails = {
+  id: string | number;
+  breadcrumb: CourseBreadcrumbItem[];
+  hero: CourseHero;
+  stats: CourseStat[];
+  sessions: CourseSession[];
+  prerequisites: string[];
+  comments: CourseComment[];
+};
+
+export async function getCourseDetails(courseId: string | number) {
+  const { data } = await http.get<{ data: CourseDetails }>(
+    `/course/course/${courseId}`
+  );
+  return data;
+}
+ 
+export async function postCourseComment(payload: {
+  courseId: string | number;
+  content: string;
+}) {
+  const { data } = await http.post(
+    `/course/${payload.courseId}/comments`,
+    { content: payload.content }
+  );
+  return data;
+}
+ 
+export async function postCommentReply(payload: {
+  commentId: string;
+  content: string;
+}) {
+  const { data } = await http.post(
+    `/comments/${payload.commentId}/reply`,
+    { content: payload.content }
+  );
+  return data;
+}

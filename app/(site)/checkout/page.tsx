@@ -18,18 +18,16 @@ console.log(cart);
   const handlePayment = async () => {
     setProcessing(true);
     try {
-      debugger
 const orderResult = await createOrderMutate();
-debugger
-console.log("ORDER RESULT", orderResult);
 
-const orderId = orderResult.id;
-console.log("orderId", orderId);
-debugger
+
+const orderId = orderResult.order.id;
+
+
 const paymentResult = await requestPaymentMutate(orderId);
-debugger
-console.log("PAYMENT RESULT", paymentResult);
-debugger
+
+
+
       if (paymentResult.free) {
        router.push(`/payment/success?orderId=${orderId}&free=true`);
       } else {

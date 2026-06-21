@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: LayoutProp) {
         <div className="flex-1 flex flex-col overflow-hidden">
           <HeaderDashborad />
 
-          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white">
+          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#FBF8F2]">
             {children}
           </main>
         </div>

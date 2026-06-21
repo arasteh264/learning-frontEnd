@@ -6,24 +6,26 @@ type Props = {
 };
 
 export default function PrerequisitesCard({
-  title = "پیش نیاز ها",
+  title = "پیش‌نیازها",
   items,
 }: Props) {
+  if (!items?.length) return null;
+
   return (
-    <div className="flex flex-col   bg-[#fafafa] mt-5 p-5 sm:p-7 rounded-xl">
-      <div className="flex justify-end items-center gap-x-2.5 md:gap-x-3 mb-5 md:mb-7">
-        <h2 className="font-bold text-body md:text-t3">{title}</h2>
+    <div className="flex flex-col bg-[#fafafa] mt-5 p-5 sm:p-7 rounded-xl">
+      <div className="flex justify-end items-center gap-2.5 mb-5">
+        <h2 className="font-bold text-[#1C2B27]">{title}</h2>
       </div>
 
-      <div className="flex  flex-col  sm:gap-x-6 gap-y-4 text-label sm:text-caption">
+      <div className="flex flex-wrap justify-end gap-2.5">
         {items.map((item, index) => (
           <div
             key={index}
-            className="flex justify-end items-center gap-x-2 sm:gap-x-2.5"
+            className="flex items-center gap-2 bg-white border border-gray-100 rounded-full pl-3 pr-2 py-1.5"
           >
-            <span>{item}</span>
-            <div className="bg-green-600 w-5 h-5 flex items-center justify-center rounded-sm">
-            <Check className="size-6 text-white" />
+            <span className="text-xs text-[#1C2B27]">{item}</span>
+            <div className="bg-[#1EB35B] w-5 h-5 flex items-center justify-center rounded-full shrink-0">
+              <Check className="size-3 text-white" strokeWidth={3} />
             </div>
           </div>
         ))}
