@@ -45,7 +45,7 @@ export default function SessionsPage() {
         <Button
           type="primary"
           size="large"
-          onClick={() => router.push("/sessions/create")}
+          onClick={() => router.push("/admin/sessions/create")}
         >
           افزودن جلسه
         </Button>
