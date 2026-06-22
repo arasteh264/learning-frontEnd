@@ -18,7 +18,7 @@ export const getAllCourse = async (data: any) => {
 };
 
 export const getAllSession = async (data: any) => {
-  const response = await http.get("/course/session");
+  const response = await http.get("/session");
   return response.data;
 };
 
@@ -65,7 +65,7 @@ export const createSessionApi = async ({
   id: string;
   data: FormData;
 }) => {
-  const response = await http.post(`/course/${id}/session`, data, {
+  const response = await http.post(`/session/${id}`, data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -146,56 +146,53 @@ export const usePopularFreeCourses = (limit: number = 8) => {
 
 
 
-export type CourseCountdown = {
-  hours: number;
-  minutes: number;
-  seconds: number;
-};
-
-export type CourseHero = {
-  title: string;
+export type Course = {
+  id: string;
+  category_id: string;
+  cover: string;
+  created_at: string;
+  creator_id: string;
   description: string;
-  image: string;
-  discountTitle: string;
-  countdown: CourseCountdown;
-  oldPrice: number;
+  discount: number;
+  enrolled_count: number;
+  href: string;
+  name: string;
   price: number;
+  rating: number;
+  status: string;
+  support: string;
+  updated_at: string;
+  views: number;
 };
-
-export type CourseStat = {
-  id: string | number;
-  icon: string; 
-  title: string;
-  label: string;
-};
-
-export type CourseSessionChild = {
-  id: string | number;
+ 
+export type SessionChild = {
+  id: string;
   title: string;
   duration: string;
   videoUrl?: string;
 };
-
-export type CourseSession = {
-  id: string | number;
+ 
+export type Session = {
+  id: string;
+  course_id: string;
   title: string;
   duration: string;
   isFree: boolean;
-  children: CourseSessionChild[];
+  children: SessionChild[];
 };
-
+ 
 export type CourseUser = {
   name: string;
   role: string;
   avatar: string;
 };
-
+ 
 export type CourseCommentReply = {
   user: CourseUser;
   date: string;
   content: string;
 };
-
+ 
 export type CourseComment = {
   id: string;
   user: CourseUser;
@@ -203,35 +200,37 @@ export type CourseComment = {
   content: string;
   reply?: CourseCommentReply | null;
 };
-
+ 
 export type CourseBreadcrumbItem = {
   label: string;
   href?: string;
 };
 
-export type CourseDetails = {
-  id: string | number;
-  breadcrumb: CourseBreadcrumbItem[];
-  hero: CourseHero;
-  stats: CourseStat[];
-  sessions: CourseSession[];
-  prerequisites: string[];
-  comments: CourseComment[];
-};
-
-export async function getCourseDetails(courseId: string | number) {
-  const { data } = await http.get<{ data: CourseDetails }>(
-    `/course/course/${courseId}`
+export async function getCourseById(courseId: string) {
+  const { data } = await http.get<{ data: Course }>(
+    `/course/${courseId}`
   );
   return data;
 }
  
+export async function getCourseSessions(courseId: string) {
+  const { data } = await http.get<{ data: Session[] }>(
+    `/session/courses/${courseId}`
+  );
+  return data;
+}
+
+
+export async function getCourseComments(courseId: string) {
+  return { data: [] as CourseComment[] };
+}
+ 
 export async function postCourseComment(payload: {
-  courseId: string | number;
+  courseId: string;
   content: string;
 }) {
   const { data } = await http.post(
-    `/course/${payload.courseId}/comments`,
+    `/courses/${payload.courseId}/comments`,
     { content: payload.content }
   );
   return data;

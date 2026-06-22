@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { ChevronDown, PlayCircle, FileEdit } from "lucide-react";
-import type { CourseSession } from "@/src/services/course";
+import { Session } from "@/src/services/course";
 
 type Props = {
-  session: CourseSession;
+  session: Session;
   index: number;
 };
 
@@ -49,7 +49,7 @@ export default function SessionCard({ session, index }: Props) {
 
       {open && session.children?.length > 0 && (
         <div className="px-4 pb-4 space-y-1 border-t border-gray-50">
-          {session.children.map((child) => (
+          {session.children.map((child ) => (
             <div
               key={child.id}
               className="flex items-center justify-between text-xs text-gray-600 py-2.5 px-2 rounded-lg hover:bg-[#fafafa] transition-colors"

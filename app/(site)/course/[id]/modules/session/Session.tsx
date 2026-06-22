@@ -1,9 +1,9 @@
 import { FileText } from "lucide-react";
 import SessionCard from "./sessionCard";
-import type { CourseSession } from "@/src/services/course";
+import type { Session as SessionType } from "@/src/services/course";
 
 type Props = {
-  sessions: CourseSession[];
+  sessions: SessionType[];
 };
 
 export default function Session({ sessions }: Props) {
