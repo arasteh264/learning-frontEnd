@@ -5,6 +5,7 @@ import { Modal, Input, Button, Select } from "antd";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ConfirmOtp from "./confirmOtp";
+
 const days = Array.from({ length: 31 }, (_, i) => ({
   label: i + 1,
   value: i + 1,
@@ -32,12 +33,12 @@ const years = Array.from({ length: 1405 - 1300 + 1 }, (_, i) => ({
   label: 1300 + i,
   value: 1300 + i,
 }));
+
 type ProfileForm = {
   name: string;
   nationalId: string;
   phone: string;
   email: string;
-  //   birthDate?: string;
   lastName: string;
   day: string;
   month: string;
@@ -75,13 +76,13 @@ export default function EditProfileModal({
       year: "",
     },
   });
+
   useEffect(() => {
     if (open && data) {
-      reset({
-        ...data,
-      });
+      reset({ ...data });
     }
   }, [open]);
+
   const [isOtpOpen, setIsOtpOpen] = useState(false);
 
   const onSubmit = (formData: ProfileForm) => {
@@ -94,18 +95,21 @@ export default function EditProfileModal({
       open={open}
       onCancel={onCancel}
       footer={null}
+      centered
+      width={520}
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-3 border-t border-gray-200 "
+        className="flex flex-col gap-3 border-t border-gray-100 pt-2"
       >
-        <span className=" text-gray-500 text-1xl py-4 ">
+        <span className="text-gray-400 text-sm py-3 leading-6">
           لطفا اطلاعات شناسایی خود را وارد کنید. نام و نام خانوادگی شما باید با
           اطلاعاتی که وارد می‌کنید همخوانی داشته باشند.
         </span>
-        <div className="w-full flex  gap-2">
+
+        <div className="w-full flex gap-2">
           <div className="w-full flex flex-col gap-1">
-            <span>نام :</span>
+            <span className="text-sm text-[#1C2B27]">نام :</span>
             <Input {...register("name")} />
             {errors.name && (
               <span className="text-red-500 text-xs">
@@ -114,9 +118,10 @@ export default function EditProfileModal({
             )}
           </div>
         </div>
-        <div className="w-full flex  gap-2 items-center py-3">
-          <div className="w-full flex flex-col gap-1 mt-2">
-            <span className="mb-0.5">کدملی :</span>
+
+        <div className="w-full flex gap-2 items-start py-1">
+          <div className="w-full flex flex-col gap-1">
+            <span className="text-sm text-[#1C2B27]">کدملی :</span>
             <Input {...register("nationalId")} />
             {errors.nationalId && (
               <span className="text-red-500 text-xs">
@@ -125,14 +130,15 @@ export default function EditProfileModal({
             )}
           </div>
           <div className="w-full flex flex-col gap-1">
-            <div className="w-full flex items-center gap-1">
-              <span>شماره موبایل :</span>
-              <Button
-                className="!border-none !p-0 !text-xs !text-blue-500"
+            <div className="w-full flex items-center justify-between gap-1">
+              <span className="text-sm text-[#1C2B27]">شماره موبایل :</span>
+              <button
+                type="button"
+                className="text-xs text-[#1EB35B] hover:text-[#17914a] font-medium"
                 onClick={() => setIsOtpOpen(true)}
               >
                 تایید شماره
-              </Button>
+              </button>
             </div>
             <Input {...register("phone")} />
             {errors.phone && (
@@ -142,14 +148,14 @@ export default function EditProfileModal({
             )}
           </div>
         </div>
-        <div className="w-full flex gap-2 items-center py-3">
+
+        <div className="w-full flex gap-2 items-start py-1">
           <div className="w-full flex flex-col gap-1">
-            <span>روز :</span>
+            <span className="text-sm text-[#1C2B27]">روز :</span>
             <Controller
               name="day"
               control={control}
               render={({ field }) => (
-                // <Select {...field} options={days} />
                 <Select
                   value={field.value}
                   onChange={field.onChange}
@@ -163,13 +169,11 @@ export default function EditProfileModal({
             )}
           </div>
           <div className="w-full flex flex-col gap-1">
-            <span>ماه :</span>
+            <span className="text-sm text-[#1C2B27]">ماه :</span>
             <Controller
               name="month"
               control={control}
               render={({ field }) => (
-                // <Select {...field} options={months}/>
-
                 <Select
                   value={field.value}
                   onChange={field.onChange}
@@ -184,9 +188,8 @@ export default function EditProfileModal({
               </span>
             )}
           </div>
-
           <div className="w-full flex flex-col gap-1">
-            <span>سال :</span>
+            <span className="text-sm text-[#1C2B27]">سال :</span>
             <Controller
               name="year"
               control={control}
@@ -206,27 +209,30 @@ export default function EditProfileModal({
             )}
           </div>
         </div>
-        <div className="w-full flex flex-col gap-1 py-3">
-          <div className="w-full flex flex-col gap-1 mt-2">
-            <span className="mb-0.5">ایمیل :</span>
-            <Input {...register("email")} />
-            {errors.email && (
-              <span className="text-red-500 text-xs">
-                {errors.email.message}
-              </span>
-            )}
-          </div>
+
+        <div className="w-full flex flex-col gap-1 py-1">
+          <span className="text-sm text-[#1C2B27]">ایمیل :</span>
+          <Input {...register("email")} />
+          {errors.email && (
+            <span className="text-red-500 text-xs">
+              {errors.email.message}
+            </span>
+          )}
         </div>
-        <Button htmlType="submit" type="primary" className="mt-3">
+
+        <Button
+          htmlType="submit"
+          type="primary"
+          className="!mt-3 !bg-[#1EB35B] !border-[#1EB35B] hover:!bg-[#17914a] hover:!border-[#17914a]"
+        >
           ذخیره
         </Button>
       </form>
+
       <ConfirmOtp
         open={isOtpOpen}
         onClose={() => setIsOtpOpen(false)}
-        onSubmit={(otp) => {
-          setIsOtpOpen(false);
-        }}
+        onSubmit={() => setIsOtpOpen(false)}
       />
     </Modal>
   );
