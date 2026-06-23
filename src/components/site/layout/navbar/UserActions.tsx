@@ -14,7 +14,6 @@ export default function UserActions() {
   if (session) {
     return (
       <div className="relative hidden md:block cursor-pointer">
-        {/* Trigger */}
         <button
           onClick={() => setOpen(!open)}
           className="flex items-center  rounded-full border border-green-600 px-2 py-1.5 text-green-600 hover:bg-green-600 hover:text-white transition-all"

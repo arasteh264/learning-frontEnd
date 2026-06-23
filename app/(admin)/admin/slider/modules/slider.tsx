@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { create, getAll, remove, update } from "@/src/services/slider";
+import Image from "next/image";
 
 type SliderForm = {
   title: string;
@@ -132,8 +133,14 @@ export default function SliderPage() {
               className="mt-1 block w-full text-sm text-gray-500"
             />
             {preview && (
-              <img src={preview} alt="preview" className="mt-2 rounded-lg w-full h-40 object-cover" />
-            )}
+<Image
+  src={preview}
+  alt="preview"
+  width={600}
+  height={300}
+  className="mt-2 rounded-lg object-cover"
+  priority
+/>            )}
           </div>
 
           {/* عنوان */}

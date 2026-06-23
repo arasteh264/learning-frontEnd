@@ -12,6 +12,7 @@ import {
 import { getUserProfile } from "@/src/services/user";
 import EditProfileModal from "./modals/editProfileModal";
 import TeacherRequestModal from "./modals/teacherRequest";
+import Image from "next/image";
 
 type ProfileFieldProps = {
   icon: React.ReactNode;
@@ -71,7 +72,9 @@ export default function ProfileInfo() {
   };
 
   const initials = userData?.name ? userData.name.trim().charAt(0) : "?";
-  const roleLabel = userData?.role ? ROLE_LABELS[userData.role] || userData.role : "دانشجو";
+  const roleLabel = userData?.role
+    ? ROLE_LABELS[userData.role] || userData.role
+    : "دانشجو";
 
   return (
     <section className="w-full h-full flex flex-col items-center px-4 py-8 gap-6">
@@ -84,10 +87,13 @@ export default function ProfileInfo() {
             aria-label="آپلود عکس پروفایل"
           >
             {avatarPreview ? (
-              <img
+              <Image
                 src={avatarPreview}
                 alt="عکس پروفایل"
+                width={200}
+                height={200}
                 className="w-full h-full object-cover"
+                priority
               />
             ) : (
               initials
@@ -112,7 +118,8 @@ export default function ProfileInfo() {
           <h1 className="text-xl font-semibold text-[#1C2B27]">
             {isLoading
               ? "در حال بارگذاری..."
-              : `${userData?.name || ""} ${userData?.lastName || ""}`.trim() || "کاربر مهمان"}
+              : `${userData?.name || ""} ${userData?.lastName || ""}`.trim() ||
+                "کاربر مهمان"}
           </h1>
           <span className="inline-flex items-center gap-1 self-center text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
             <CrownOutlined className="text-[11px]" />

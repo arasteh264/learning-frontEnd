@@ -4,6 +4,7 @@ import { X, Trash2, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useCart, useRemoveFromCart } from "@/src/hooks/useCart";
 import EmptyState from "@/src/components/base/EmptyState";
+import Image from "next/image";
 
 export default function CartDrawer({
   open,
@@ -76,11 +77,13 @@ export default function CartDrawer({
                         className="flex items-center gap-3 p-3 rounded-xl border border-gray-100"
                       >
                         {course.cover && (
-                          <img
-                            src={course.cover}
-                            alt={course.name}
-                            className="w-16 h-12 rounded-lg object-cover shrink-0"
-                          />
+                          <Image
+  src={course.cover}
+  alt={course.name}
+  width={64}
+  height={48}
+  className="rounded-lg object-cover"
+/>
                         )}
 
                         <div className="flex-1 min-w-0">

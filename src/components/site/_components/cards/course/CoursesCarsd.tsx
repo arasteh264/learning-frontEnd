@@ -50,11 +50,11 @@ export default function CourseCard({
 
       <div className="flex flex-col justify-between gap-2 px-3 sm:px-5 w-full h-full">
         <div className="flex flex-col gap-1 min-h-[80px]">
-          <Link href={href}>
+         
             <h3 className="text-xs font-semibold text-gray-700 line-clamp-2">
               {title}
             </h3>
-          </Link>
+         
           {description && (
             <p className="text-[11px] font-light text-gray-500 line-clamp-2">
               {description}

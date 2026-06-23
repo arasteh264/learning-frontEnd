@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import http from "@/src/services/interseptor/http";
 
 const secret = process.env.NEXTAUTH_SECRET as string;
 
@@ -17,25 +16,27 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        try {
-          const res = await http.post("/auth/login", {
-            identifier: credentials?.username,
-            password: credentials?.password,
-          });
-
-          const data = res.data?.data || res.data;
-
-          if (!data?.accessToken) return null;
-
-          return {
-            id: data.id || "1",
-            name: data.name || "",
-            accessToken: data.accessToken,
-            role: data.user.role || "user",
-          };
-        } catch {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              identifier: credentials?.username,
+              password: credentials?.password,
+            }),
+          },
+        );
+        const data = await res.json();
+        if (!data?.accessToken) {
           return null;
         }
+        return {
+          id: data.user.id,
+          name: data.user.userName,
+          accessToken: data.accessToken,
+          role: data.user.role,
+        };
       },
     }),
   ],
@@ -47,20 +48,20 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user.accessToken || "";
-        token.role = user.role || "user";
+        if (typeof user.accessToken === "string") {
+          token.accessToken = user.accessToken;
+        }
+
+        if (typeof user.role === "string") {
+          token.role = user.role;
+        }
       }
       return token;
     },
 
     async session({ session, token }) {
       session.accessToken = token.accessToken as string;
-
-      session.user = {
-        ...session.user,
-        role: token.role as string,
-      };
-
+      session.user.role = token.role as string;
       return session;
     },
   },
