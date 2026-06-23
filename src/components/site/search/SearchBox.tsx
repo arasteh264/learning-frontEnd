@@ -3,6 +3,7 @@ import { useSearchCourse } from "@/src/services/course";
 import { Search, ChevronLeft, SmilePlus } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   onResults?: (results: any[]) => void;
@@ -132,7 +133,6 @@ export default function SearchBox({ onResults }: Props) {
                       hover:bg-gray-50 transition-colors
                     "
                   >
-      
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-800 truncate">
                         {course.name}
@@ -142,8 +142,8 @@ export default function SearchBox({ onResults }: Props) {
                       </p>
                     </div>
                     <ChevronLeft size={18} className="text-gray-400 shrink-0" />
-                                  {course.cover && (
-                      <img
+                    {course.cover && (
+                      <Image
                         src={course.cover}
                         alt={course.name}
                         className="w-15 h-15 rounded-lg object-cover shrink-0 "

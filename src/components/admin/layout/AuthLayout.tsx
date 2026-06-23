@@ -1,6 +1,7 @@
 "use client";
+import Link from "next/link";
 import React from "react";
-
+import Image from "next/image";
 interface LayoutProp {
   children: React.ReactNode;
   title?: string;
@@ -17,16 +18,15 @@ export const AuthLayout: React.FC<LayoutProp> = ({
       className="min-h-screen flex flex-col md:flex-row"
       style={{ background: "#F7F4EF" }}
     >
-      {/* ───── LEFT PANEL — image + branding ───── */}
       <div className="relative hidden md:flex md:w-[52%] flex-col overflow-hidden">
-        {/* photo */}
-        <img
+        <Image
           src="/images/young-man.webp"
           alt="auth visual"
-          className="absolute inset-0 h-full w-full object-cover"
+          fill
+          priority
+          className="object-cover"
         />
 
-        {/* warm tint overlay — lets image breathe */}
         <div
           className="absolute inset-0"
           style={{
@@ -34,10 +34,7 @@ export const AuthLayout: React.FC<LayoutProp> = ({
               "linear-gradient(135deg, rgba(99,86,46,0.45) 0%, rgba(180,140,80,0.15) 60%, transparent 100%)",
           }}
         />
-
-    
       </div>
-
 
       <div
         className="flex flex-1 flex-col items-center justify-center px-5 py-10 md:py-14"
@@ -82,20 +79,20 @@ export const AuthLayout: React.FC<LayoutProp> = ({
             lineHeight: "1.7",
           }}
         >
-          با ورود یا ثبت‌نام، با{" "}
-          <a
-            href="#"
+          با ورود یا ثبت‌نام، با
+          <Link
+            href="/terms"
             style={{ color: "#8B7355", textDecoration: "underline" }}
           >
             شرایط استفاده
-          </a>{" "}
-          و{" "}
-          <a
-            href="#"
+          </Link>
+          و
+          <Link
+            href="/privacy"
             style={{ color: "#8B7355", textDecoration: "underline" }}
           >
             سیاست حریم خصوصی
-          </a>{" "}
+          </Link>
           موافقت می‌کنید.
         </p>
       </div>

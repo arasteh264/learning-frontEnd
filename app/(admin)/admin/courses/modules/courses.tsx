@@ -3,7 +3,7 @@ import { getCourseColumns } from "@/src/components/admin/tables/tablesColumns/co
 import { getAllCourse, removeCourse } from "@/src/services/course";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Modal } from "antd";
-
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -64,8 +64,11 @@ export default function Courses() {
         width={600}
       >
         {previewImage && (
-          <img
+          <Image
             src={previewImage}
+            alt="cover preview"
+            width={600}
+            height={400}
             className="w-full rounded-lg   py-6 border border-gray-200"
           />
         )}
