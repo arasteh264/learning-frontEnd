@@ -68,7 +68,7 @@ export const sidebarMenuItemsWithSubmenus = [
     label: "محتوا",
     children: [
       {
-        key: "/admin/articles",
+        key: "/admin/article",
         icon: <FileTextOutlined />,
         label: "مقاله‌ها",
       },

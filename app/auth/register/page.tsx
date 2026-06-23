@@ -1,224 +1,420 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Form, Input, Button, Card, Typography } from "antd";
+import { SubmitHandler } from "react-hook-form";
+import { Input, Button, Checkbox, Form } from "antd";
+import { UserOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { AuthLayout } from "@/src/components/admin/layout/AuthLayout";
-import { Register } from "@/src/services/auth/auth.services";
 import { toast } from "react-toastify";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { RegisterType } from "@/src/types/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getSession, signIn } from "next-auth/react";
 
-const { Title } = Typography;
-const RegisterPage: React.FC = () => {
-  const router = useRouter();
+type Inputs = {
+  username: string;
+  password: string;
+  remember: boolean;
+};
 
+/* ─── design tokens ────────────────────────────────── */
+const TOKEN = {
+  primary: "#8B7355",
+  primaryHover: "#6B5640",
+  primaryLight: "#F0EAE0",
+  text: "#3D3029",
+  textMuted: "#9C8877",
+  border: "#E5DDD4",
+  inputBg: "#FAF8F5",
+  error: "#D95C3A",
+  success: "#4A7C59",
+  font: "Vazirmatn, -apple-system, sans-serif",
+};
+
+const inputStyle: React.CSSProperties = {
+  background: TOKEN.inputBg,
+  border: `1.5px solid ${TOKEN.border}`,
+  borderRadius: "10px",
+  padding: "10px 40px 10px 14px",
+  fontSize: "14px",
+  fontFamily: TOKEN.font,
+  color: TOKEN.text,
+  direction: "rtl",
+  outline: "none",
+  width: "100%",
+  transition: "border-color .2s, box-shadow .2s",
+};
+
+const InputField: React.FC<{
+  label: string;
+  icon: React.ReactNode;
+  error?: string;
+  children: React.ReactNode;
+}> = ({ label, icon, error, children }) => (
+  <div style={{ marginBottom: "1rem" }}>
+    <label
+      style={{
+        display: "block",
+        fontSize: "13px",
+        fontWeight: 500,
+        color: TOKEN.textMuted,
+        marginBottom: "6px",
+        fontFamily: TOKEN.font,
+      }}
+    >
+      {label}
+    </label>
+    <div style={{ position: "relative" }}>
+      {children}
+      <span
+        style={{
+          position: "absolute",
+          right: "12px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          color: TOKEN.textMuted,
+          pointerEvents: "none",
+          fontSize: "16px",
+        }}
+      >
+        {icon}
+      </span>
+    </div>
+    {error && (
+      <p
+        style={{
+          color: TOKEN.error,
+          fontSize: "12px",
+          marginTop: "4px",
+          fontFamily: TOKEN.font,
+        }}
+      >
+        {error}
+      </p>
+    )}
+  </div>
+);
+
+const LoginPage: React.FC = () => {
   const {
-    control: registerControl,
-    handleSubmit: handleRegisterSubmit,
-    formState: { errors: registerErrors },
-    watch,
-  } = useForm<RegisterType>({
-    defaultValues: {
-      userName: "",
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-    },
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<Inputs>({
+    defaultValues: { username: "", password: "", remember: false },
   });
 
-  const password = watch("password");
+  const [showPass, setShowPass] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const router = useRouter();
 
-  const handleRegister = async (data: RegisterType) => {
-    try {
-      const userData = {
-        userName: data.userName,
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        phone: data.phone,
-        confirmPassword: data.confirmPassword,
-      };
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const res = await signIn("credentials", {
+      username: data.username,
+      password: data.password,
+      redirect: false,
+    });
 
-      const resLogin = await Register(userData);
-
-      if (resLogin.status === 201) {
-        router.push("/auth/login");
-        toast.success("ثبت نام با موفقیت انجام شد.");
-      }
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message ||
-        "خطا در ثبت نام. لطفا دوباره تلاش کنید.";
-      toast.error(errorMessage);
+    if (res?.ok) {
+      const session = await getSession();
+      toast.success("ورود موفقیت‌آمیز بود.");
+      router.push(session?.user?.role === "ADMIN" ? "/admin" : "/");
+    } else {
+      toast.error("نام کاربری یا رمز عبور اشتباه است.");
     }
   };
 
   return (
-    <AuthLayout>
-      <Card className="w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 rounded-2xl shadow-xl">
-        <Title level={3} className="text-center mb-6 text-gray-800">
-          ثبت نام حساب کاربری
-        </Title>
-        <Form
-          name="registerForm"
-          layout="vertical"
-          onFinish={handleRegisterSubmit(handleRegister)}
-          autoComplete="on"
-          className="space-y-4"
+    <AuthLayout
+      title="خوش برگشتید"
+      subtitle="وارد حساب کاربری‌تان شوید و از تمام امکانات استفاده کنید."
+    >
+      {/* header */}
+      <div style={{ textAlign: "center", marginBottom: "1.8rem" }}>
+        <div
+          style={{
+            width: "52px",
+            height: "52px",
+            borderRadius: "14px",
+            background: TOKEN.primaryLight,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "12px",
+          }}
         >
-          <Controller
-            name="userName"
-            control={registerControl}
-            rules={{ required: "نام کاربری الزامی است." }}
-            render={({ field }) => (
-              <Form.Item
-                label="نام کاربری"
-                validateStatus={registerErrors.userName ? "error" : ""}
-                help={registerErrors.userName?.message}
-              >
-                <Input
-                  {...field}
-                  placeholder="نام کاربری خود را وارد کنید"
-                  prefix={<UserOutlined className="site-form-item-icon" />}
-                />
-              </Form.Item>
-            )}
-          />
+          <LockOutlined style={{ fontSize: "22px", color: TOKEN.primary }} />
+        </div>
+        <h2
+          style={{
+            fontSize: "20px",
+            fontWeight: 700,
+            color: TOKEN.text,
+            fontFamily: TOKEN.font,
+            margin: 0,
+          }}
+        >
+          ورود به حساب کاربری
+        </h2>
+        <p
+          style={{
+            fontSize: "13px",
+            color: TOKEN.textMuted,
+            marginTop: "4px",
+            fontFamily: TOKEN.font,
+          }}
+        >
+          اطلاعات خود را وارد کنید
+        </p>
+      </div>
 
-          <Controller
-            name="name"
-            control={registerControl}
-            rules={{ required: "نام و نام خانوادگی الزامی است." }}
-            render={({ field }) => (
-              <Form.Item
-                label="نام و نام خانوادگی"
-                validateStatus={registerErrors.name ? "error" : ""}
-                help={registerErrors.name?.message}
-              >
-                <Input
-                  {...field}
-                  placeholder="نام و نام خانوادگی خود را وارد کنید"
-                />
-              </Form.Item>
-            )}
-          />
-
-          <Controller
-            name="email"
-            control={registerControl}
-            rules={{
-              required: "ایمیل الزامی است.",
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: "فرمت ایمیل نامعتبر است.",
-              },
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <InputField
+          label="نام کاربری"
+          icon={<UserOutlined />}
+          error={errors.username?.message}
+        >
+          <input
+            {...register("username", {
+              required: "نام کاربری الزامی است.",
+              minLength: { value: 3, message: "حداقل ۳ کاراکتر وارد کنید." },
+            })}
+            style={{
+              ...inputStyle,
+              borderColor: errors.username ? TOKEN.error : TOKEN.border,
             }}
-            render={({ field }) => (
-              <Form.Item
-                label="ایمیل"
-                validateStatus={registerErrors.email ? "error" : ""}
-                help={registerErrors.email?.message}
-              >
-                <Input {...field} placeholder="example@domain.com" />
-              </Form.Item>
-            )}
+            placeholder="نام کاربری"
+            autoComplete="username"
           />
+        </InputField>
 
-          <Controller
-            name="password"
-            control={registerControl}
-            rules={{
+        <InputField
+          label="رمز عبور"
+          icon={
+            <button
+              type="button"
+              onClick={() => setShowPass((v) => !v)}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: TOKEN.textMuted,
+                padding: 0,
+                fontSize: "16px",
+                pointerEvents: "auto",
+              }}
+              aria-label={showPass ? "مخفی کردن رمز" : "نمایش رمز"}
+            >
+              {showPass ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+            </button>
+          }
+          error={errors.password?.message}
+        >
+          <input
+            {...register("password", {
               required: "رمز عبور الزامی است.",
-              minLength: {
-                value: 8,
-                message: "رمز عبور باید حداقل 8 کاراکتر باشد.",
-              },
+              minLength: { value: 6, message: "حداقل ۶ کاراکتر وارد کنید." },
+            })}
+            type={showPass ? "text" : "password"}
+            style={{
+              ...inputStyle,
+              borderColor: errors.password ? TOKEN.error : TOKEN.border,
+              paddingLeft: "40px",
             }}
-            render={({ field }) => (
-              <Form.Item
-                label="رمز عبور"
-                validateStatus={registerErrors.password ? "error" : ""}
-                help={registerErrors.password?.message}
-              >
-                <Input.Password
-                  {...field}
-                  placeholder="رمز عبور خود را وارد کنید"
-                  prefix={<LockOutlined className="site-form-item-icon" />}
-                />
-              </Form.Item>
-            )}
+            placeholder="رمز عبور"
+            autoComplete="current-password"
           />
+        </InputField>
 
-          <Controller
-            name="confirmPassword"
-            control={registerControl}
-            rules={{
-              required: "تایید رمز عبور الزامی است.",
-              validate: (value) =>
-                value === password || "رمز عبور و تایید آن مطابقت ندارند.",
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "1.4rem",
+            fontFamily: TOKEN.font,
+          }}
+        >
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "7px",
+              fontSize: "13px",
+              color: TOKEN.textMuted,
+              cursor: "pointer",
+              userSelect: "none",
             }}
-            render={({ field }) => (
-              <Form.Item
-                label="تایید رمز عبور"
-                validateStatus={registerErrors.confirmPassword ? "error" : ""}
-                help={registerErrors.confirmPassword?.message}
-              >
-                <Input.Password
-                  {...field}
-                  placeholder="رمز عبور خود را دوباره وارد کنید"
-                />
-              </Form.Item>
-            )}
-          />
-
-          <Controller
-            name="phone"
-            control={registerControl}
-            rules={{
-              required: "شماره تلفن الزامی است.",
-              pattern: {
-                value: /^09\d{9}$/,
-                message: "فرمت شماره تلفن نامعتبر است (مثال: 09123456789).",
-              },
-            }}
-            render={({ field }) => (
-              <Form.Item
-                label="شماره تلفن"
-                validateStatus={registerErrors.phone ? "error" : ""}
-                help={registerErrors.phone?.message}
-              >
-                <Input {...field} placeholder="09123456789" />
-              </Form.Item>
-            )}
-          />
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="w-full bg-blue-600"
-              onClick={handleRegisterSubmit(handleRegister)} // فراخوانی submit برای فرم ثبت نام
+          >
+            <span
+              onClick={() => setRemember((v) => !v)}
+              style={{
+                width: "18px",
+                height: "18px",
+                borderRadius: "5px",
+                border: `1.5px solid ${remember ? TOKEN.primary : TOKEN.border}`,
+                background: remember ? TOKEN.primary : TOKEN.inputBg,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "all .2s",
+                cursor: "pointer",
+                flexShrink: 0,
+              }}
             >
-              ثبت نام
-            </Button>
-          </Form.Item>
-          <div className="text-center text-sm text-gray-600 ">
-            حساب کاربری دارید؟
-            <Link
-              href="/auth/login"
-              className="text-blue-500 hover:text-blue-700 ml-1 px-2"
-            >
-              ورود
-            </Link>
-          </div>
-        </Form>
-      </Card>
+              {remember && (
+                <svg
+                  width="10"
+                  height="8"
+                  viewBox="0 0 10 8"
+                  fill="none"
+                >
+                  <path
+                    d="M1 4L3.5 6.5L9 1"
+                    stroke="white"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
+            </span>
+            مرا به خاطر بسپار
+          </label>
+
+          <Link
+            href="/forgot-password"
+            style={{
+              fontSize: "13px",
+              color: TOKEN.primary,
+              textDecoration: "none",
+            }}
+          >
+            فراموشی رمز عبور؟
+          </Link>
+        </div>
+
+        {/* submit */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          style={{
+            width: "100%",
+            padding: "13px",
+            background: isSubmitting ? "#C4B49E" : TOKEN.primary,
+            color: "#fff",
+            border: "none",
+            borderRadius: "12px",
+            fontSize: "15px",
+            fontWeight: 600,
+            fontFamily: TOKEN.font,
+            cursor: isSubmitting ? "not-allowed" : "pointer",
+            transition: "background .2s, transform .1s",
+            marginBottom: "1.2rem",
+            letterSpacing: "0.02em",
+          }}
+          onMouseEnter={(e) => {
+            if (!isSubmitting)
+              (e.target as HTMLButtonElement).style.background = TOKEN.primaryHover;
+          }}
+          onMouseLeave={(e) => {
+            if (!isSubmitting)
+              (e.target as HTMLButtonElement).style.background = TOKEN.primary;
+          }}
+        >
+          {isSubmitting ? "در حال ورود..." : "ورود به حساب"}
+        </button>
+
+        {/* divider */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            marginBottom: "1rem",
+          }}
+        >
+          <div
+            style={{ flex: 1, height: "1px", background: TOKEN.border }}
+          />
+          <span
+            style={{
+              fontSize: "12px",
+              color: TOKEN.textMuted,
+              fontFamily: TOKEN.font,
+              whiteSpace: "nowrap",
+            }}
+          >
+            یا ورود با
+          </span>
+          <div
+            style={{ flex: 1, height: "1px", background: TOKEN.border }}
+          />
+        </div>
+
+        {/* google only (no github per client request) */}
+        <button
+          type="button"
+          style={{
+            width: "100%",
+            padding: "11px",
+            background: TOKEN.inputBg,
+            border: `1.5px solid ${TOKEN.border}`,
+            borderRadius: "12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            fontSize: "14px",
+            fontFamily: TOKEN.font,
+            color: TOKEN.text,
+            cursor: "pointer",
+            transition: "border-color .2s, background .2s",
+            marginBottom: "1.4rem",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = TOKEN.primary;
+            (e.currentTarget as HTMLButtonElement).style.background = "#FFF";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = TOKEN.border;
+            (e.currentTarget as HTMLButtonElement).style.background = TOKEN.inputBg;
+          }}
+        >
+          {/* google icon */}
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.6 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z" />
+            <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.2 19 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.6 29.3 4 24 4 16.3 4 9.7 8.5 6.3 14.7z" />
+            <path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.5 35.5 26.9 36 24 36c-5.2 0-9.6-2.9-11.3-7.1L6 33.9C9.3 39.5 16.1 44 24 44z" />
+            <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.3-2.5 4.3-4.6 5.7l6.2 5.2C40.8 35.5 44 30.1 44 24c0-1.3-.1-2.7-.4-4z" />
+          </svg>
+          ادامه با گوگل
+        </button>
+
+        {/* signup link */}
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "13px",
+            color: TOKEN.textMuted,
+            fontFamily: TOKEN.font,
+            margin: 0,
+          }}
+        >
+          حساب کاربری ندارید؟{" "}
+          <Link
+            href="/auth/register"
+            style={{
+              color: TOKEN.primary,
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            ثبت‌نام کنید
+          </Link>
+        </p>
+      </form>
     </AuthLayout>
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
