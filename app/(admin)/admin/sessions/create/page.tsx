@@ -138,11 +138,10 @@ export default function CreateSessionPage() {
               <Select
                 value={field.value}
                 onChange={field.onChange}
-                className="w-full"
                 placeholder="انتخاب دوره"
                 options={courseOptions}
                 loading={isLoading}
-                className="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                className="w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
               />
             )}
           />
@@ -168,11 +167,11 @@ export default function CreateSessionPage() {
         <button
           type="submit"
           className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition ${
-            mutation.isLoading ? "opacity-75 cursor-not-allowed" : ""
+            mutation.isPending ? "opacity-75 cursor-not-allowed" : ""
           }`}
-          disabled={mutation.isLoading}
+          disabled={mutation.isPending}
         >
-          {mutation.isLoading ? "در حال ثبت..." : "ثبت جلسه"}
+          {mutation.isPending ? "در حال ثبت..." : "ثبت جلسه"}
         </button>
       </form>
     </div>

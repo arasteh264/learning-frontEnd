@@ -65,11 +65,7 @@ export const createSessionApi = async ({
   id: string;
   data: FormData;
 }) => {
-  const response = await http.post(`/session/${id}`, data, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await http.post(`/session/${id}`, data);
 
   return response.data;
 };
@@ -79,11 +75,7 @@ export const removeSession = async (id: string) => {
   return res.data;
 };
 
-export const getSessionDetail = async (id: string) => {
-  const response = await http.get(`/course/session/${id}`);
 
-  return response.data;
-};
 
 export const updateSessionApi = async ({
   id,
@@ -246,3 +238,7 @@ export async function postCommentReply(payload: {
   );
   return data;
 }
+export const getSessionDetail = async (id: string) => {
+  const response = await http.get(`/session/${id}`);
+  return response.data;
+};

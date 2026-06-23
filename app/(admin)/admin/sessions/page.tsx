@@ -20,7 +20,7 @@ export default function SessionsPage() {
   });
 
   const handleEdit = (id: string) => {
-    router.push(`/sessions/edite/${id}`);
+    router.push(`/admin/sessions/edite/${id}`);
   };
 
   const { mutate: handleDeleteSession } = useMutation({
