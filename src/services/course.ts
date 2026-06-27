@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import http from "./interseptor/http";
 import { ApiResponse } from "../types/globalType";
 
-
 export type Course = {
   id: string;
   category_id: string;
@@ -14,14 +13,35 @@ export type Course = {
   enrolled_count: number;
   href: string;
   name: string;
-  price: number;
+  price: number | string;
   rating: number;
-  status: string;
+  status: boolean;
   support: string;
   updated_at: string;
   views: number;
+  creator?: string;
+  category?: string;
 };
-
+export type EditCourseForm = Omit<
+  Course,
+  | "id"
+  | "created_at"
+  | "updated_at"
+  | "enrolled_count"
+  | "rating"
+  | "views"
+  | "cover"
+  | "price"
+  | "status"
+  | "category_id"
+  | "creator_id"
+> & {
+  cover: File | string | null;
+  price: string | number;
+  status: boolean;
+  category: string;
+  creator: string;
+};
 export type SessionChild = {
   id: string;
   title: string;
@@ -65,10 +85,18 @@ export type CourseBreadcrumbItem = {
 
 export type CreateCourseForm = Omit<
   Course,
-  "id" | "created_at" | "updated_at" | "enrolled_count" | "rating" | "views" | "cover"
+  | "id"
+  | "created_at"
+  | "updated_at"
+  | "enrolled_count"
+  | "rating"
+  | "views"
+  | "cover"
 > & {
-  cover: File | null; 
-  price: string;      
+  cover: File | null;
+  price: string;
+  creator: string;
+  category: string;
 };
 
 export type UpdateCoursePayload = {
@@ -96,8 +124,6 @@ export type CommentReplyPayload = {
   content: string;
 };
 
-
-
 export const getAllCourse = async (): Promise<Course[]> => {
   const response = await http.get<ApiResponse<Course[]>>("/course");
   return response.data.data;
@@ -124,9 +150,13 @@ export const updateCourseApi = async ({
   id,
   data,
 }: UpdateCoursePayload): Promise<Course> => {
-  const response = await http.patch<ApiResponse<Course>>(`/course/${id}`, data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const response = await http.patch<ApiResponse<Course>>(
+    `/course/${id}`,
+    data,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    },
+  );
   return response.data.data;
 };
 
@@ -141,7 +171,9 @@ export const searchCourseApi = async (query: string): Promise<Course[]> => {
   return response.data.data;
 };
 
-export const getLatestCourses = async (limit: number = 8): Promise<Course[]> => {
+export const getLatestCourses = async (
+  limit: number = 8,
+): Promise<Course[]> => {
   const response = await http.get<ApiResponse<Course[]>>("/course/latest", {
     params: { limit },
   });
@@ -149,23 +181,28 @@ export const getLatestCourses = async (limit: number = 8): Promise<Course[]> => 
   return response.data.data;
 };
 
-export const getPopularFreeCourses = async (limit: number = 8): Promise<Course[]> => {
-  const response = await http.get<ApiResponse<Course[]>>("/course/free/popular", {
-    params: { limit },
-  });
+export const getPopularFreeCourses = async (
+  limit: number = 8,
+): Promise<Course[]> => {
+  const response = await http.get<ApiResponse<Course[]>>(
+    "/course/free/popular",
+    {
+      params: { limit },
+    },
+  );
   return response.data.data;
 };
-
-
 
 export const getAllSession = async (): Promise<Session[]> => {
   const response = await http.get<ApiResponse<Session[]>>("/session");
   return response.data.data;
 };
 
-export const getCourseSessions = async (courseId: string): Promise<Session[]> => {
+export const getCourseSessions = async (
+  courseId: string,
+): Promise<Session[]> => {
   const { data } = await http.get<ApiResponse<Session[]>>(
-    `/session/courses/${courseId}`
+    `/session/courses/${courseId}`,
   );
   return data.data;
 };
@@ -179,7 +216,10 @@ export const createSessionApi = async ({
   id,
   data,
 }: CreateSessionPayload): Promise<Session> => {
-  const response = await http.post<ApiResponse<Session>>(`/session/${id}`, data);
+  const response = await http.post<ApiResponse<Session>>(
+    `/session/${id}`,
+    data,
+  );
   return response.data.data;
 };
 
@@ -190,7 +230,7 @@ export const updateSessionApi = async ({
   const response = await http.put<ApiResponse<Session>>(
     `/course/session/${id}`,
     data,
-    { headers: { "Content-Type": "multipart/form-data" } }
+    { headers: { "Content-Type": "multipart/form-data" } },
   );
   return response.data.data;
 };
@@ -199,35 +239,31 @@ export const removeSession = async (id: string): Promise<void> => {
   await http.delete(`/course/session/${id}`);
 };
 
-
-
 export const getCourseComments = async (
-  _courseId: string
+  _courseId: string,
 ): Promise<CourseComment[]> => {
   return [];
 };
 
 export const postCourseComment = async (
-  payload: CommentPayload
+  payload: CommentPayload,
 ): Promise<CourseComment> => {
   const { data } = await http.post<ApiResponse<CourseComment>>(
     `/courses/${payload.courseId}/comments`,
-    { content: payload.content }
+    { content: payload.content },
   );
   return data.data;
 };
 
 export const postCommentReply = async (
-  payload: CommentReplyPayload
+  payload: CommentReplyPayload,
 ): Promise<CourseCommentReply> => {
   const { data } = await http.post<ApiResponse<CourseCommentReply>>(
     `/comments/${payload.commentId}/reply`,
-    { content: payload.content }
+    { content: payload.content },
   );
   return data.data;
 };
-
-
 
 export const useSearchCourse = (query: string) => {
   return useQuery<Course[]>({

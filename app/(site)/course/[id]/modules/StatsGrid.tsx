@@ -8,7 +8,7 @@ import {
   Signal,
   Infinity as InfinityIcon,
 } from "lucide-react";
-import type { CourseStat } from "@/src/services/course";
+
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   clock: Clock,
@@ -22,7 +22,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 type Props = {
-  stats: CourseStat[];
+  stats: any[];
 };
 
 export default function StatsGrid({ stats }: Props) {

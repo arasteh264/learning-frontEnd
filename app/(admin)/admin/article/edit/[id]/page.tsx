@@ -3,12 +3,11 @@
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-
 import { getArticleById, updateArticleApi } from "@/src/services/article";
 import { ArticleFormValues } from "@/src/validation/article.schema";
-
 import LoadingPage from "../../../loading";
 import ArticleForm from "../../modules/ArticleForm";
+import { ApiError } from "@/src/types/globalType";
 
 export default function EditArticlePage() {
   const router = useRouter();
@@ -27,7 +26,7 @@ export default function EditArticlePage() {
       toast.success("مقاله با موفقیت ویرایش شد");
       router.push("/admin/article");
     },
-    onError: (err: any) => {
+    onError: (err: ApiError) => {
       toast.error(err.response?.data?.message || "خطا در ویرایش مقاله");
     },
   });
@@ -59,36 +58,21 @@ export default function EditArticlePage() {
 
   const existingCoverUrl: string | undefined = article?.cover ?? undefined;
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
   return (
     <section className="w-full max-w-6xl mx-auto px-6 py-8" dir="rtl">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center">
-          <svg
-            className="w-5 h-5 text-amber-500"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.8}
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            />
+          <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
         </div>
         <div>
           <h1 className="text-lg font-semibold text-gray-900">ویرایش مقاله</h1>
-          <p className="text-sm text-gray-400">
-            تغییرات را اعمال کنید و ذخیره کنید
-          </p>
+          <p className="text-sm text-gray-400">تغییرات را اعمال کنید و ذخیره کنید</p>
         </div>
       </div>
-
       <ArticleForm
         defaultValues={defaultValues}
         existingCoverUrl={existingCoverUrl}

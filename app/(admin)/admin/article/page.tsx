@@ -7,13 +7,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 import BaseTable from "@/src/components/admin/tables/BaseTable";
-import { getAllArticles, removeArticle } from "@/src/services/article";
+import { ArticleStatus, getAllArticles, removeArticle } from "@/src/services/article";
 import { getArticleColumns } from "@/src/components/admin/tables/tablesColumns/articles.columns";
+import { ApiError } from "@/src/types/globalType";
 
 export default function ArticlePage() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [status, setStatus] = useState<string | undefined>(undefined);
+  const [status, setStatus] = useState<ArticleStatus | undefined>(undefined);
 
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["articles", status],
@@ -28,7 +29,7 @@ export default function ArticlePage() {
       toast.success("مقاله مورد نظر با موفقیت حذف شد.");
     },
 
-    onError: (err: any) => {
+    onError: (err: ApiError) => {
       toast.error(err.response?.data?.message || "خطا رخ داد");
     },
   });
@@ -76,7 +77,7 @@ export default function ArticlePage() {
       </div>
 
       <BaseTable
-        data={data}
+        data={data|| []}
         columns={columns}
         loading={isLoading || isFetching}
       />

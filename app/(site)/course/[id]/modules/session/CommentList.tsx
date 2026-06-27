@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { postCourseComment } from "@/src/services/course";
 import CommentCard, { Comment } from "./CommentCard";
+import { ApiError } from "@/src/types/globalType";
 
 type Props = {
   courseId: string | number;
@@ -17,13 +18,13 @@ export default function CommentList({ courseId, comments }: Props) {
   const [text, setText] = useState("");
 
   const commentMutation = useMutation({
-    mutationFn: () => postCourseComment({ courseId, content: text }),
+    mutationFn: () => postCourseComment({ courseId: String(courseId), content: text }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["courseDetails", courseId] });
       toast.success("نظر شما با موفقیت ثبت شد");
       setText("");
     },
-    onError: (err: any) => {
+    onError: (err: ApiError) => {
       toast.error(err?.response?.data?.message || "خطا در ثبت نظر");
     },
   });

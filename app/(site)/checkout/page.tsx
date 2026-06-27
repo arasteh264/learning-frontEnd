@@ -6,6 +6,7 @@ import { useCreateOrder, useRequestPayment } from "@/src/hooks/useOrder";
 import EmptyState from "@/src/components/base/EmptyState";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/src/hooks/useCart";
+import { CartItem } from "@/src/services/cart";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -62,12 +63,12 @@ const paymentResult = await requestPaymentMutate(orderId);
         <h2 className="text-sm font-bold border-b pb-3">خلاصه سفارش</h2>
 
         <div className="flex flex-col gap-3">
-          {cart.items.map((item: any) => {
+          {cart.items.map((item: CartItem) => {
             const course = item.courses;
             const price = course.price ?? 0;
             const discount = course.discount ?? 0;
             const finalPrice = discount > 0
-              ? Math.round(price - (price * discount) / 100)
+              ? Math.round(+price - (+price * discount) / 100)
               : price;
 
             return (

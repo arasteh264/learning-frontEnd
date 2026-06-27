@@ -1,7 +1,7 @@
 import { Input } from "antd";
 
 type Props = {
-  value: string;
+  value: string | number;
   onChange: (value: string) => void;
 };
 

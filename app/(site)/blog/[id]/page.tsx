@@ -1,54 +1,66 @@
 "use client";
+
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useParams } from "next/navigation";
-import { getArticleById } from "@/src/services/article";
-import { useQuery } from "@tanstack/react-query";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { getArticleById, Article } from "@/src/services/article";
 
-export default function Page() {
+
+
+type ArticleWithAuthor = Article & {
+  teachers?: {
+    id: string;
+    bio: string;
+    avatar?: string;
+  };
+};
+
+
+
+export default function ArticleDetailPage() {
   const params = useParams();
   const id = typeof params?.id === "string" ? params.id : null;
 
-  const {
-    data: article,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: article, isLoading, isError } = useQuery<ArticleWithAuthor>({
     queryKey: ["article", id],
     queryFn: () => getArticleById(id as string),
     enabled: !!id,
   });
 
-const schema = useMemo(() => ({
-  ...defaultSchema,
-  tagNames: [
-    ...(defaultSchema.tagNames || []),
-    "table", "thead", "tbody", "tr", "th", "td",
-  ],
-  attributes: {
-    ...defaultSchema.attributes,
-    th: ["align"],
-    td: ["align"],
-  },
-}), []);
+  const schema = useMemo(() => ({
+    ...defaultSchema,
+    tagNames: [
+      ...(defaultSchema.tagNames ?? []),
+      "table", "thead", "tbody", "tr", "th", "td",
+    ],
+    attributes: {
+      ...defaultSchema.attributes,
+      th: ["align"],
+      td: ["align"],
+    },
+  }), []);
 
   if (isLoading) return <div>در حال لود...</div>;
   if (isError || !article) return <div>مقاله پیدا نشد</div>;
 
   const author = article.teachers;
+
   const createdDate = new Date(article.created_at).toLocaleDateString("fa-IR", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+
   const readTime = Math.max(
     1,
-    Math.ceil(article.content.split(/\s+/).length / 200),
+    Math.ceil(article.content.split(/\s+/).length / 200)
   );
-const cleanContent = article.content.replace(/\r\n/g, "\n");
+
+  const cleanContent = article.content.replace(/\r\n/g, "\n");
 
   return (
     <section className="container-custom mt-10 flex flex-col text-right px-5">
@@ -87,15 +99,13 @@ const cleanContent = article.content.replace(/\r\n/g, "\n");
         </div>
       )}
 
-      <div
-        className="prose prose-sm max-w-none text-sm text-gray-700 leading-7"
-        dir="rtl"
-      >
-     <ReactMarkdown
-  remarkPlugins={[remarkGfm]}
->
-  {cleanContent}
-</ReactMarkdown>
+      <div className="prose prose-sm max-w-none text-sm text-gray-700 leading-7" dir="rtl">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[[rehypeSanitize, schema]]}
+        >
+          {cleanContent}
+        </ReactMarkdown>
       </div>
     </section>
   );

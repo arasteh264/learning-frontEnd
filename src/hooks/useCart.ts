@@ -4,7 +4,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { addToCart, getCart, removeFromCart } from "../services/cart";
+import { addToCart, Cart, getCart, removeFromCart } from "../services/cart";
 
 export const useCart = () => {
   return useQuery({
@@ -16,30 +16,28 @@ export const useCart = () => {
 
 export const useAddToCart = () => {
   const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (courseId: string) => addToCart(courseId),
+  return useMutation<Cart, Error, string>({
+    mutationFn: addToCart,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
-      toast.success("دوره با موفقیت به سبد اضافه شد");
+      toast.success("به سبد خرید اضافه شد");
     },
-    onError: (err: any) => {
-      toast.error(err.response?.data?.message || "خطا در افزودن به سبد");
+    onError: () => {
+      toast.error("خطا در افزودن به سبد خرید");
     },
   });
 };
 
 export const useRemoveFromCart = () => {
   const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (courseId: string) => removeFromCart(courseId),
+  return useMutation<Cart, Error, string>({
+    mutationFn: removeFromCart,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
-      toast.success("دوره از سبد حذف شد");
+      toast.success("از سبد خرید حذف شد");
     },
-    onError: (err: any) => {
-      toast.error(err.response?.data?.message || "خطا در حذف از سبد");
+    onError: () => {
+      toast.error("خطا در حذف از سبد خرید");
     },
   });
 };

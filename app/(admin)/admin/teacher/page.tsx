@@ -2,54 +2,55 @@
 
 import BaseTable from "@/src/components/admin/tables/BaseTable";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, RoleUser, BanUser } from "@/src/services/user";
 import { toast } from "react-toastify";
-import {
-  getTeacherList,
-  removeTeacher,
-  verifyTeacher,
-} from "@/src/services/teacher";
+import { useCallback, useMemo } from "react";
+import { getTeacherList, removeTeacher, verifyTeacher, Teacher } from "@/src/services/teacher";
 import { getTeacherColumns } from "@/src/components/admin/tables/tablesColumns/teacher.columns";
-import { useMemo } from "react";
+import { ApiError } from "@/src/types/globalType";
 
-export default function teacherPage() {
+
+export default function TeacherPage() {
   const queryClient = useQueryClient();
 
-  const { data, isLoading, error,isFetching } = useQuery({
-    queryKey: ["teacher"],
+  const { data, isLoading, isFetching } = useQuery<Teacher[]>({
+    queryKey: ["teachers"],
     queryFn: getTeacherList,
   });
 
   const { mutate: verifyTeacherMutate } = useMutation({
     mutationFn: verifyTeacher,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["teacher"] });
+      queryClient.invalidateQueries({ queryKey: ["teachers"] });
       toast.success("استاد تایید شد");
+    },
+    onError: (err: ApiError) => {
+      toast.error(err?.response?.data?.message || "خطا در تایید استاد");
     },
   });
 
   const { mutate: removeMutation } = useMutation({
     mutationFn: (id: string) => removeTeacher(id),
-
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["teacher"] });
-      toast.success("استاد مورد نظر با موفقیت حذف شد.");
+      queryClient.invalidateQueries({ queryKey: ["teachers"] });
+      toast.success("استاد با موفقیت حذف شد");
     },
-
-    onError: (err: any) => {
-      toast.error(err.response.data.message || "خطا رخ داد");
+    onError: (err: ApiError) => {
+      toast.error(err?.response?.data?.message || "خطا رخ داد");
     },
   });
 
-  const handleDelete = (id: string) => {
-    removeMutation(id);
-  };
 
-  const handleVerify = (id: string) => verifyTeacherMutate(id);
+  const handleDelete = useCallback((id: string) => {
+    removeMutation(id);
+  }, [removeMutation]);
+
+  const handleVerify = useCallback((id: string) => {
+    verifyTeacherMutate(id);
+  }, [verifyTeacherMutate]);
 
   const columns = useMemo(
     () => getTeacherColumns(handleDelete, handleVerify),
-    [handleDelete, handleVerify],
+    [handleDelete, handleVerify]
   );
 
   return (
@@ -58,7 +59,11 @@ export default function teacherPage() {
         <h2 className="text-xl font-bold">لیست اساتید</h2>
       </div>
 
-      <BaseTable data={data} columns={columns} loading={isLoading||isFetching} />
+      <BaseTable
+        data={data ?? []}
+        columns={columns}
+        loading={isLoading || isFetching}
+      />
     </section>
   );
 }

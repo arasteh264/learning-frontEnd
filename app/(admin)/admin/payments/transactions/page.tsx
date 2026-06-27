@@ -20,7 +20,7 @@ export default function TransactionsPage() {
       </div>
 
       <BaseTable
-        data={data}
+        data={data || []}
         columns={columns}
         loading={isLoading || isFetching}
       />

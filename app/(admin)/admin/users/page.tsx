@@ -3,61 +3,64 @@
 import BaseTable from "@/src/components/admin/tables/BaseTable";
 import { getUserColumns } from "@/src/components/admin/tables/tablesColumns/users.columns";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, getUsers, RoleUser, BanUser } from "@/src/services/user";
+import { deleteUser, getUsers, banUser, updateUserRole, User, UpdateRolePayload } from "@/src/services/user";
 import { toast } from "react-toastify";
+import { ApiError } from "@/src/types/globalType";
+
+
+
 
 export default function UsersPage() {
   const queryClient = useQueryClient();
-  const { data, isLoading, error } = useQuery({
+
+  const { data, isLoading, isFetching } = useQuery<User[]>({
     queryKey: ["users"],
     queryFn: getUsers,
   });
-  const { mutate: handleDeleteUUser } = useMutation({
-    mutationFn: deleteUser,
 
+  const { mutate: handleDeleteUser } = useMutation({
+    mutationFn: deleteUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("کاربر با موفقیت حذف شد.");
+      toast.success("کاربر با موفقیت حذف شد");
     },
-    onError: (err) => {
-      toast.error("خطا در حذف کاربر.");
+    onError: (err: ApiError) => {
+      toast.error(err?.response?.data?.message || "خطا در حذف کاربر");
     },
   });
 
   const { mutate: toggleBan } = useMutation({
-    mutationFn: BanUser,
-
+    mutationFn: banUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("وضعیت کاربر با موفقیت تغییر کرد.");
+      toast.success("وضعیت کاربر با موفقیت تغییر کرد");
     },
-    onError: (err) => {
-      toast.error("خطا در تغییر وضعیت کاربر.");
+    onError: (err: ApiError) => {
+      toast.error(err?.response?.data?.message || "خطا در تغییر وضعیت");
     },
   });
-  const { mutate: toggleRole } = useMutation({
-    mutationFn: RoleUser,
 
+  const { mutate: toggleRole } = useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateRolePayload }) =>
+      updateUserRole(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success("نقش کاربر تغییر کرد");
     },
-
-    onError: () => {
-      toast.error("خطا در تغییر نقش");
+    onError: (err: ApiError) => {
+      toast.error(err?.response?.data?.message || "خطا در تغییر نقش");
     },
   });
 
-  const handleDelete = (id: string) => {
-    handleDeleteUUser(id);
+  const handleDelete = (id: string) => handleDeleteUser(id);
+
+  const onToggleBan = (record: User) => {
+    toggleBan(record.id);
   };
 
-  const onToggleBan = (record: any) => {
-    toggleBan(record.id || record.id);
-  };
-
-  const onToggleRole = (record: any) => {
-    toggleRole(record.id);
+  const onToggleRole = (record: User) => {
+    const nextRole = record.role === "USER" ? "TEACHER" : "USER";
+    toggleRole({ id: record.id, payload: { role: nextRole } });
   };
 
   return (
@@ -68,6 +71,7 @@ export default function UsersPage() {
 
       <BaseTable
         data={data ?? []}
+        loading={isLoading || isFetching}
         columns={getUserColumns(handleDelete, onToggleBan, onToggleRole)}
       />
     </section>

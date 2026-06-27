@@ -19,6 +19,7 @@ export type PaymentRequest = Pick<Transaction, "orderId">;
 export type PaymentResponse = {
   paymentUrl: string;
   authority: string;
+  free?: boolean;
 };
 
 
