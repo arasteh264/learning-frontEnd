@@ -19,6 +19,7 @@ export const getCategoryList = async (): Promise<Category[]> => {
   return response.data.data;
 };
 
+
 export const addCategory = async (
   newCategory: CategoryPayload
 ): Promise<Category> => {

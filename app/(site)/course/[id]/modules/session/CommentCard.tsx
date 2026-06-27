@@ -6,6 +6,7 @@ import { CornerUpLeft, Send } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { postCommentReply } from "@/src/services/course";
+import { ApiError } from "@/src/types/globalType";
 
 type User = {
   name: string;
@@ -68,7 +69,7 @@ export default function CommentCard({ comment, courseId }: Props) {
       setReplyText("");
       setIsReplying(false);
     },
-    onError: (err: any) => {
+    onError: (err: ApiError) => {
       toast.error(err?.response?.data?.message || "خطا در ثبت پاسخ");
     },
   });

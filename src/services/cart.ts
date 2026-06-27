@@ -1,23 +1,21 @@
 import http from "./interseptor/http";
-import {  Course } from "./course";
+import { Course } from "./course";
 import { ApiResponse } from "../types/globalType";
 
 
 
 export type CartItem = {
   id: string;
-  course: Course;
-  addedAt: string;
+  courses: Pick<Course, "id" | "name" | "cover" | "href" | "price" | "discount">;
 };
 
 export type Cart = {
   id: string;
   userId: string;
   items: CartItem[];
-  totalPrice: number;
+  count: number;
+  total: number;
 };
-
-export type CartSummary = Pick<Cart, "items" | "totalPrice">;
 
 
 

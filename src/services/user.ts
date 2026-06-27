@@ -1,15 +1,17 @@
-import { ApiResponse } from "../types/globalType";
 import http from "./interseptor/http";
+import { ApiResponse } from "../types/globalType";
 
 
 
-export type UserRole = "admin" | "user" | "teacher";
+export type UserRole = "ADMIN" | "USER" | "TEACHER" | "STUDENT";
 
 export type User = {
   id: string;
   name: string;
+  lastName: string;       
   email: string;
   phone: string;
+  nationalId: string;     
   avatar: string;
   role: UserRole;
   isBanned: boolean;
@@ -20,8 +22,7 @@ export type UserProfile = Omit<User, "isBanned">;
 
 export type UpdateRolePayload = Pick<User, "role">;
 
-
-
+ 
 
 export const getUserProfile = async (): Promise<UserProfile> => {
   const response = await http.get<ApiResponse<UserProfile>>("/users/profile");
@@ -41,7 +42,6 @@ export const banUser = async (id: string): Promise<User> => {
   const res = await http.post<ApiResponse<User>>(`/users/ban/${id}`);
   return res.data.data;
 };
-
 
 export const updateUserRole = async (
   id: string,

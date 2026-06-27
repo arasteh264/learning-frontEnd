@@ -22,13 +22,24 @@ export type Order = {
   created_at: string;
   updated_at: string;
 };
+type CartItem = {
+  id: string;
+  courses: {
+    name: string;
+    price: number | string;
+    discount: number;
+  };
+};
 
+export type CreateOrderResponse = {
+  order: Order;
+};
 export type OrderSummary = Pick<Order, "id" | "totalPrice" | "status" | "created_at">;
 
 
-export const createOrder = async (): Promise<Order> => {
-  const response = await http.post<ApiResponse<Order>>("/order");
-  return response.data.data;
+export const createOrder = async (): Promise<CreateOrderResponse> => {
+  const res = await http.post<ApiResponse<CreateOrderResponse>>("/order/create");
+  return res.data.data;
 };
 
 export const getOrders = async (): Promise<Order[]> => {

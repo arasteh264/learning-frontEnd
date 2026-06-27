@@ -1,5 +1,6 @@
 import HeaderDashborad from "@/src/components/admin/layout/Header";
 import Sidebar from "@/src/components/admin/layout/Sidebar";
+import { LayoutProp } from "@/src/types/globalType";
 import { ConfigProvider } from "antd";
 import faIR from "antd/locale/fa_IR";
 import { ToastContainer } from "react-toastify";

@@ -1,4 +1,4 @@
-type LayoutProp = {
+export type LayoutProp = {
   children: React.ReactNode;
 };
 export type ApiResponse<T> = {
@@ -6,3 +6,12 @@ export type ApiResponse<T> = {
   message?: string;
   status: number;
 };
+export interface ApiError {
+  message: string;
+  status?: number;
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}

@@ -4,52 +4,60 @@ import BaseTable from "@/src/components/admin/tables/BaseTable";
 import { getCategoryColumns } from "@/src/components/admin/tables/tablesColumns/category.columns";
 import { Button, Modal, Input } from "antd";
 import { useMemo, useState } from "react";
-
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { categorySchema } from "@/src/validation/category.schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  addCategory,
-  getCategoryList,
-  removeCategory,
-  updateCategory,
-} from "@/src/services/category";
+import { addCategory, getCategoryList, removeCategory, updateCategory, Category } from "@/src/services/category";
 import { toast } from "react-toastify";
+
+// ============================================================
+// 📦 TYPES
+// ============================================================
 
 type CategoryForm = {
   title: string;
   href: string;
 };
 
-export default function Category() {
+// ✅ ApiError به جای any توی onError
+type ApiError = {
+  message: string;
+};
+
+// ============================================================
+// 🖥️ COMPONENT
+// ============================================================
+
+export default function CategoryPage() {
   const queryClient = useQueryClient();
-  const { data } = useQuery({
-    queryKey: ["category"],
+
+  // ✅ useQuery با type مشخص
+  const { data, isLoading } = useQuery<Category[]>({
+    queryKey: ["categories"],   // ✅ "category" → "categories" (با سرویس هماهنگ)
     queryFn: getCategoryList,
   });
 
   const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState<any>(null);
-
+  // ✅ editing: any  →  Category | null
+  const [editing, setEditing] = useState<Category | null>(null);
   const isEdit = !!editing?.id;
 
-  const {
-    handleSubmit,
-    reset,
-    trigger,
-    control,
-    formState: { errors },
-  } = useForm<CategoryForm>({
-    resolver: zodResolver(categorySchema),
-    defaultValues: { title: "", href: "" },
-    mode: "onSubmit",
-  });
+  const { handleSubmit, reset, trigger, control, formState: { errors } } =
+    useForm<CategoryForm>({
+      resolver: zodResolver(categorySchema),
+      defaultValues: { title: "", href: "" },
+      mode: "onSubmit",
+    });
 
   const modalKey = useMemo(
     () => (isEdit ? `edit-${editing?.id ?? "x"}` : "add"),
-    [isEdit, editing?.id],
+    [isEdit, editing?.id]
   );
+
+  // ============================================================
+  // 🎯 HANDLERS
+  // ============================================================
 
   const handleAdd = () => {
     setEditing(null);
@@ -57,67 +65,70 @@ export default function Category() {
     setOpen(true);
   };
 
-  const handleEdit = (record: any) => {
+  const handleEdit = (record: Category) => {
     setEditing(record);
-    const next = {
-      title: record?.title ?? "",
-      href: record?.href ?? "",
-    };
-
-    reset(next);
+    reset({ title: record.title, href: record.href });
     trigger(["title", "href"]);
     setOpen(true);
   };
 
-  const handleDelete = (record: any) => {
+  const handleDelete = (record: Category) => {
     removeMutation.mutate(record.id);
   };
+
+  const cancelModal = () => {
+    setOpen(false);
+    setEditing(null);
+  };
+
 
   const addMutation = useMutation({
     mutationFn: (newCategory: CategoryForm) => addCategory(newCategory),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["category"] });
-      toast.success("دسته‌بندی با موفقیت اضافه شد.");
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      toast.success("دسته‌بندی با موفقیت اضافه شد");
       setOpen(false);
+      reset({ title: "", href: "" });
     },
-    onError: (err: any) => {
-      toast.error(`خطا در افزودن دسته‌بندی: ${err.message || "خطای نامشخص"}`);
+    onError: (err: ApiError) => {
+      toast.error(`خطا در افزودن: ${err.message || "خطای نامشخص"}`);
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: (payload: { newCategory: CategoryForm; id: number }) =>
-      updateCategory(payload.newCategory, payload.id),
-
+    mutationFn: ({ id, data }: { id: number; data: CategoryForm }) =>
+      updateCategory(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["category"] });
-      toast.success("دسته‌بندی با موفقیت ویرایش شد.");
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      toast.success("دسته‌بندی با موفقیت ویرایش شد");
       setOpen(false);
+      setEditing(null);
     },
-    onError: (err: any) => {
-      toast.error(`خطا در ویرایش دسته‌بندی: ${err.message || "خطای نامشخص"}`);
+    onError: (err: ApiError) => {
+      toast.error(`خطا در ویرایش: ${err.message || "خطای نامشخص"}`);
     },
   });
+
   const removeMutation = useMutation({
     mutationFn: (id: number) => removeCategory(id),
-
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["category"] });
-      toast.success("دسته‌بندی با موفقیت حذف شد.");
-      setOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      toast.success("دسته‌بندی با موفقیت حذف شد");
     },
-    onError: (err: any) => {
-      toast.error(`خطا در حذف دسته‌بندی: ${err.message || "خطای نامشخص"}`);
+    onError: (err: ApiError) => {
+      toast.error(`خطا در حذف: ${err.message || "خطای نامشخص"}`);
     },
   });
 
   const onSubmit = (formData: CategoryForm) => {
-    if (editing?.id) {
-      updateMutation.mutate({ newCategory: formData, id: editing?.id });
+    if (isEdit && editing) {
+      updateMutation.mutate({ id: editing.id, data: formData });
     } else {
       addMutation.mutate(formData);
     }
   };
+
+
 
   return (
     <section className="w-full px-10 flex flex-col mt-6">
@@ -126,14 +137,15 @@ export default function Category() {
       </Button>
 
       <BaseTable
-        data={data?.data || []}
+        data={data ?? []}
+        loading={isLoading}
         columns={getCategoryColumns(handleEdit, handleDelete)}
       />
 
       <Modal
         key={modalKey}
         open={open}
-        onCancel={() => setOpen(false)}
+        onCancel={cancelModal}
         onOk={handleSubmit(onSubmit)}
         okText="ذخیره"
         cancelText="بستن"
@@ -143,30 +155,22 @@ export default function Category() {
         <div className="flex flex-col gap-3">
           <div>
             <label>عنوان</label>
-            <Controller
-              name="title"
-              control={control}
-              defaultValue=""
+            <Controller name="title" control={control}
               render={({ field }) => (
                 <Input {...field} placeholder="مثلاً: تکنولوژی" />
-              )}
-            />
-            {errors?.title && (
+              )} />
+            {errors.title && (
               <p className="text-red-500 text-xs">{errors.title.message}</p>
             )}
           </div>
 
           <div>
             <label>لینک</label>
-            <Controller
-              name="href"
-              control={control}
-              defaultValue=""
+            <Controller name="href" control={control}
               render={({ field }) => (
                 <Input {...field} placeholder="/tech-..." />
-              )}
-            />
-            {errors?.href && (
+              )} />
+            {errors.href && (
               <p className="text-red-500 text-xs">{errors.href.message}</p>
             )}
           </div>

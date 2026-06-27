@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-
 import { createArticleApi } from "@/src/services/article";
 import { ArticleFormValues } from "@/src/validation/article.schema";
 import ArticleForm from "../modules/ArticleForm";
+import { ApiError } from "@/src/types/globalType";
 
 export default function CreateArticlePage() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function CreateArticlePage() {
       toast.success("مقاله با موفقیت ایجاد شد");
       router.push("/admin/article");
     },
-    onError: (err: any) => {
+    onError: (err: ApiError) => {
       toast.error(err.response?.data?.message || "خطا در ایجاد مقاله");
     },
   });
@@ -48,12 +48,7 @@ export default function CreateArticlePage() {
           <p className="text-sm text-gray-400">اطلاعات مقاله را تکمیل کنید و ذخیره کنید</p>
         </div>
       </div>
-
-      <ArticleForm
-        isPending={isPending}
-        onSubmit={handleSubmit}
-        onCancel={() => router.back()}
-      />
+      <ArticleForm isPending={isPending} onSubmit={handleSubmit} onCancel={() => router.back()} />
     </section>
   );
 }
