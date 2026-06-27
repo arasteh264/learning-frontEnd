@@ -1,13 +1,16 @@
 "use server";
-import { LoginType, RegisterType } from '@/src/types/auth';
-import http from '../interseptor/http';
-import { signIn } from 'next-auth/react';
 
+import {
+  AuthResponse,
+  LoginApiResponse,
+  LoginType,
+  RegisterResponse,
+  RegisterType,
+} from "@/src/types/auth";
+import http from "../interseptor/http";
+import { signIn } from "next-auth/react";
 
-
-
-
-export async function loginAction(data: LoginType) {
+export async function loginAction(data: LoginType): Promise<AuthResponse> {
   const res = await fetch(`${process.env.API_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -17,11 +20,10 @@ export async function loginAction(data: LoginType) {
     }),
   });
 
-console.log("LOGIN RESPONSE:", await res);
-  const result = await res.json();
-console.log("LOGIN RESPONSE:", await res.json());
+  const result: LoginApiResponse = await res.json();
+
   if (!result?.data?.accessToken) {
-    return { ok: false };
+    return { ok: false, error: "توکن دریافت نشد" };
   }
 
   await signIn("credentials", {
@@ -34,19 +36,15 @@ console.log("LOGIN RESPONSE:", await res.json());
     }),
   });
 
-  return {
-    ok: true,
-  };
+  return { ok: true };
 }
 
-export const Register = async ({ userName, password, name, phone,email,confirmPassword }: RegisterType) => {
-  const response = await http.post('/auth/register', {
-    userName,
-    password,
-    name,
-    phone,
-    email,
-    confirmPassword
-  });
-  return response;
+export const register = async (
+  data: RegisterType,
+): Promise<RegisterResponse> => {
+  const response = await http.post<{ data: RegisterResponse }>(
+    "/auth/register",
+    data,
+  );
+  return response.data.data;
 };

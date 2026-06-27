@@ -1,31 +1,68 @@
+import { ApiResponse } from "../types/globalType";
 import http from "./interseptor/http";
 
-export const getAllArticles = async (status?: string) => {
-  const response = await http.get("/article", { params: { status } });
-  return response.data;
+
+export type ArticleStatus = "draft" | "published" | "archived";
+
+export type Article = {
+  id: string;
+  title: string;
+  content: string;
+  cover: string;
+  slug: string;
+  status: ArticleStatus;
+  author_id: string;
+  created_at: string;
+  updated_at: string;
 };
 
-export const getArticleById = async (id: string) => {
-  const response = await http.get(`/article/${id}`);
-  return response.data;
+export type CreateArticlePayload = Omit<
+  Article,
+  "id" | "created_at" | "updated_at" | "cover"
+> & {
+  cover: File | null; 
 };
 
-export const createArticleApi = async (data: FormData) => {
-  const response = await http.post("/article", data, {
+export type UpdateArticlePayload = {
+  id: string;
+  data: FormData;
+};
+
+
+
+export const getAllArticles = async (
+  status?: ArticleStatus
+): Promise<Article[]> => {
+  const response = await http.get<ApiResponse<Article[]>>("/article", {
+    params: { status },
+  });
+  return response.data.data;
+};
+
+export const getArticleById = async (id: string): Promise<Article> => {
+  const response = await http.get<ApiResponse<Article>>(`/article/${id}`);
+  return response.data.data;
+};
+
+export const createArticleApi = async (data: FormData): Promise<Article> => {
+  const response = await http.post<ApiResponse<Article>>("/article", data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-  return response.data;
+  return response.data.data;
 };
 
-export const updateArticleApi = async ({ id, data }: { id: string; data: FormData }) => {
-  
-  const response = await http.put(`/article/${id}`, data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  return response.data;
+export const updateArticleApi = async ({
+  id,
+  data,
+}: UpdateArticlePayload): Promise<Article> => {
+  const response = await http.put<ApiResponse<Article>>(
+    `/article/${id}`,
+    data,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+  return response.data.data;
 };
 
-export const removeArticle = async (id: string) => {
-  const res = await http.delete(`/article/${id}`);
-  return res.data;
+export const removeArticle = async (id: string): Promise<void> => {
+  await http.delete(`/article/${id}`);
 };
