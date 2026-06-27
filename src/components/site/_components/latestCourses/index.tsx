@@ -6,7 +6,9 @@ import { getAllCourse } from "@/src/services/course";
 import EmptyState from "@/src/components/base/EmptyState";
 
 export default async function LatestCourses() {
-  const courses = await getAllCourse({});
+  debugger
+  const courses = await getAllCourse() ?? [];
+  
 console.log(courses);
 
   return (

@@ -1,44 +1,76 @@
 import { useQuery } from "@tanstack/react-query";
 import http from "./interseptor/http";
+import { ApiResponse } from "../types/globalType";
 
-export const getAll = async () => {
-  const res = await http.get("/announcement");
-  return res.data;
-};
 
-export const getIsActive = async () => {
-  const res = await http.get(`/announcement/active`);
-  return res.data;
-};
 
-export const create = async (data: any) => {
-  const res = await http.post("/announcement", data);
-  return res.data;
+export type Announcement = {
+  id: string;
+  title: string;
+  content: string;
+  isActive: boolean;
+  created_at: string;
+  updated_at: string;
 };
 
-export const update = async (id: string, data: any) => {
-  const res = await http.put(`/announcement/${id}`, data);
-  return res.data;
+export type CreateAnnouncementPayload = Omit<
+  Announcement,
+  "id" | "created_at" | "updated_at" | "isActive"
+>;
+
+export type UpdateAnnouncementPayload = Partial<CreateAnnouncementPayload>;
+
+
+
+export const getAll = async (): Promise<Announcement[]> => {
+  const res = await http.get<ApiResponse<Announcement[]>>("/announcement");
+  return res.data.data;
 };
 
-export const onChangeStatus = async (id: string) => {
-  const res = await http.patch(`/announcement/${id}/status`);
-  return res.data;
+export const getIsActive = async (): Promise<Announcement[]> => {
+  const res = await http.get<ApiResponse<Announcement[]>>("/announcement/active");
+  return res.data.data;
 };
-export const getById  = async (id: string) => {
-  const res = await http.get(`/announcement/${id}`);
-  return res.data;
+
+export const getById = async (id: string): Promise<Announcement> => {
+  const res = await http.get<ApiResponse<Announcement>>(`/announcement/${id}`);
+  return res.data.data;
 };
-export const remove = async (id: string) => {
-  const res = await http.delete(`/announcement/${id}`);
-  return res.data;
+
+export const create = async (
+  data: CreateAnnouncementPayload
+): Promise<Announcement> => {
+  const res = await http.post<ApiResponse<Announcement>>("/announcement", data);
+  return res.data.data;
+};
+
+export const update = async (
+  id: string,
+  data: UpdateAnnouncementPayload
+): Promise<Announcement> => {
+  const res = await http.put<ApiResponse<Announcement>>(
+    `/announcement/${id}`,
+    data
+  );
+  return res.data.data;
+};
+
+export const onChangeStatus = async (id: string): Promise<Announcement> => {
+  const res = await http.patch<ApiResponse<Announcement>>(
+    `/announcement/${id}/status`
+  );
+  return res.data.data;
+};
+
+export const remove = async (id: string): Promise<void> => {
+  await http.delete(`/announcement/${id}`);
 };
 
 
 
 export const useGetAnnouncement = () => {
-  return useQuery({
+  return useQuery<Announcement[]>({
     queryKey: ["announcement"],
-    queryFn: () => getIsActive(),
+    queryFn: getIsActive,
   });
 };

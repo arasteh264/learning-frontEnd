@@ -1,5 +1,10 @@
-import axios from "axios";
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { getSession, signOut } from "next-auth/react";
+
+const UNAUTHORIZED_STATUS: Record<number, boolean> = {
+  401: true,
+  403: true,
+};
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -12,7 +17,7 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use(
-  async (config) => {
+  async (config: InternalAxiosRequestConfig) => {
     const session = await getSession();
 
     if (session?.accessToken) {
@@ -21,25 +26,21 @@ apiClient.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error: AxiosError) => Promise.reject(error),
 );
-
-const UNAUTHORIZED_STATUS = [401, 403];
 
 apiClient.interceptors.response.use(
   (response) => response,
 
-  async (error) => {
+  async (error: AxiosError) => {
     const status = error?.response?.status;
 
-    if (UNAUTHORIZED_STATUS.includes(status)) {
-      await signOut({
-        callbackUrl: "/auth/login",
-      });
+    if (status && UNAUTHORIZED_STATUS[status]) {
+      await signOut({ callbackUrl: "/auth/login" });
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;
