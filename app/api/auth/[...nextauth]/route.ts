@@ -41,6 +41,7 @@ const handler = NextAuth({
         return {
           id: String(data.user.id),
           name: data.user.userName ?? "",
+          email: data.user.email ?? "",
           accessToken: data.accessToken,
           role: data.user.role ?? "USER",
         };
@@ -61,15 +62,22 @@ const handler = NextAuth({
       return token;
     },
 
-    async session({ session, token }) {
-      if (!session || !token) return session;
+async session({ session, token }) {
+  if (!session || !token) return session;
 
-      if (typeof token.accessToken === "string") {
-        session.accessToken = token.accessToken;
-      }
+  session.user = {
+    name: token.name ?? "",
+    email: token.email ?? "",   
+    image: token.picture ?? null,
+    role: token.role as string,
+  };
 
-      return session;
-    },
+  if (typeof token.accessToken === "string") {
+    session.accessToken = token.accessToken;
+  }
+
+  return session;
+},
   },
 
   secret,
