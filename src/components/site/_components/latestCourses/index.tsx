@@ -43,7 +43,7 @@ export default async function LatestCourses() {
               description={course.description}
               author={{
                 name: course.teachers?.bio ?? "",
-                avatar: "/img/avatar-placeholder.png",
+                avatar: "/images/avatar-placeholder.png",
               }}
               rating={course.teachers?.rating ?? 0}
               students={0}
