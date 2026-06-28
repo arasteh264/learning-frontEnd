@@ -1,6 +1,5 @@
 "use client";
 
-import SearchBox from "@/src/components/site/search/SearchBox";
 
 type HeroSearchSectionProps = {
   title?: string;

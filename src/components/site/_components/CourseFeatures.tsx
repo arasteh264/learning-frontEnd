@@ -1,3 +1,5 @@
+"use client";
+
 export default function CourseFeatures() {
   return (
     <div className="container-custom py-10 mt-5 flex items-center justify-around select-none  gap-1 px-4 text-xs">
