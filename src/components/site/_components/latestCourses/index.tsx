@@ -1,3 +1,4 @@
+"use client";
 import SectionHeader from "../ContentSectionHeader";
 import Link from "next/link";
 import CourseCard from "../cards/course/CoursesCarsd";
@@ -6,7 +7,7 @@ import { getAllCourse } from "@/src/services/course";
 import EmptyState from "@/src/components/base/EmptyState";
 
 export default async function LatestCourses() {
-  debugger
+  
   const courses = await getAllCourse() ?? [];
   
 
