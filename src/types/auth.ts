@@ -29,4 +29,5 @@ export type LoginApiResponse = {
 
 export type RegisterResponse = {
   message: string;
+  status:number;
 };

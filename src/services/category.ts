@@ -7,10 +7,14 @@ export type Category = {
   id: number;
   title: string;
   href: string;
+  image?: string | null; 
+  count?: number;          
   created_at: string;
+  updated_at?: string;     
 };
 
-export type CategoryPayload = Omit<Category, "created_at">;
+
+export type CategoryPayload = Omit<Category, "id" | "created_at">
 
 
 

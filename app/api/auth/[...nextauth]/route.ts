@@ -16,26 +16,33 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        if (!credentials?.username || !credentials?.password) {
+          return null;
+        }
+
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              identifier: credentials?.username,
-              password: credentials?.password,
+              identifier: credentials.username,
+              password: credentials.password,
             }),
           },
         );
+
+        if (!res.ok) return null;
+
         const data = await res.json();
-        if (!data?.accessToken) {
-          return null;
-        }
+
+        if (!data?.accessToken || !data?.user) return null;
+
         return {
-          id: data.user.id,
-          name: data.user.userName,
+          id: String(data.user.id),
+          name: data.user.userName ?? "",
           accessToken: data.accessToken,
-          role: data.user.role,
+          role: data.user.role ?? "USER",
         };
       },
     }),
@@ -48,20 +55,19 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        if (typeof user.accessToken === "string") {
-          token.accessToken = user.accessToken;
-        }
-
-        if (typeof user.role === "string") {
-          token.role = user.role;
-        }
+        token.accessToken = (user as any).accessToken ?? undefined;
+        token.role = (user as any).role ?? undefined;
       }
       return token;
     },
 
     async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
-      session.user.role = token.role as string;
+      if (!session || !token) return session;
+
+      if (typeof token.accessToken === "string") {
+        session.accessToken = token.accessToken;
+      }
+
       return session;
     },
   },

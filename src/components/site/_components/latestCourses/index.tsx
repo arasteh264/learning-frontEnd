@@ -9,7 +9,6 @@ export default async function LatestCourses() {
   debugger
   const courses = await getAllCourse() ?? [];
   
-console.log(courses);
 
   return (
     <section className="container-custom flex flex-col gap-6">

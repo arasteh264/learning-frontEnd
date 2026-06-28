@@ -17,10 +17,10 @@ export interface Category {
 export default function CourseCategory() {
   const { data, isLoading } = useCategoryList();
 
-const mapped: CategoryCardProps[] = (data || []).map((c: Category) => ({
+const mapped: CategoryCardProps[] = (data ?? []).map((c) => ({
   title: c.title,
   href: c.href,
-  image: c.image || null,
+  image: c.image ?? null,
   count: c.count ?? 0,
 }));
 

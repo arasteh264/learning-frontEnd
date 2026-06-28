@@ -4,18 +4,20 @@ import { ApiResponse } from "../types/globalType";
 
 export type Announcement = {
   id: string;
-
-  content: string;
+  text: string;       
+  end_date?: string;
   isActive: boolean;
   created_at: string;
   updated_at: string;
 };
-
 export type CreateAnnouncementPayload = Omit<
   Announcement,
   "id" | "created_at" | "updated_at" | "isActive"
 >;
-
+export type AnnouncementForm = {
+  text: string;     
+  end_date: string;
+};
 export type UpdateAnnouncementPayload = Partial<CreateAnnouncementPayload>;
 
 export const getAll = async (): Promise<Announcement[]> => {
@@ -65,8 +67,11 @@ export const remove = async (id: string): Promise<void> => {
 };
 
 export const useGetAnnouncement = () => {
-  return useQuery<Announcement[]>({
+  return useQuery<Announcement | null>({
     queryKey: ["announcement"],
-    queryFn: getIsActive,
+    queryFn: async () => {
+      const list = await getIsActive();
+      return list[0] ?? null;
+    },
   });
 };
