@@ -4,14 +4,21 @@ import HeroSearchSection from "@/src/components/site/_components/HeroSearchSecti
 import SearchBox from "@/src/components/site/search/SearchBox";
 import HeroSlider from "@/src/components/site/slider/HeroSlider";
 import CourseFeatures from "@/src/components/site/_components/CourseFeatures";
-import LatestCourses from "@/src/components/site/_components/latestCourses";
-import CourseCategory from "@/src/components/site/_components/courseCategory";
-import LatestCoursesSlider from "@/src/components/site/_components/LatestCoursesSlider";
+import dynamic from "next/dynamic";
 import SocialBanners from "@/src/components/site/_components/SocialBanners";
-import LatestArticles from "@/src/components/site/_components/LatestArticles";
-import CommentsSlider from "@/src/components/site/_components/CommentsSlider";
-import PopularFreeCourses from "@/src/components/site/_components/freePopularCourses";
-
+// import LatestCourses from "@/src/components/site/_components/latestCourses";
+// import CourseCategory from "@/src/components/site/_components/courseCategory";
+// import LatestCoursesSlider from "@/src/components/site/_components/LatestCoursesSlider";
+// import SocialBanners from "@/src/components/site/_components/SocialBanners";
+// import LatestArticles from "@/src/components/site/_components/LatestArticles";
+// import CommentsSlider from "@/src/components/site/_components/CommentsSlider";
+// import PopularFreeCourses from "@/src/components/site/_components/freePopularCourses";
+const LatestCourses = dynamic(() => import("@/src/components/site/_components/latestCourses"), { ssr: false });
+const CourseCategory = dynamic(() => import("@/src/components/site/_components/courseCategory"), { ssr: false });
+const LatestCoursesSlider = dynamic(() => import("@/src/components/site/_components/LatestCoursesSlider"), { ssr: false });
+const PopularFreeCourses = dynamic(() => import("@/src/components/site/_components/freePopularCourses"), { ssr: false });
+const LatestArticles = dynamic(() => import("@/src/components/site/_components/LatestArticles"), { ssr: false });
+const CommentsSlider = dynamic(() => import("@/src/components/site/_components/CommentsSlider"), { ssr: false });
 export default function Page() {
 
 
