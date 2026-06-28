@@ -39,7 +39,7 @@ export async function loginAction(data: LoginType): Promise<AuthResponse> {
   return { ok: true };
 }
 
-export const register = async (
+export const Register = async (
   data: RegisterType,
 ): Promise<RegisterResponse> => {
   const response = await http.post<{ data: RegisterResponse }>(

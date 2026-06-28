@@ -108,7 +108,7 @@ export const useAnnouncement = () => {
     try {
       const detail = await getById(record.id);
       reset({
-        content: detail?.content || "",
+        title: detail.text || "",
         end_date: detail?.updated_at || "",
       });
       setOpen(true);
@@ -129,7 +129,10 @@ export const useAnnouncement = () => {
     if (isEdit && editing) {
       updateMutation.mutate({ id: editing.id, data: formData });
     } else {
-      createMutation.mutate({ content: formData.content });
+      createMutation.mutate({
+  text: formData.title || "",  
+  end_date: formData.end_date,
+});
     }
   };
 

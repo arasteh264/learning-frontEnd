@@ -5,6 +5,7 @@ import { ConfigProvider } from "antd";
 import localFont from "next/font/local";
 import Providers from "./providers";
 import { ToastContainer } from "react-toastify";
+import { LayoutProp } from "@/src/types/globalType";
 
 const iranYekan = localFont({
   src: [

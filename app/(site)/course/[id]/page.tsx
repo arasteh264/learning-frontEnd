@@ -40,9 +40,9 @@ export default function CourseDetailsPage() {
     enabled: !!courseId,
   });
 
-  const course = courseData?.data;
-  const sessions = sessionsData?.data || [];
-  const comments = commentsData?.data || [];
+  const course = courseData;
+  const sessions = sessionsData || [];
+  const comments = commentsData || [];
 
   if (isCourseError) {
     return (

@@ -10,36 +10,28 @@ import { categorySchema } from "@/src/validation/category.schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addCategory, getCategoryList, removeCategory, updateCategory, Category } from "@/src/services/category";
 import { toast } from "react-toastify";
+import { ApiError } from "@/src/types/globalType";
 
-// ============================================================
-// 📦 TYPES
-// ============================================================
+
 
 type CategoryForm = {
   title: string;
   href: string;
 };
 
-// ✅ ApiError به جای any توی onError
-type ApiError = {
-  message: string;
-};
 
-// ============================================================
-// 🖥️ COMPONENT
-// ============================================================
+
+
 
 export default function CategoryPage() {
   const queryClient = useQueryClient();
 
-  // ✅ useQuery با type مشخص
   const { data, isLoading } = useQuery<Category[]>({
-    queryKey: ["categories"],   // ✅ "category" → "categories" (با سرویس هماهنگ)
+    queryKey: ["categories"],   
     queryFn: getCategoryList,
   });
 
   const [open, setOpen] = useState(false);
-  // ✅ editing: any  →  Category | null
   const [editing, setEditing] = useState<Category | null>(null);
   const isEdit = !!editing?.id;
 
@@ -55,9 +47,7 @@ export default function CategoryPage() {
     [isEdit, editing?.id]
   );
 
-  // ============================================================
-  // 🎯 HANDLERS
-  // ============================================================
+
 
   const handleAdd = () => {
     setEditing(null);

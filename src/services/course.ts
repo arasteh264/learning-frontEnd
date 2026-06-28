@@ -51,11 +51,17 @@ export type SessionChild = {
 
 export type Session = {
   id: string;
-  course_id: string;
   title: string;
-  duration: string;
-  isFree: boolean;
-  children: SessionChild[];
+  course_id: string;
+  time: string;       
+  free: boolean;       
+  video?: string;    
+  created_at: string; 
+  updated_at: string;    
+  courses?: {             
+    id: string;
+    name: string;
+  };
 };
 
 export type CourseUser = {
@@ -177,7 +183,6 @@ export const getLatestCourses = async (
   const response = await http.get<ApiResponse<Course[]>>("/course/latest", {
     params: { limit },
   });
-  console.log("FULL RESPONSE:", response.data);
   return response.data.data;
 };
 

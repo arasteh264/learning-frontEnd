@@ -16,7 +16,7 @@ function formatToman(n: number) {
 export default function HeroSection({ course }: Props) {
   const hasDiscount = course.discount > 0;
   const finalPrice = hasDiscount
-    ? course.price - (course.price * course.discount) / 100
+    ? +course.price - (+course.price * course.discount) / 100
     : course.price;
 
   return (
@@ -53,13 +53,13 @@ export default function HeroSection({ course }: Props) {
           <div className="flex flex-col gap-1 items-start">
             {hasDiscount && (
               <span className="text-xs text-gray-400 line-through">
-                {formatToman(course.price)}
+                {formatToman(+course.price)}
               </span>
             )}
 
             <div className="flex items-center gap-1">
               <span className="text-sm font-bold text-[#1C2B27]">
-                {formatToman(finalPrice)}
+                {formatToman(+finalPrice)}
               </span>
               <span className="text-xs text-gray-400">تومان</span>
             </div>

@@ -4,6 +4,7 @@ export function mapCourseToCardProps(course: any) {
   const oldPrice = discount > 0 ? Math.round(price / (1 - discount / 100)) : price;
 
   return {
+    id: course.id,
     title: course.name,
     href: course.href,
     image: course.cover,

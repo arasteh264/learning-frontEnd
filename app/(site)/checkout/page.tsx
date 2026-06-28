@@ -14,7 +14,6 @@ export default function CheckoutPage() {
   const { mutateAsync: createOrderMutate } = useCreateOrder();
   const { mutateAsync: requestPaymentMutate } = useRequestPayment();
   const [processing, setProcessing] = useState(false);
-console.log(cart);
 
   const handlePayment = async () => {
     setProcessing(true);

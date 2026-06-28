@@ -1,17 +1,7 @@
 import { FileText, VideoOff } from "lucide-react";
 import SessionCard from "./sessionCard";
+import type { Session } from "@/src/services/course";
 
-export type Session = {
-  id: string;
-  title: string;
-  time: string;
-  free: boolean;
-  video: string;
-  course_id: string;
-  created_at: string;
-  updated_at: string;
-  courses?: { id: string; name: string };
-};
 
 type Props = {
   sessions: Session[];
