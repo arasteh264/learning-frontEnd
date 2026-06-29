@@ -21,7 +21,7 @@
     "lottie-react": "^2.4.1",
     "lucide-react": "^1.16.0",
     "moment-jalaali": "^0.10.4",
-    "next": "15.3.3",
+    "next": "15.3.8",
     "next-auth": "^4.24.14",
     "react": "^19.2.5",
     "react-date-object": "^2.1.9",
