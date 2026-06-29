@@ -1,4 +1,5 @@
 
+export const dynamic = "force-dynamic";
 import AnnouncementBar from "@/src/components/site/announcement-bar";
 import HeroSearchSection from "@/src/components/site/_components/HeroSearchSection";
 import SearchBox from "@/src/components/site/search/SearchBox";
