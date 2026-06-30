@@ -9,6 +9,7 @@ import {
 } from "@/src/types/auth";
 import http from "../interseptor/http";
 import { signIn } from "next-auth/react";
+import serverApiClient from "../interseptor/http.server";
 
 export async function loginAction(data: LoginType): Promise<AuthResponse> {
   const res = await fetch(`${process.env.API_URL}/auth/login`, {
@@ -42,7 +43,7 @@ export async function loginAction(data: LoginType): Promise<AuthResponse> {
 export const Register = async (
   data: RegisterType,
 ): Promise<RegisterResponse> => {
-  const response = await http.post<{ data: RegisterResponse }>(
+  const response = await serverApiClient.post<{ data: RegisterResponse }>(
     "/auth/register",
     data,
   );

@@ -5,7 +5,7 @@ import { FolderOpen } from "lucide-react";
 
 export type CategoryCardProps = {
   title: string;
-  href: string;
+  href : string;
   image?: string | null;
   count?: number;
 };

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import http from "./interseptor/http";
 import { ApiResponse } from "../types/globalType";
+import apiClient from "./interseptor/http.client";
 
 
 export type Category = {
@@ -19,7 +19,7 @@ export type CategoryPayload = Omit<Category, "id" | "created_at">
 
 
 export const getCategoryList = async (): Promise<Category[]> => {
-  const response = await http.get<ApiResponse<Category[]>>("/category");
+  const response = await apiClient.get<ApiResponse<Category[]>>("/category");
   return response.data.data;
 };
 
@@ -27,7 +27,7 @@ export const getCategoryList = async (): Promise<Category[]> => {
 export const addCategory = async (
   newCategory: CategoryPayload
 ): Promise<Category> => {
-  const response = await http.post<ApiResponse<Category>>(
+  const response = await apiClient.post<ApiResponse<Category>>(
     "/category",
     newCategory
   );
@@ -38,7 +38,7 @@ export const updateCategory = async (
   id: number,
   newCategory: CategoryPayload  
 ): Promise<Category> => {
-  const response = await http.put<ApiResponse<Category>>(
+  const response = await apiClient.put<ApiResponse<Category>>(
     `/category/${id}`,
     newCategory
   );
@@ -46,7 +46,7 @@ export const updateCategory = async (
 };
 
 export const removeCategory = async (id: number): Promise<void> => {
-  await http.delete(`/category/${id}`);
+  await apiClient.delete(`/category/${id}`);
 };
 
 

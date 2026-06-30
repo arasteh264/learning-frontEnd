@@ -1,5 +1,3 @@
-"use client";
-
 import SectionHeader from "../ContentSectionHeader";
 import Link from "next/link";
 import { ArrowLeft, Newspaper } from "lucide-react";
@@ -8,12 +6,8 @@ import EmptyState from "@/src/components/base/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { getAllArticles } from "@/src/services/article";
 
-export default function LatestArticles() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["articles", "published"],
-    queryFn: () => getAllArticles("published"),
-  });
-
+export default async function LatestArticles() {
+  const data = (await getAllArticles("published")) ?? [];
   const articles = data ?? [];
 
   return (
@@ -32,13 +26,34 @@ export default function LatestArticles() {
         }
       />
 
-      {isLoading ? (
+      {/* {isLoading ? (
         <div dir="rtl" className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-64 rounded-xl bg-gray-100 animate-pulse" />
           ))}
         </div>
       ) : articles.length === 0 ? (
+        <EmptyState message="مقاله‌ای موجود نیست" icon={Newspaper} />
+      ) : (
+        <div dir="rtl" className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {articles.map((article: any) => (
+            <ArticleCard
+              key={article.id}
+              id={article.id}
+              title={article.title}
+              href={`/blog/${article.slug}`}
+              image={article.cover}
+              description={article.summary}
+              author={{
+                name: article.teachers?.bio || "ناشناس",
+                avatar: article.teachers?.avatar || "/slider/1.webp",
+              }}
+              readTime={article.readTime || 5}
+            />
+          ))}
+        </div>
+      )} */}
+      {articles.length === 0 ? (
         <EmptyState message="مقاله‌ای موجود نیست" icon={Newspaper} />
       ) : (
         <div dir="rtl" className="grid grid-cols-2 md:grid-cols-4 gap-4">

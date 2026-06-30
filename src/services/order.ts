@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import http from "./interseptor/http";
 import { Course } from "./course";
 import { ApiResponse } from "../types/globalType";
+import apiClient from "./interseptor/http.client";
 
 
 
@@ -38,12 +38,12 @@ export type OrderSummary = Pick<Order, "id" | "totalPrice" | "status" | "created
 
 
 export const createOrder = async (): Promise<CreateOrderResponse> => {
-  const res = await http.post<ApiResponse<CreateOrderResponse>>("/order/create");
+  const res = await apiClient.post<ApiResponse<CreateOrderResponse>>("/order/create");
   return res.data.data;
 };
 
 export const getOrders = async (): Promise<Order[]> => {
-  const { data } = await http.get<ApiResponse<Order[]>>("/order");
+  const { data } = await apiClient.get<ApiResponse<Order[]>>("/order");
   return data.data;
 };
 

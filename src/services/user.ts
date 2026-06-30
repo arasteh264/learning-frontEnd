@@ -1,5 +1,5 @@
-import http from "./interseptor/http";
 import { ApiResponse } from "../types/globalType";
+import apiClient from "./interseptor/http.client";
 
 
 
@@ -25,21 +25,21 @@ export type UpdateRolePayload = Pick<User, "role">;
  
 
 export const getUserProfile = async (): Promise<UserProfile> => {
-  const response = await http.get<ApiResponse<UserProfile>>("/users/profile");
+  const response = await apiClient.get<ApiResponse<UserProfile>>("/users/profile");
   return response.data.data;
 };
 
 export const getUsers = async (): Promise<User[]> => {
-  const res = await http.get<ApiResponse<User[]>>("/users");
+  const res = await apiClient.get<ApiResponse<User[]>>("/users");
   return res.data.data;
 };
 
 export const deleteUser = async (id: string): Promise<void> => {
-  await http.delete(`/users/${id}`);
+  await apiClient.delete(`/users/${id}`);
 };
 
 export const banUser = async (id: string): Promise<User> => {
-  const res = await http.post<ApiResponse<User>>(`/users/ban/${id}`);
+  const res = await apiClient.post<ApiResponse<User>>(`/users/ban/${id}`);
   return res.data.data;
 };
 
@@ -47,6 +47,6 @@ export const updateUserRole = async (
   id: string,
   payload: UpdateRolePayload
 ): Promise<User> => {
-  const res = await http.put<ApiResponse<User>>(`/users/role/${id}`, payload);
+  const res = await apiClient.put<ApiResponse<User>>(`/users/role/${id}`, payload);
   return res.data.data;
 };
