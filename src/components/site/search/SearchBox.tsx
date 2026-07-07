@@ -94,11 +94,13 @@ export default function SearchBox({ onResults }: Props) {
       {showDropdown && (
         <div
           className="
-            w-full max-w-3xl mx-auto mt-2
-            bg-background rounded-2xl
-            shadow-md border border-border
-            overflow-hidden
-            absolute left-1/2 -translate-x-1/2 right-0 z-10
+    w-full max-w-3xl mx-auto mt-2
+    bg-background rounded-2xl
+    shadow-md border border-border
+    absolute left-1/2 -translate-x-1/2 right-0 z-10
+    max-h-[20rem]
+    overflow-y-auto
+    overflow-x-hidden
           "
         >
           {isFetching && (
@@ -123,7 +125,7 @@ export default function SearchBox({ onResults }: Props) {
           )}
 
           {!isFetching && data && data.length > 0 && (
-            <ul className="divide-y divide-border text-right">
+            <ul className="divide-y divide-border text-right  max-h-[26rem]">
               {data.map((course: any) => (
                 <li key={course.id}>
                   <Link

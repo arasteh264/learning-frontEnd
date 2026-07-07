@@ -25,7 +25,7 @@ export default function ArticleCard({
   id
 }: ArticleCardProps) {
   return (
-    <div className="flex flex-col gap-y-3 h-full rounded-xl bg-white shadow-base group/blog text-right shadow-2xl">
+    <div className="flex flex-col gap-y-3 h-full rounded-xl bg-white shadow-base group/blog text-right shadow-2xl py-4">
       <Link href={href} className="block">
         <Image
           src={image}

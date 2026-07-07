@@ -2,12 +2,12 @@ import SectionHeader from "../ContentSectionHeader";
 import Link from "next/link";
 import CourseCard from "../cards/course/CoursesCarsd";
 import { ArrowLeft, BookOpen } from "lucide-react";
-import { getAllCourse } from "@/src/services/course";
+import { getLatestCourses } from "@/src/services/course";
 import EmptyState from "@/src/components/base/EmptyState";
 
 export default async function LatestCourses() {
   
-  const courses = await getAllCourse() ?? [];
+  const courses = await getLatestCourses() ?? [];
   
 
   return (
