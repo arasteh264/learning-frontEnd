@@ -34,16 +34,17 @@ const handler = NextAuth({
 
         if (!res.ok) return null;
 
-        const data = await res.json();
+        const json = await res.json();
+        const payload = json.data;
 
-        if (!data?.accessToken || !data?.user) return null;
+        if (!payload?.accessToken || !payload?.user) return null;
 
         return {
-          id: String(data.user.id),
-          name: data.user.userName ?? "",
-          email: data.user.email ?? "",
-          accessToken: data.accessToken,
-          role: data.user.role ?? "USER",
+          id: String(payload.user.id),
+          name: payload.user.userName ?? "",
+          email: payload.user.email ?? "",
+          accessToken: payload.accessToken,
+          role: payload.user.role ?? "USER",
         };
       },
     }),
@@ -62,22 +63,34 @@ const handler = NextAuth({
       return token;
     },
 
-async session({ session, token }) {
-  if (!session || !token) return session;
+    async session({ session, token }) {
+      if (!session || !token) return session;
 
-  session.user = {
-    name: token.name ?? "",
-    email: token.email ?? "",   
-    image: token.picture ?? null,
-    role: token.role as string,
-  };
+      session.user = {
+        name: token.name ?? "",
+        email: token.email ?? "",
+        image: token.picture ?? null,
+        role: token.role as string,
+      };
 
-  if (typeof token.accessToken === "string") {
-    session.accessToken = token.accessToken;
-  }
+      if (typeof token.accessToken === "string") {
+        session.accessToken = token.accessToken;
+      }
 
-  return session;
-},
+      return session;
+    },
+
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+
+      return baseUrl;
+    },
   },
 
   secret,

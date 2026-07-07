@@ -30,7 +30,7 @@ export default function PaymentFailedContent() {
       <div className="flex gap-3 mt-4">
         <button
           onClick={() => router.push("/cart")}
-          className="px-6 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition-colors"
+          className="px-6 py-2.5 rounded-xl bg-brand  text-white text-sm font-medium transition-colors"
         >
           بازگشت به سبد خرید
         </button>

@@ -44,19 +44,19 @@ export default function SearchBox({ onResults }: Props) {
         onSubmit={handleSubmit}
         className={`
           w-full max-w-3xl mx-auto
-          bg-white rounded-2xl
-          shadow-md border border-gray-100
+          bg-background rounded-2xl
+          shadow-md border border-border
           flex items-center gap-2
           p-2 md:p-3
           transition-all duration-300
-          ${focused ? "ring-2 ring-green-500/20 border-green-500" : ""}
+          ${focused ? "ring-2 ring-brand/20 border-brand" : ""}
         `}
       >
         <div
           className="
             flex items-center justify-center
             w-11 h-11 rounded-xl
-            bg-green-50 text-green-600
+            bg-brand-light text-brand
             shrink-0
           "
         >
@@ -72,7 +72,7 @@ export default function SearchBox({ onResults }: Props) {
           className="
             flex-1 bg-transparent outline-none
             text-sm md:text-base
-            placeholder:text-gray-400
+            placeholder:text-muted
             h-11
           "
         />
@@ -81,7 +81,7 @@ export default function SearchBox({ onResults }: Props) {
           className="
             h-11 px-4 md:px-6
             rounded-xl
-            bg-green-600 hover:bg-green-700
+            bg-brand hover:bg-brand-dark
             text-white text-sm md:text-base
             transition-colors duration-300
             shrink-0
@@ -95,58 +95,60 @@ export default function SearchBox({ onResults }: Props) {
         <div
           className="
             w-full max-w-3xl mx-auto mt-2
-            bg-white rounded-2xl
-            shadow-md border border-gray-100
+            bg-background rounded-2xl
+            shadow-md border border-border
             overflow-hidden
             absolute left-1/2 -translate-x-1/2 right-0 z-10
           "
         >
           {isFetching && (
             <div className="p-8 text-center">
-              <div className="w-6 h-6 mx-auto mb-3 border-2 border-gray-200 border-t-green-600 rounded-full animate-spin" />
-              <p className="text-sm text-gray-400">در حال جستجو...</p>
+              <div className="w-6 h-6 mx-auto mb-3 border-2 border-border border-t-brand rounded-full animate-spin" />
+              <p className="text-sm text-muted">در حال جستجو...</p>
             </div>
           )}
 
           {!isFetching && data?.length === 0 && (
             <div className="p-10 text-center">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-                <SmilePlus size={28} className="text-gray-400" />
+              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-surface-2 flex items-center justify-center">
+                <SmilePlus size={28} className="text-muted" />
               </div>
-              <p className="text-base font-medium text-gray-800 mb-1">
+              <p className="text-base font-medium text-foreground mb-1">
                 دوره‌ای یافت نشد
               </p>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-muted">
                 عبارت دیگری را امتحان کنید
               </p>
             </div>
           )}
 
           {!isFetching && data && data.length > 0 && (
-            <ul className="divide-y divide-gray-100 text-right ">
+            <ul className="divide-y divide-border text-right">
               {data.map((course: any) => (
                 <li key={course.id}>
                   <Link
                     href={course.href || `/courses/${course.id}`}
                     className="
                       flex items-center gap-3 p-3
-                      hover:bg-gray-50 transition-colors
+                      hover:bg-surface transition-colors
                     "
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-800 truncate">
+                      <p className="text-sm font-medium text-foreground truncate">
                         {course.name}
                       </p>
-                      <p className="text-xs text-gray-400 truncate">
+                      <p className="text-xs text-muted truncate">
                         {course.description}
                       </p>
                     </div>
-                    <ChevronLeft size={18} className="text-gray-400 shrink-0" />
+                    <ChevronLeft size={18} className="text-muted shrink-0" />
                     {course.cover && (
                       <Image
                         src={course.cover}
                         alt={course.name}
-                        className="w-15 h-15 rounded-lg object-cover shrink-0 "
+                        width={60}
+                        height={60}
+                        className="w-15 h-15 rounded-lg object-cover shrink-0"
                       />
                     )}
                   </Link>

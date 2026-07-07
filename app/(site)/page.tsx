@@ -32,20 +32,20 @@ export default function Page() {
       <SocialBanners
         items={[
           {
-            href: "https://t.me/sabzlearn",
+            href: "https://t.me/yaddadi",
             image: "/images/telegram-logo-4.png",
-            alt: "کانال تلگرام سبزلرن",
-            ariaLabel: "کانال تلگرام سبزلرن",
-            title: "کانال تلگرام سبزلرن",
+            alt: "کانال تلگرام یاددادی",
+            ariaLabel: "کانال تلگرام یاددادی",
+            title: "کانال تلگرام یاددادی",
             subtitle: "به‌روزترین نکات آموزشی",
             titleColor: "#229ED9",
           },
           {
-            href: "https://www.instagram.com/sabzlearn_",
+            href: "https://www.instagram.com/yaddadi",
             image: "/images/instagram.png",
-            alt: "پیج اینستاگرام سبزلرن",
-            ariaLabel: "پیج اینستاگرام سبزلرن",
-            title: "صفحه اینستاگرام سبزلرن",
+            alt: "پیج اینستاگرام یاددادی",
+            ariaLabel: "پیج اینستاگرام یاددادی",
+            title: "صفحه اینستاگرام یاددادی",
             subtitle: "به‌روزترین نکات آموزشی",
             titleColor: "#E1306C",
           },

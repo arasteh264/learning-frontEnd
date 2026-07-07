@@ -16,7 +16,7 @@ export default function SectionHeader({
 
       {action && <div className="shrink-0 mr-auto text-sm">{action}</div>}
       <h2 className="flex items-center gap-x-1 shrink-0 text-t4 sm:text-t3 md:text-t2 font-bold cursor-default ">
-        <span className="text-[#1eb35b] ">{highlight}</span>
+        <span className="text-brand ">{highlight}</span>
         <span>{title}</span>
       </h2>
     </div>

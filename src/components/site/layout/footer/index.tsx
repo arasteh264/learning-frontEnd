@@ -1,158 +1,132 @@
 "use client";
 
 import Link from "next/link";
+import { Send, Mail } from "lucide-react";
+import { FaLinkedinIn, FaInstagram, FaTelegramPlane } from "react-icons/fa";
+import Logo from "@/src/components/base/logo";
+
+const usefulLinks = [
+  { href: "/terms-conditions/", label: "قوانین مقررات" },
+  { href: "/support", label: "تیکت پشتیبانی" },
+  { href: "/about", label: "درباره ما" },
+  { href: "/contact", label: "تماس با ما" },
+];
+
+const suggestedCourses = [
+  { href: "/course/css", label: "آموزش CSS" },
+  { href: "/course/html", label: "آموزش HTML" },
+  { href: "/course/javascript", label: "آموزش جاوااسکریپت" },
+  { href: "/course/python", label: "آموزش پایتون" },
+];
+
+const socials = [
+  { href: "https://linkedin.com", label: "لینکدین", icon: FaLinkedinIn },
+  { href: "https://instagram.com", label: "اینستاگرام", icon: FaInstagram },
+  { href: "https://t.me", label: "تلگرام", icon: FaTelegramPlane },
+];
 
 export default function Footer() {
   return (
-<footer className=" container-custom text-right py-5 mt-10">
-  <div className=" bg-[#242424] py-5 flex justify-end sm:flex-row-reverse md:justify-between flex-wrap   gap-x-5 xl:gap-x-12 rounded-xl px-5">
+    <footer className="container-custom text-right py-5 mt-10">
+      <div className="bg-[#1E1B4B] rounded-2xl px-6 py-10 sm:px-10 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-10 xl:gap-16">
+          <div className="flex flex-col gap-y-5">
+            <Logo variant="reversed" />
+            <p className="text-xs sm:text-sm text-white/60 leading-7">
+              شروع هرچیزی سخته، ولی وقتی مسیر درستی رو انتخاب کنی، با خیال
+              راحت و بدون استرس می‌تونی از مسیر لذت ببری. یاددای همراه توئه تا
+              چیزی که یاد می‌گیری رو یادداشت کنی، مرور کنی و هیچ‌وقت فراموش
+              نکنی.
+            </p>
+          </div>
 
-        {/* About */}
-        <div className="flex flex-col gap-y-3 sm:gap-y-6 w-full lg:w-70 xl:w-90 mb-5">
-          <span className="font-demibold text-caption text-xs sm:text-sm xl:text-t3 text-white">
-            درباره ما
-          </span>
+          <div className="flex flex-col gap-y-5">
+            <h3 className="text-xs sm:text-sm font-demibold text-white">
+              لینک‌های مفید
+            </h3>
+            <ul className="flex flex-col gap-y-3">
+              {usefulLinks.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-xs sm:text-[13px] text-white/60 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <p className="font-regular text-label text-xs sm:text-sm text-gray-300 leading-6">
-            شروع هرچیزی سخته، ولی وقتی مسیر درستی رو انتخاب کنی، با خیال راحت و بدون استرس میتونی از مسیر لذت ببری.
-            ما در سبزلرن، توی سفر به دنیای برنامه نویسی کنارت هستیم تا باهم رشد کنیم.
-          </p>
-        </div>
+          <div className="flex flex-col gap-y-5">
+            <h3 className="text-xs sm:text-sm font-demibold text-white">
+              دوره‌های پیشنهادی
+            </h3>
+            <ul className="flex flex-col gap-y-3">
+              {suggestedCourses.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-xs sm:text-[13px] text-white/60 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* Links */}
-        <div className="flex flex-col gap-y-3 sm:gap-y-6 ">
-          <h3 className="font-demibold text-caption text-xs sm:text-sm xl:text-t3 text-white">
-            لینک های مفید
-          </h3>
+          <div className="flex flex-col gap-y-5">
+            <h3 className="text-xs sm:text-sm font-demibold text-white">
+              ارتباط با ما
+            </h3>
 
-          <ul className="flex flex-col gap-y-2.5">
-            {[
-              { href: "/terms-conditions/", label: "قوانین مقررات" },
-              { href: "/support", label: "تیکت پشتیبانی" },
-              { href: "/about", label: "درباره ما" },
-              { href: "/contact", label: "تماس با ما" },
-            ].map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="text-white inline-flex items-center gap-x-1.5 font-regular text-label  text-[10px] "
-                >
-
-                  {item.label}
-                                      <span className="text-[#1eb35b] text-xl">-</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Courses */}
-        <div className="flex flex-col gap-y-3 sm:gap-y-6">
-          <h3 className="font-demibold text-caption text-xs xl:text-t3 text-white sm:text-sm">
-            دوره های پیشنهادی
-          </h3>
-
-          <ul className="flex flex-col gap-y-2.5">
-            {[
-              { href: "/course/css", label: "آموزش CSS" },
-              { href: "/course/html", label: "آموزش HTML" },
-              { href: "/course/javascript", label: "آموزش جاوااسکریپت" },
-              { href: "/course/python", label: "آموزش پایتون" },
-            ].map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="text-white inline-flex items-center gap-x-1.5 font-regular text-label  text-[10px]"
-                >
-
-                  {item.label}
-                                      <span className="text-[#1eb35b] text-xl">-</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Contact */}
-        <div className="flex flex-col gap-y-3 pt-3 w-full sm:w-70 xl:w-80">
-          <h3 className="font-demibold text-caption text-sm xl:text-t3 text-white sm:text-sm">
-            ارتباط با ما
-          </h3>
-
-          <div className="flex flex-col justify-between h-full gap-y-8 ">
-
-            {/* info */}
-            <div className="flex flex-col gap-y-3 text-label text-xs text-white">
-              <div className="flex justify-between flex-wrap gap-x-3 gap-y-1.5">
-                <a className=" hover:text-brand sm:text-sm" href="https://t.me/sabzlearn_support">
-                  @sabzlearn_support
-                </a>
-                                <span >پشتیبان تلگرام</span>
-              </div>
-
-              <div className="flex justify-between flex-wrap gap-x-3 gap-y-1.5">
-                <a className=" hover:text-brand sm:text-sm" href="mailto:info@sabzlearn.ir">
-                  info@sabzlearn.ir
-                </a>
-                                <span>ایمیل</span>
-
-              </div>
+            <div className="flex flex-col gap-y-3 text-xs sm:text-[13px]">
+              <a
+                href="https://t.me/yaddadi_support"
+                className="flex items-center gap-x-2 text-white/60 hover:text-white transition-colors"
+              >
+                <Send className="size-4 text-brand" />
+                @yaddadi_support
+              </a>
+              <a
+                href="mailto:info@yaddadi.ir"
+                className="flex items-center gap-x-2 text-white/60 hover:text-white transition-colors"
+              >
+                <Mail className="size-4 text-brand" />
+                info@yaddadi.ir
+              </a>
             </div>
 
-            {/* social */}
-            <div className="flex items-center justify-between flex-wrap gap-x-3 gap-y-1.5 text-white">
-
-
+            <div className="flex flex-col gap-y-3">
+              <span className="text-[11px] text-white/40">
+                شبکه‌های اجتماعی
+              </span>
               <div className="flex gap-x-2.5">
-                {[
-                  {
-                    href: "https://linkedin.com",
-                    label: "LinkedIn",
-                    className: "bg-white/10",
-                  },
-                  {
-                    href: "https://instagram.com",
-                    label: "Instagram",
-                    className: "bg-white/10",
-                  },
-                  {
-                    href: "https://t.me",
-                    label: "Telegram",
-                    className: "bg-brand",
-                  },
-                ].map((item) => (
+                {socials.map(({ href, label, icon: Icon }) => (
                   <a
-                    key={item.href}
-                    href={item.href}
+                    key={href}
+                    href={href}
                     target="_blank"
-                    className={`flex items-center justify-center size-10 text-white rounded-md hover:bg-brand transition-colors ${item.className}`}
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex items-center justify-center size-9 rounded-lg bg-white/5 text-white hover:bg-brand transition-colors"
                   >
-                    {item.label[0]}
+                    <Icon className="size-4" />
                   </a>
                 ))}
               </div>
-                            <span className="text-label text-xs text-secondary-dark">
-                شبکه های اجتماعی
-              </span>
             </div>
-
           </div>
         </div>
 
-
-              <div className="w-full flex items-center  justify-end sm:justify-between sm:flex-row-reverse bg-[#fdfffd44]  py-5  flex-wrap   text-white text-label sm:text-caption  mt-5 rounded-2xl">
-        <p>
-          کلیه حقوق برای <span className="text-brand">سبزلرن</span> محفوظ است.
-        </p>
-
-        <p className="dir-ltr text-sm opacity-80 ">
-          Built pixel by pixel by Hamidreza
-        </p>
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col-reverse sm:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-white/50">
+          <p>
+            کلیه حقوق برای <span className="text-brand font-demibold">یاددای</span> محفوظ است.
+          </p>
+          <p className="dir-ltr opacity-70">Built pixel by pixel by arasteh264</p>
+        </div>
       </div>
-      </div>
-
-
-
     </footer>
   );
 }

@@ -2,6 +2,15 @@ import { Code, Layout, Server } from "lucide-react";
 
 export const navItems = [
   {
+    title: "مقالات",
+    href: "/blog",
+  },
+
+  {
+    title: "درباره ما",
+    href: "/about",
+  },
+  {
     title: "دوره های آموزشی",
     href: "/courses",
     megaMenu: [
@@ -13,7 +22,10 @@ export const navItems = [
           { title: "آموزش HTML", href: "/course/html-tutorial" },
           { title: "آموزش CSS", href: "/course/css-tutorial" },
           { title: "آموزش TailwindCSS", href: "/course/tailwind-css" },
-          { title: "آموزش جاوااسکریپت", href: "/course/java-script-zero-to-hero" },
+          {
+            title: "آموزش جاوااسکریپت",
+            href: "/course/java-script-zero-to-hero",
+          },
         ],
       },
 
@@ -39,15 +51,5 @@ export const navItems = [
         ],
       },
     ],
-  },
-
-  {
-    title: "مقالات",
-    href: "/blog",
-  },
-
-  {
-    title: "درباره ما",
-    href: "/about",
   },
 ];

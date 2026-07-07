@@ -1,4 +1,6 @@
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { ApiResponse } from "../types/globalType";
+import { Category } from "./category";
 import apiClient from "./interseptor/http.client";
 import serverApiClient from "./interseptor/http.server";
 
@@ -27,8 +29,6 @@ export type CreateArticlePayload = Omit<
 
 export type UpdateArticlePayload = { id: string; data: FormData };
 
-
-
 export const getAllArticles = async (status?: ArticleStatus): Promise<Article[]> => {
   const response = await serverApiClient.get<ApiResponse<Article[]>>("/article", { params: { status } });
   return response.data.data;
@@ -55,4 +55,41 @@ export const updateArticleApi = async ({ id, data }: UpdateArticlePayload): Prom
 
 export const removeArticle = async (id: string): Promise<void> => {
   await apiClient.delete(`/article/${id}`);
+};
+
+export const getAllCategories = async (): Promise<Category[]> => {
+  const response = await apiClient.get<ApiResponse<Category[]>>("/category");
+  return response.data.data;
+};
+
+export const getArticlesByCategory = async (
+  categoryId: string,
+  page: number,
+  limit: number,
+): Promise<Article[]> => {
+  const response = await apiClient.get<ApiResponse<Article[]>>("/article", {
+    params: { category: categoryId, page, limit },
+  });
+  return response.data.data;
+};
+
+export const useCategories = () => {
+  return useQuery<Category[]>({
+    queryKey: ["categories"],
+    queryFn: getAllCategories,
+  });
+};
+
+const ARTICLES_PAGE_SIZE = 9;
+
+export const useArticlesByCategory = (categoryId: string, limit = ARTICLES_PAGE_SIZE) => {
+  return useInfiniteQuery<Article[]>({
+    queryKey: ["articles", categoryId],
+    queryFn: ({ pageParam }) =>
+      getArticlesByCategory(categoryId, pageParam as number, limit),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length === limit ? allPages.length + 1 : undefined,
+    enabled: !!categoryId,
+  });
 };

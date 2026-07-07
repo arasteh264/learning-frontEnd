@@ -18,7 +18,8 @@ export default function CommentList({ courseId, comments }: Props) {
   const [text, setText] = useState("");
 
   const commentMutation = useMutation({
-    mutationFn: () => postCourseComment({ courseId: String(courseId), content: text }),
+    mutationFn: () =>
+      postCourseComment({ courseId: String(courseId), content: text }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["courseDetails", courseId] });
       toast.success("نظر شما با موفقیت ثبت شد");
@@ -49,7 +50,7 @@ export default function CommentList({ courseId, comments }: Props) {
           type="button"
           onClick={handleSubmit}
           disabled={!text.trim() || commentMutation.isPending}
-          className="shrink-0 size-9 rounded-full bg-[#1EB35B] text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#17914a] transition-colors"
+          className="shrink-0 size-9 rounded-full bg-[#1EB35B] text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#brand] transition-colors"
           aria-label="ارسال نظر"
         >
           <Send className="size-4" />
@@ -70,7 +71,11 @@ export default function CommentList({ courseId, comments }: Props) {
       ) : (
         <div className="space-y-4">
           {comments.map((comment) => (
-            <CommentCard key={comment.id} comment={comment} courseId={courseId} />
+            <CommentCard
+              key={comment.id}
+              comment={comment}
+              courseId={courseId}
+            />
           ))}
         </div>
       )}
