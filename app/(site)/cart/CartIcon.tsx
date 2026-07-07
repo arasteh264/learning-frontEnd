@@ -16,10 +16,10 @@ export default function CartIcon() {
         {count > 0 && (
           <span
             className="absolute -top-1.5 -right-1.5
-            w-4 h-4 rounded-full bg-green-600
+            w-4 h-4 rounded-full bg-brand p-1
             text-white text-[10px] flex items-center justify-center"
           >
-            {count}
+            {count.toLocaleString("fa-IR")}
           </span>
         )}
       </button>

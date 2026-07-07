@@ -181,7 +181,7 @@ export const searchCourseApi = async (query: string): Promise<Course[]> => {
 export const getLatestCourses = async (
   limit: number = 8,
 ): Promise<Course[]> => {
-  const response = await apiClient.get<ApiResponse<Course[]>>("/course/latest", {
+  const response = await serverApiClient.get<ApiResponse<Course[]>>("/course/latest", {
     params: { limit },
   });
   return response.data.data;

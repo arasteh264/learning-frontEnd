@@ -18,14 +18,12 @@ export default function Page() {
 
   const articles = data?.pages.flat() ?? [];
 
-  // auto-select the first category once loaded, so the page isn't empty
   useEffect(() => {
     if (!selectedCategory && categories && categories.length > 0) {
       setSelectedCategory(categories[0].id);
     }
   }, [categories, selectedCategory]);
 
-  // infinite scroll sentinel
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

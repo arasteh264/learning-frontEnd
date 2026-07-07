@@ -33,7 +33,14 @@ export const getAllArticles = async (status?: ArticleStatus): Promise<Article[]>
   const response = await serverApiClient.get<ApiResponse<Article[]>>("/article", { params: { status } });
   return response.data.data;
 };
-
+export const getLatestArticles = async (
+  limit: number = 8,
+): Promise<Article[]> => {
+  const response = await serverApiClient.get<ApiResponse<Article[]>>("/article/latest", {
+    params: { limit },
+  });
+  return response.data.data;
+};
 export const getArticleById = async (id: string): Promise<Article> => {
   const response = await apiClient.get<ApiResponse<Article>>(`/article/${id}`);
   return response.data.data;

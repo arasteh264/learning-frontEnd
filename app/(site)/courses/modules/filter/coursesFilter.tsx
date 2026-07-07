@@ -35,7 +35,6 @@ export default function CoursesFilter({
         </div>
       </Button>
 
-      {/* Filter */}
       <Button
         onClick={() => open("filter")}
         size="small"
