@@ -1,5 +1,5 @@
 import { ApiResponse } from "../types/globalType";
-import http from "./interseptor/http";
+import apiClient from "./interseptor/http.client";
 
 
 
@@ -15,7 +15,7 @@ export const uploadContentImage = async (file: File): Promise<UploadedFile> => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await http.post<ApiResponse<UploadedFile>>("/upload", formData, {
+  const response = await apiClient.post<ApiResponse<UploadedFile>>("/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 

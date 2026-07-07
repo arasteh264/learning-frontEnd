@@ -1,10 +1,13 @@
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "eyjhwifhaehxxdcfuunx.supabase.co",
+        pathname: "/storage/v1/object/**",
+      },
+    ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

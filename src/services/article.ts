@@ -1,5 +1,8 @@
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { ApiResponse } from "../types/globalType";
-import http from "./interseptor/http";
+import { Category } from "./category";
+import apiClient from "./interseptor/http.client";
+import serverApiClient from "./interseptor/http.server";
 
 export type ArticleStatus = "draft" | "published" | "archived";
 
@@ -26,32 +29,67 @@ export type CreateArticlePayload = Omit<
 
 export type UpdateArticlePayload = { id: string; data: FormData };
 
-
-
 export const getAllArticles = async (status?: ArticleStatus): Promise<Article[]> => {
-  const response = await http.get<ApiResponse<Article[]>>("/article", { params: { status } });
+  const response = await serverApiClient.get<ApiResponse<Article[]>>("/article", { params: { status } });
   return response.data.data;
 };
 
 export const getArticleById = async (id: string): Promise<Article> => {
-  const response = await http.get<ApiResponse<Article>>(`/article/${id}`);
+  const response = await apiClient.get<ApiResponse<Article>>(`/article/${id}`);
   return response.data.data;
 };
 
 export const createArticleApi = async (data: FormData): Promise<Article> => {
-  const response = await http.post<ApiResponse<Article>>("/article", data, {
+  const response = await apiClient.post<ApiResponse<Article>>("/article", data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return response.data.data;
 };
 
 export const updateArticleApi = async ({ id, data }: UpdateArticlePayload): Promise<Article> => {
-  const response = await http.put<ApiResponse<Article>>(`/article/${id}`, data, {
+  const response = await apiClient.put<ApiResponse<Article>>(`/article/${id}`, data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return response.data.data;
 };
 
 export const removeArticle = async (id: string): Promise<void> => {
-  await http.delete(`/article/${id}`);
+  await apiClient.delete(`/article/${id}`);
+};
+
+export const getAllCategories = async (): Promise<Category[]> => {
+  const response = await apiClient.get<ApiResponse<Category[]>>("/category");
+  return response.data.data;
+};
+
+export const getArticlesByCategory = async (
+  categoryId: string,
+  page: number,
+  limit: number,
+): Promise<Article[]> => {
+  const response = await apiClient.get<ApiResponse<Article[]>>("/article", {
+    params: { category: categoryId, page, limit },
+  });
+  return response.data.data;
+};
+
+export const useCategories = () => {
+  return useQuery<Category[]>({
+    queryKey: ["categories"],
+    queryFn: getAllCategories,
+  });
+};
+
+const ARTICLES_PAGE_SIZE = 9;
+
+export const useArticlesByCategory = (categoryId: string, limit = ARTICLES_PAGE_SIZE) => {
+  return useInfiniteQuery<Article[]>({
+    queryKey: ["articles", categoryId],
+    queryFn: ({ pageParam }) =>
+      getArticlesByCategory(categoryId, pageParam as number, limit),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length === limit ? allPages.length + 1 : undefined,
+    enabled: !!categoryId,
+  });
 };

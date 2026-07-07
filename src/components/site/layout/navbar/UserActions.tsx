@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { User, Settings, LogOut } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 
 export default function UserActions() {
   const { data: session, status } = useSession();
@@ -13,36 +13,29 @@ export default function UserActions() {
 
   if (session) {
     return (
-      <div className="relative hidden md:block cursor-pointer">
+      <div className="relative hidden md:block">
         <button
           onClick={() => setOpen(!open)}
-          className="flex items-center  rounded-full border border-green-600 px-2 py-1.5 text-green-600 hover:bg-green-600 hover:text-white transition-all"
+          className="flex items-center gap-1.5 rounded-full border border-brand   p-2  bg-brand text-white transition-colors cursor-pointer"
         >
-          <div className=" rounded-full flex items-center justify-center">
-            <User className="w-6 h-6" />
-          </div>
-
-          <span className="text-sm font-medium">
-            {session.user?.name}
-          </span>
+          <User className="w-5 h-5 relative left-0.5" />
+          <span className="text-sm font-medium">{session.user?.name}</span>
         </button>
 
         {open && (
-          <div className="absolute left-0 mt-2 w-48 rounded-lg border border-gray-200 bg-white shadow-lg overflow-hidden z-50">
-            
+          <div className="absolute left-0 mt-2 w-48 rounded-xl border border-gray-100 bg-white shadow-lg overflow-hidden z-50">
             <Link
               href="/profile"
-              className="flex items-center gap-x-2 px-4 py-2 text-sm hover:bg-gray-100"
               onClick={() => setOpen(false)}
+              className="flex items-center gap-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
             >
               <User className="w-4 h-4" />
               پروفایل
             </Link>
 
-
             <button
-              onClick={() => signOut()}
-              className="w-full flex items-center gap-x-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="w-full flex items-center gap-x-2 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 border-t border-gray-100"
             >
               <LogOut className="w-4 h-4" />
               خروج
@@ -54,12 +47,12 @@ export default function UserActions() {
   }
 
   return (
-    <div className="hidden md:flex items-center border border-green-600 rounded-lg py-2 px-2">
-      <Link href="/auth/login" className="text-sm px-1 text-green-600">
+    <div className="hidden md:flex items-center border border-brand rounded-lg py-2 px-2">
+      <Link href="/auth/login" className="text-sm px-1 text-brand">
         ورود
       </Link>
-      <span className="text-green-600">|</span>
-      <Link href="/auth/register" className="text-green-600 text-sm px-1">
+      <span className="text-brand/40">|</span>
+      <Link href="/auth/register" className="text-sm px-1 text-brand">
         ثبت نام
       </Link>
     </div>

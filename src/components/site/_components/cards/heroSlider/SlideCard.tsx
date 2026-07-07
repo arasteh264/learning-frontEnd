@@ -12,7 +12,7 @@ export default function SlideCard({ link, image, title }: SlideProps) {
     >
       <div className="relative w-full h-45 md:h-120">
         <Image
-          src={image}      
+          src={image}
           alt={title}
           fill
           className="object-cover transition-transform duration-300 hover:scale-105"

@@ -1,5 +1,5 @@
 import { ApiResponse } from "../types/globalType";
-import http from "./interseptor/http";
+import apiClient from "./interseptor/http.client";
 
 
 
@@ -25,7 +25,7 @@ export type PaymentResponse = {
 
 
 export const requestPayment = async (orderId: string): Promise<PaymentResponse> => {
-  const response = await http.post<ApiResponse<PaymentResponse>>(
+  const response = await apiClient.post<ApiResponse<PaymentResponse>>(
     "/payment/request",
     { orderId }
   );
@@ -33,7 +33,7 @@ export const requestPayment = async (orderId: string): Promise<PaymentResponse> 
 };
 
 export const getAllTransactions = async (): Promise<Transaction[]> => {
-  const response = await http.get<ApiResponse<Transaction[]>>(
+  const response = await apiClient.get<ApiResponse<Transaction[]>>(
     "/payment/transactions"
   );
   return response.data.data;

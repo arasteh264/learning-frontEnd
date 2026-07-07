@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import http from "./interseptor/http";
 import { ApiResponse } from "../types/globalType";
+import apiClient from "./interseptor/http.client";
+import serverApiClient from "./interseptor/http.server";
 
 export type Course = {
   id: string;
@@ -131,22 +132,22 @@ export type CommentReplyPayload = {
 };
 
 export const getAllCourse = async (): Promise<Course[]> => {
-  const response = await http.get<ApiResponse<Course[]>>("/course");
+  const response = await serverApiClient.get<ApiResponse<Course[]>>("/course");
   return response.data.data;
 };
 
 export const getCourseDetail = async (id: string): Promise<Course> => {
-  const response = await http.get<ApiResponse<Course>>(`/course/${id}`);
+  const response = await apiClient.get<ApiResponse<Course>>(`/course/${id}`);
   return response.data.data;
 };
 
 export const getCourseById = async (courseId: string): Promise<Course> => {
-  const { data } = await http.get<ApiResponse<Course>>(`/course/${courseId}`);
+  const { data } = await apiClient.get<ApiResponse<Course>>(`/course/${courseId}`);
   return data.data;
 };
 
 export const createCourseApi = async (data: FormData): Promise<Course> => {
-  const response = await http.post<ApiResponse<Course>>("/course", data, {
+  const response = await apiClient.post<ApiResponse<Course>>("/course", data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return response.data.data;
@@ -156,7 +157,7 @@ export const updateCourseApi = async ({
   id,
   data,
 }: UpdateCoursePayload): Promise<Course> => {
-  const response = await http.patch<ApiResponse<Course>>(
+  const response = await apiClient.patch<ApiResponse<Course>>(
     `/course/${id}`,
     data,
     {
@@ -167,11 +168,11 @@ export const updateCourseApi = async ({
 };
 
 export const removeCourse = async (id: string): Promise<void> => {
-  await http.delete(`/course/${id}`);
+  await apiClient.delete(`/course/${id}`);
 };
 
 export const searchCourseApi = async (query: string): Promise<Course[]> => {
-  const response = await http.get<ApiResponse<Course[]>>("/course/search", {
+  const response = await apiClient.get<ApiResponse<Course[]>>("/course/search", {
     params: { q: query },
   });
   return response.data.data;
@@ -180,7 +181,7 @@ export const searchCourseApi = async (query: string): Promise<Course[]> => {
 export const getLatestCourses = async (
   limit: number = 8,
 ): Promise<Course[]> => {
-  const response = await http.get<ApiResponse<Course[]>>("/course/latest", {
+  const response = await apiClient.get<ApiResponse<Course[]>>("/course/latest", {
     params: { limit },
   });
   return response.data.data;
@@ -189,7 +190,7 @@ export const getLatestCourses = async (
 export const getPopularFreeCourses = async (
   limit: number = 8,
 ): Promise<Course[]> => {
-  const response = await http.get<ApiResponse<Course[]>>(
+  const response = await apiClient.get<ApiResponse<Course[]>>(
     "/course/free/popular",
     {
       params: { limit },
@@ -199,21 +200,21 @@ export const getPopularFreeCourses = async (
 };
 
 export const getAllSession = async (): Promise<Session[]> => {
-  const response = await http.get<ApiResponse<Session[]>>("/session");
+  const response = await apiClient.get<ApiResponse<Session[]>>("/session");
   return response.data.data;
 };
 
 export const getCourseSessions = async (
   courseId: string,
 ): Promise<Session[]> => {
-  const { data } = await http.get<ApiResponse<Session[]>>(
+  const { data } = await apiClient.get<ApiResponse<Session[]>>(
     `/session/courses/${courseId}`,
   );
   return data.data;
 };
 
 export const getSessionDetail = async (id: string): Promise<Session> => {
-  const response = await http.get<ApiResponse<Session>>(`/session/${id}`);
+  const response = await apiClient.get<ApiResponse<Session>>(`/session/${id}`);
   return response.data.data;
 };
 
@@ -221,7 +222,7 @@ export const createSessionApi = async ({
   id,
   data,
 }: CreateSessionPayload): Promise<Session> => {
-  const response = await http.post<ApiResponse<Session>>(
+  const response = await apiClient.post<ApiResponse<Session>>(
     `/session/${id}`,
     data,
   );
@@ -232,7 +233,7 @@ export const updateSessionApi = async ({
   id,
   data,
 }: UpdateSessionPayload): Promise<Session> => {
-  const response = await http.put<ApiResponse<Session>>(
+  const response = await apiClient.put<ApiResponse<Session>>(
     `/course/session/${id}`,
     data,
     { headers: { "Content-Type": "multipart/form-data" } },
@@ -241,7 +242,7 @@ export const updateSessionApi = async ({
 };
 
 export const removeSession = async (id: string): Promise<void> => {
-  await http.delete(`/course/session/${id}`);
+  await apiClient.delete(`/course/session/${id}`);
 };
 
 export const getCourseComments = async (
@@ -253,7 +254,7 @@ export const getCourseComments = async (
 export const postCourseComment = async (
   payload: CommentPayload,
 ): Promise<CourseComment> => {
-  const { data } = await http.post<ApiResponse<CourseComment>>(
+  const { data } = await apiClient.post<ApiResponse<CourseComment>>(
     `/courses/${payload.courseId}/comments`,
     { content: payload.content },
   );
@@ -263,7 +264,7 @@ export const postCourseComment = async (
 export const postCommentReply = async (
   payload: CommentReplyPayload,
 ): Promise<CourseCommentReply> => {
-  const { data } = await http.post<ApiResponse<CourseCommentReply>>(
+  const { data } = await apiClient.post<ApiResponse<CourseCommentReply>>(
     `/comments/${payload.commentId}/reply`,
     { content: payload.content },
   );

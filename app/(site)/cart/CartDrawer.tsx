@@ -50,7 +50,7 @@ function CartItemCard({
             {course.name}
           </p>
         </Link>
-        <p className="text-xs text-green-600 mt-1">
+        <p className="text-xs text-brand mt-1">
           {finalPrice === 0
             ? "رایگان"
             : `${finalPrice.toLocaleString("fa-IR")} تومان`}
@@ -127,7 +127,7 @@ export default function CartDrawer({ open, onOpenChange }: Props) {
               <div className="border-t border-gray-100 px-4 py-4 shrink-0 flex flex-col gap-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">مبلغ قابل پرداخت</span>
-                  <span className="font-bold text-green-600">
+                  <span className="font-bold text-brand">
                     {cart?.total === 0
                       ? "رایگان"
                       : `${cart?.total.toLocaleString("fa-IR")} تومان`}
@@ -135,7 +135,7 @@ export default function CartDrawer({ open, onOpenChange }: Props) {
                 </div>
 
                 <Link href="/checkout" onClick={() => onOpenChange(false)}
-                  className="w-full text-center py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition-colors">
+                  className="w-full text-center py-3 rounded-xl bg-brand  text-white text-sm font-medium transition-colors">
                   ادامه و پرداخت
                 </Link>
               </div>

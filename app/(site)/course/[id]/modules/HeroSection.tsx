@@ -68,7 +68,7 @@ export default function HeroSection({ course }: Props) {
           <Button
             type="primary"
             icon={<ShoppingCart className="size-4" />}
-            className="!bg-[#1EB35B] !text-white !border-none !text-xs !px-5 hover:!bg-[#17914a]"
+            className="!bg-brand !text-white !border-none !text-xs !px-5 "
             size="large"
           >
             افزودن به سبد خرید

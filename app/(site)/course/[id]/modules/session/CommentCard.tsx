@@ -103,7 +103,7 @@ export default function CommentCard({ comment, courseId }: Props) {
             type="button"
             onClick={handleReplySubmit}
             disabled={!replyText.trim() || replyMutation.isPending}
-            className="shrink-0 size-8 rounded-full bg-[#1EB35B] text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#17914a] transition-colors"
+            className="shrink-0 size-8 rounded-full bg-[#1EB35B] text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#brand] transition-colors"
             aria-label="ارسال پاسخ"
           >
             <Send className="size-3.5" />

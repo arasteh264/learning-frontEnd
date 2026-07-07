@@ -3,11 +3,15 @@
 @import "swiper/css/pagination";
 @import "swiper/css/navigation";
 @plugin "@tailwindcss/typography";
-:root {
-  /*  Brand */
-  --brand: #4f7cff;
 
-  /*  Background system */
+:root {
+  /* Brand */
+  --brand: #4338ca;
+  --brand-dark: #312e81;
+  --brand-light: #eef2ff;
+  --brand-rgb: 67, 56, 202;
+
+  /* Background system */
   --bg: #ffffff;
   --surface: #f8fafc;
   --surface-2: #f1f5f9;
@@ -19,37 +23,59 @@
   /* Borders */
   --border: #e2e8f0;
 
-  /*  Status */
+  /* Status */
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
   --info: #3b82f6;
 
-  /*  Effects */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 10px 30px rgba(0,0,0,0.06);
+  /* Effects */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.06);
 
   --radius: 14px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans);
+[data-theme="dark"] {
+  --brand: #6366f1;
+  --brand-dark: #4338ca;
+  --brand-light: #1e1b4b;
+  --brand-rgb: 99, 102, 241;
+
+  --bg: #100e1c;
+  --surface: #191730;
+  --surface-2: #211f3d;
+
+  --text: #f4f4f6;
+  --muted: #a1a1c2;
+
+  --border: #2c2a4a;
 }
 
-@media (prefers-color-scheme: dark) {
- :root[data-theme="dark"] {
-  --foreground: #ffffff;
-  --background: #ffffff;
-  --menubackground:#1eb35b;
-  --color-brand: #1eb35b;
-}
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-light: var(--brand-light);
+
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  --font-sans: var(--font-iranyekan);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-iranyekan), sans-serif;
 }
 html, body {
@@ -73,10 +99,10 @@ html, body {
   margin-top: 12px;
   position: relative !important;
 }
-.footer-container{
-  background-color: #169a4a;
 
-
+.footer-container {
+  background-color: var(--brand-dark);
+}
 
 .custom-responsive-drawer .ant-drawer-content {
   overflow: hidden;
@@ -98,59 +124,57 @@ html, body {
   }
 }
 
-/* 💻 Desktop */
+/* Desktop */
 @media (min-width: 768px) {
   .custom-responsive-drawer .ant-drawer-content-wrapper {
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.06);
   }
-}}
-/* for  calendar*/
+}
+
+/* for calendar */
 .rmdp-calendar {
   border: none !important;
   border-radius: 16px !important;
   padding: 12px !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
   font-family: inherit !important;
 }
 .rmdp-header {
   background: transparent !important;
   padding: 8px 0 !important;
 }
-
 .rmdp-header-values {
   font-size: 14px;
   font-weight: 600;
-  color: #111827;
+  color: var(--text);
 }
 .rmdp-arrow-container {
   border-radius: 10px !important;
-  background: #f3f4f6 !important;
+  background: var(--surface) !important;
   transition: all 0.2s ease !important;
 }
-
 .rmdp-arrow-container:hover {
-  background: #e5e7eb !important;
+  background: var(--surface-2) !important;
   transform: scale(1.05);
 }
 .rmdp-day {
   border-radius: 10px !important;
   transition: all 0.15s ease !important;
 }
-
 .rmdp-day:hover {
-  background: #eff6ff !important;
-  color: #2563eb !important;
+  background: rgba(var(--brand-rgb), 0.08) !important;
+  color: var(--brand) !important;
   transform: scale(1.05);
 }
 .rmdp-selected {
-  background: #2563eb !important;
+  background: var(--brand) !important;
   color: white !important;
   border-radius: 10px !important;
-  box-shadow: 0 4px 12px rgba(37,99,235,0.3) !important;
+  box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.3) !important;
 }
 .rmdp-wrapper {
   animation: popIn 0.18s ease-out;
-    display: flex !important;
+  display: flex !important;
 }
 
 @keyframes popIn {
@@ -166,103 +190,83 @@ html, body {
 .rmdp-calendar,
 .rmdp-month-picker,
 .rmdp-year-picker {
-  background: white !important;
+  background: var(--bg) !important;
 }
 .rmdp-time-picker .bottom {
-    align-self: anchor-center ;
+  align-self: anchor-center;
 }
 .rmdp-time-picker {
-    align-self: anchor-center !important;
+  align-self: anchor-center !important;
 }
-
-
 
 .ant-table {
   background: var(--bg) !important;
   border-radius: var(--radius) !important;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
 }
 .ant-table-container {
   border-radius: 16px !important;
 }
-
 .ant-table-thead > tr > th {
   background: var(--surface) !important;
   color: var(--text) !important;
   font-weight: 600;
   border-bottom: 1px solid var(--border) !important;
 }
-
-
 .ant-table-tbody > tr {
   transition: all 0.2s ease;
 }
-
 .ant-table-tbody > tr:hover > td {
   background: var(--surface-2) !important;
 }
-
 .ant-table-tbody > tr > td {
   border-bottom: 1px solid var(--border) !important;
 }
+.ant-table-tbody > tr:hover {
+  box-shadow: 0 4px 20px rgba(var(--brand-rgb), 0.15);
+}
+
 .ant-pagination {
   display: flex !important;
   justify-content: center;
   margin-top: 16px;
 }
-
-
 .ant-pagination-item-active {
   background: var(--brand) !important;
   border-color: var(--brand) !important;
 }
-
 .ant-pagination-item-active a {
   color: white !important;
 }
-.ant-table {
-  backdrop-filter: blur(10px);
-}
-.ant-table-tbody > tr:hover {
-  box-shadow: 0 4px 20px rgba(30, 179, 91, 0.15);
-}
-
-
 
 .custom-sidebar-menu {
   color: #cbd5e1 !important;
 }
-
 .custom-sidebar-menu .ant-menu-item {
   color: #cbd5e1 !important;
   border-radius: 10px;
   margin: 6px 8px;
 }
-
 .custom-sidebar-menu .ant-menu-item:hover {
   color: white !important;
   background: rgba(255, 255, 255, 0.06) !important;
 }
-
 .custom-sidebar-menu .ant-menu-item-selected {
   color: white !important;
-  background: linear-gradient(90deg, #10b98120, #06b6d420) !important;
+  background: rgba(var(--brand-rgb), 0.35) !important;
 }
-
 .custom-sidebar-menu .ant-menu-submenu-title {
   color: #cbd5e1 !important;
 }
-
 .custom-sidebar-menu .ant-menu-submenu-title:hover {
   color: white !important;
   background: rgba(255, 255, 255, 0.05) !important;
 }
-
-/* icon color */
 .custom-sidebar-menu .anticon {
   color: inherit;
 }
-.ant-menu-title-content{
+.ant-menu-title-content {
   color: #ffffff;
 }

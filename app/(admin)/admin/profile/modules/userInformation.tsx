@@ -101,7 +101,7 @@ export default function ProfileInfo() {
       <div className="w-full max-w-2xl bg-white border border-gray-100 rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <button onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-1.5 text-sm text-[#1EB35B] hover:text-[#17914a] font-medium transition-colors">
+            className="flex items-center gap-1.5 text-sm text-[#1EB35B] hover:text-brand font-medium transition-colors">
             <EditOutlined /> ویرایش اطلاعات
           </button>
           <span className="text-sm font-medium text-[#1C2B27]">اطلاعات شناسایی</span>

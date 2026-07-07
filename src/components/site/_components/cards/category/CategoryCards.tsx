@@ -5,7 +5,7 @@ import { FolderOpen } from "lucide-react";
 
 export type CategoryCardProps = {
   title: string;
-  href: string;
+  href : string;
   image?: string | null;
   count?: number;
 };
@@ -41,7 +41,7 @@ export default function CategoryCard({
         {title}
       </h3>
 
-      <span className="flex items-center gap-1 px-1 py-1 mb-5 bg-[#1eb35b] text-[11px] sm:text-xs text-white rounded-md">
+      <span className="flex items-center gap-1 px-1 py-1 mb-5 bg-brand text-[11px] sm:text-xs text-white rounded-md">
         {(count ?? 0).toLocaleString("fa-IR")} دوره
         <span className="hidden sm:inline">آموزشی</span>
       </span>

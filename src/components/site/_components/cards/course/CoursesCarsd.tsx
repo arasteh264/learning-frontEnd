@@ -100,7 +100,7 @@ export default function CourseCard({
                       {(oldPrice ?? 0).toLocaleString("fa-IR")}
                     </span>
 
-                    <span className="bg-[#1eb35b] text-white text-[10px] py-1 px-1 rounded-md">
+                    <span className="bg-brand text-white text-[10px] py-1 px-1 rounded-md">
                       {discount.toLocaleString("fa-IR")}%
                     </span>
                   </div>

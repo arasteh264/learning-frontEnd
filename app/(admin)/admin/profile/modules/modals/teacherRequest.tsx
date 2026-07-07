@@ -1,10 +1,12 @@
 import { Modal, Input, Select } from "antd";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { requestForTeacher, TeacherRequestPayload } from "@/src/services/teacher";
+import {
+  requestForTeacher,
+  TeacherRequestPayload,
+} from "@/src/services/teacher";
 import { toast } from "react-toastify";
 import { ApiError } from "@/src/types/globalType";
-
 
 type Props = {
   open: boolean;
@@ -14,8 +16,6 @@ type Props = {
 type TeacherFormData = TeacherRequestPayload & {
   expertise: string[];
 };
-
-
 
 export default function TeacherRequestModal({ open, onClose }: Props) {
   const [formData, setFormData] = useState<TeacherFormData>({
@@ -39,7 +39,7 @@ export default function TeacherRequestModal({ open, onClose }: Props) {
 
   const handleChange = <K extends keyof TeacherFormData>(
     field: K,
-    value: TeacherFormData[K]
+    value: TeacherFormData[K],
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -49,12 +49,19 @@ export default function TeacherRequestModal({ open, onClose }: Props) {
   };
 
   return (
-    <Modal title="درخواست تدریس" open={open} onCancel={onClose}
-      onOk={handleSubmit} okText="ارسال درخواست" cancelText="بستن"
+    <Modal
+      title="درخواست تدریس"
+      open={open}
+      onCancel={onClose}
+      onOk={handleSubmit}
+      okText="ارسال درخواست"
+      cancelText="بستن"
       okButtonProps={{
-        className: "!bg-[#1EB35B] !border-[#1EB35B] hover:!bg-[#17914a]",
+        className: "!bg-[#1EB35B] !border-[#1EB35B] hover:!bg-[#brand]",
         loading: requestMutation.isPending,
-      }} centered>
+      }}
+      centered
+    >
       <div className="flex flex-col gap-3 pt-1">
         <span className="text-gray-400 text-sm leading-6">
           چند خط درباره خودتان و حوزه تخصصی‌تان بنویسید
@@ -62,17 +69,23 @@ export default function TeacherRequestModal({ open, onClose }: Props) {
 
         <div className="flex flex-col gap-1">
           <span className="text-sm text-[#1C2B27]">بیو</span>
-          <Input.TextArea value={formData.bio}
+          <Input.TextArea
+            value={formData.bio}
             onChange={(e) => handleChange("bio", e.target.value)}
-            placeholder="درباره تجربه و سابقه تدریس خود بنویسید" rows={3} />
+            placeholder="درباره تجربه و سابقه تدریس خود بنویسید"
+            rows={3}
+          />
         </div>
 
         <div className="flex flex-col gap-1">
           <span className="text-sm text-[#1C2B27]">تخصص‌ها</span>
-          <Select mode="tags" style={{ width: "100%" }}
+          <Select
+            mode="tags"
+            style={{ width: "100%" }}
             placeholder="مثلاً React, Nodejs"
             value={formData.expertise}
-            onChange={(values: string[]) => handleChange("expertise", values)} />
+            onChange={(values: string[]) => handleChange("expertise", values)}
+          />
         </div>
       </div>
     </Modal>

@@ -21,7 +21,7 @@ export default function CardSlider() {
           slider ? (
             <SlideCard
               link={slider.link}
-              image={slider.image}
+              image={slider.image_url}
               title={slider.title}
               order={slider.order}
             />

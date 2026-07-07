@@ -1,4 +1,3 @@
-"use client";
 import SectionHeader from "../ContentSectionHeader";
 import Link from "next/link";
 import CourseCard from "../cards/course/CoursesCarsd";

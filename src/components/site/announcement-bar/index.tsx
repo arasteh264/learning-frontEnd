@@ -1,18 +1,13 @@
 "use client";
-
 import { useGetAnnouncement } from "@/src/services/announcement";
-
 import { useEffect, useState } from "react";
 
 export default function AnnouncementBar() {
-  
   const { data } = useGetAnnouncement();
-  
-  const item = data;
 
+  const item = data;
   const endDate = item?.end_date;
   const text = item?.text;
-
   const [time, setTime] = useState({
     days: 0,
     hours: 0,
@@ -22,14 +17,10 @@ export default function AnnouncementBar() {
 
   useEffect(() => {
     if (!endDate) return;
-
     const target = new Date(endDate).getTime();
-
     const tick = () => {
       const diff = target - Date.now();
-
       if (diff <= 0) return;
-
       setTime({
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
@@ -37,17 +28,15 @@ export default function AnnouncementBar() {
         seconds: Math.floor((diff / 1000) % 60),
       });
     };
-
     tick();
     const interval = setInterval(tick, 1000);
-
     return () => clearInterval(interval);
   }, [endDate]);
 
   if (!data) return null;
 
   return (
-    <div className="w-full bg-black/90 text-white flex items-center justify-center">
+    <div className="w-full bg-brand-dark text-white flex items-center justify-center">
       <div className="container-custom flex justify-center flex-col md:flex-row items-center py-3 gap-2 md:py-0 md:h-20 md:gap-x-9 lg:gap-x-8">
         {endDate && (
           <div className="hidden md:flex gap-2.5 select-none">
@@ -110,6 +99,7 @@ export default function AnnouncementBar() {
     </div>
   );
 }
+
 function Box({
   value,
   label,
@@ -121,8 +111,8 @@ function Box({
 }) {
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-y-2 
-      w-12 h-12 lg:w-13 lg:h-13 
+      className={`flex flex-col items-center justify-center gap-y-2
+      w-12 h-12 lg:w-13 lg:h-13
       rounded-lg border ${opacity}`}
     >
       <span className="text-sm font-bold leading-4">{value}</span>

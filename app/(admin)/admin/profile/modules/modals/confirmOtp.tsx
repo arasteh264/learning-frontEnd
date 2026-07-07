@@ -20,7 +20,7 @@ export default function ConfirmOtp({ open, onClose, onSubmit }: Props) {
       cancelText="بستن"
       centered
       okButtonProps={{
-        className: "!bg-[#1EB35B] !border-[#1EB35B] hover:!bg-[#17914a]",
+        className: "!bg-[#1EB35B] !border-[#1EB35B] hover:!bg-brand",
       }}
       onOk={() => onSubmit(otp)}
     >

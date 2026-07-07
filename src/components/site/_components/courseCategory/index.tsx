@@ -14,7 +14,7 @@ export interface Category {
   created_at: string;
   updated_at: string;
 }
-export default function CourseCategory() {
+export default  function CourseCategory() {
   const { data, isLoading } = useCategoryList();
 
 const mapped: CategoryCardProps[] = (data ?? []).map((c) => ({

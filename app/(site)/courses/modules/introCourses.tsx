@@ -26,7 +26,7 @@ export default function IntroCourses() {
           <h1 className="text-2sm font-bold text-white py-4">
             همه دوره‌های آموزشی
           </h1>
-          <div className="bg-[#1eb35b] text-xl w-1 h-4 rounded-ee-md"></div>
+          <div className="bg-brand text-xl w-1 h-4 rounded-ee-md"></div>
         </div>
         <div className="flex">
           {stats.map((item, index) => {
