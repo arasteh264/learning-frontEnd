@@ -5,14 +5,40 @@ import { X } from "lucide-react";
 import { PanelType } from "./useResponsivePanel";
 import FilterContent from "./FilterContent";
 import UpdatesContent from "./UpdatesContent";
+import type { SortId } from "./Usecoursesfilter";
+
+interface FilterProps {
+  selectedCategories: string[];
+  onToggleCategory: (id: string) => void;
+  onlyFree: boolean;
+  onFreeChange: (value: boolean) => void;
+  onlyPreSale: boolean;
+  onPreSaleChange: (value: boolean) => void;
+  onApply: () => void;
+  onClear: () => void;
+  resultCount: number;
+}
+
+interface SortProps {
+  active: SortId;
+  onChange: (id: SortId) => void;
+}
 
 interface Props {
   open: boolean;
   type: PanelType;
   onClose: () => void;
+  filterProps: FilterProps;
+  sortProps: SortProps;
 }
 
-export default function ResponsivePanel({ open, type, onClose }: Props) {
+export default function ResponsivePanel({
+  open,
+  type,
+  onClose,
+  filterProps,
+  sortProps,
+}: Props) {
   const isFilter = type === "filter";
   const isUpdates = type === "updates";
 
@@ -21,7 +47,7 @@ export default function ResponsivePanel({ open, type, onClose }: Props) {
       open={open}
       onClose={onClose}
       placement={isMobile() ? "bottom" : "right"}
-      height={isMobile() ? (isFilter ? "100dvh" : "35vh") : "100%"}
+      height={isMobile() ? (isFilter ? "100dvh" : "45vh") : "100%"}
       width={420}
       closeIcon={false}
       styles={{
@@ -34,28 +60,23 @@ export default function ResponsivePanel({ open, type, onClose }: Props) {
         },
       }}
     >
-      <div className="container-custom flex items-center justify-between px-4 py-3 bg-gray-100">
-        <div className="text-sm font-semibold text-gray-800">
+      <div className="flex items-center justify-between border-b border-zinc-100 bg-zinc-50 px-4 py-3">
+        <div className="text-sm font-semibold text-zinc-800">
           {isFilter && "فیلتر نتایج"}
-          {isUpdates && "مرتب سازی بر اساس"}
+          {isUpdates && "مرتب‌سازی بر اساس"}
         </div>
 
         <button
           onClick={onClose}
-          className="
-     
-      p-2
-      rounded-full
-      hover:bg-gray-100
-      transition
-    "
+          className="rounded-full p-2 transition hover:bg-zinc-100"
         >
           <X size={18} />
         </button>
       </div>
+
       <div className="h-full overflow-y-auto">
-        {isFilter && <FilterContent />}
-        {isUpdates && <UpdatesContent />}
+        {isFilter && <FilterContent {...filterProps} />}
+        {isUpdates && <UpdatesContent {...sortProps} />}
       </div>
     </Drawer>
   );
