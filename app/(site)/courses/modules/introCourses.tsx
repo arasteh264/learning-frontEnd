@@ -2,32 +2,21 @@ import { Clock, GraduationCap, User } from "lucide-react";
 
 export default function IntroCourses() {
   const stats = [
-    {
-      icon: Clock,
-      count: 850,
-      label: "ساعت آموزش",
-    },
-    {
-      icon: GraduationCap,
-      count: 120,
-      label: "دوره تخصصی",
-    },
-    {
-      icon: User,
-      count: 12500,
-      label: "دانشجو",
-    },
+    { icon: Clock, count: 850, label: "ساعت آموزش" },
+    { icon: GraduationCap, count: 120, label: "دوره تخصصی" },
+    { icon: User, count: 12500, label: "دانشجو" },
   ];
 
   return (
     <section className="container-custom">
-      <div className="flex flex-col items-center bg-[#242424] rounded-2xl">
+      <div className="flex flex-col items-center rounded-2xl bg-[#242424]">
         <div className="flex items-center gap-2">
-          <h1 className="text-2sm font-bold text-white py-4">
+          <h1 className="py-4 text-2sm font-bold text-white">
             همه دوره‌های آموزشی
           </h1>
-          <div className="bg-brand text-xl w-1 h-4 rounded-ee-md"></div>
+          <div className="h-4 w-1 rounded-ee-md bg-brand text-xl"></div>
         </div>
+
         <div className="flex">
           {stats.map((item, index) => {
             const Icon = item.icon;
@@ -35,9 +24,9 @@ export default function IntroCourses() {
             return (
               <div
                 key={index}
-                className="flex flex-col items-center gap-2 px-5 text-center text-white py-5"
+                className="flex flex-col items-center gap-2 px-5 py-5 text-center text-white"
               >
-                <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-brand/20 bg-gray-500">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-500 bg-brand/20">
                   <Icon size={17} />
                 </div>
 
