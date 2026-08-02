@@ -7,7 +7,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 import BaseTable from "@/src/components/admin/tables/BaseTable";
-import { ArticleStatus, getAllArticles, removeArticle } from "@/src/services/article";
+import {
+  ArticleStatus,
+  getAllArticles,
+  removeArticle,
+} from "@/src/services/article/article";
 import { getArticleColumns } from "@/src/components/admin/tables/tablesColumns/articles.columns";
 import { ApiError } from "@/src/types/globalType";
 
@@ -39,7 +43,6 @@ export default function ArticlePage() {
   };
 
   const handleEdit = (id: string) => {
-    
     router.push(`/admin/article/edit/${id}`);
   };
 
@@ -77,7 +80,7 @@ export default function ArticlePage() {
       </div>
 
       <BaseTable
-        data={data|| []}
+        data={data || []}
         columns={columns}
         loading={isLoading || isFetching}
       />

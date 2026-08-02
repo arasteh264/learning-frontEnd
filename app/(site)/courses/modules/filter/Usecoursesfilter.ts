@@ -71,7 +71,6 @@ export function useCoursesFilter({ courses }: UseCoursesFilterParams) {
       const finalPrice = price - (price * (course.discount ?? 0)) / 100;
       const matchesFree = !onlyFree || finalPrice <= 0;
 
-      // اگر فیلد presale در داده وجود نداشته باشه، این فیلتر بی‌اثر می‌مونه
       const matchesPreSale =
         !onlyPreSale || (course as { presale?: boolean }).presale === true;
 

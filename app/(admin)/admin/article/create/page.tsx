@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { createArticleApi } from "@/src/services/article";
+import { createArticleApi } from "@/src/services/article/article";
 import { ArticleFormValues } from "@/src/validation/article.schema";
 import ArticleForm from "../modules/ArticleForm";
 import { ApiError } from "@/src/types/globalType";
@@ -39,16 +39,34 @@ export default function CreateArticlePage() {
     <section className="w-full max-w-6xl mx-auto px-6 py-8" dir="rtl">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center">
-          <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m-4-4h8M4 6h16" />
+          <svg
+            className="w-5 h-5 text-indigo-500"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4v16m-4-4h8M4 6h16"
+            />
           </svg>
         </div>
         <div>
-          <h1 className="text-lg font-semibold text-gray-900">افزودن مقاله جدید</h1>
-          <p className="text-sm text-gray-400">اطلاعات مقاله را تکمیل کنید و ذخیره کنید</p>
+          <h1 className="text-lg font-semibold text-gray-900">
+            افزودن مقاله جدید
+          </h1>
+          <p className="text-sm text-gray-400">
+            اطلاعات مقاله را تکمیل کنید و ذخیره کنید
+          </p>
         </div>
       </div>
-      <ArticleForm isPending={isPending} onSubmit={handleSubmit} onCancel={() => router.back()} />
+      <ArticleForm
+        isPending={isPending}
+        onSubmit={handleSubmit}
+        onCancel={() => router.back()}
+      />
     </section>
   );
 }

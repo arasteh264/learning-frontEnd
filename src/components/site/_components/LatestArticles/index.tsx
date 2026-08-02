@@ -4,7 +4,10 @@ import { ArrowLeft, Newspaper } from "lucide-react";
 import ArticleCard from "../cards/article/ArticleCard";
 import EmptyState from "@/src/components/base/EmptyState";
 import { useQuery } from "@tanstack/react-query";
-import { getAllArticles, getLatestArticles } from "@/src/services/article";
+import {
+  getAllArticles,
+  getLatestArticles,
+} from "@/src/services/article/article";
 
 export default async function LatestArticles() {
   const data = (await getLatestArticles()) ?? [];
