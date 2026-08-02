@@ -7,9 +7,7 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { getArticleById, Article } from "@/src/services/article";
-
-
+import { getArticleById, Article } from "@/src/services/article/article";
 
 type ArticleWithAuthor = Article & {
   teachers?: {
@@ -19,30 +17,40 @@ type ArticleWithAuthor = Article & {
   };
 };
 
-
-
 export default function ArticleDetailPage() {
   const params = useParams();
   const id = typeof params?.id === "string" ? params.id : null;
 
-  const { data: article, isLoading, isError } = useQuery<ArticleWithAuthor>({
+  const {
+    data: article,
+    isLoading,
+    isError,
+  } = useQuery<ArticleWithAuthor>({
     queryKey: ["article", id],
     queryFn: () => getArticleById(id as string),
     enabled: !!id,
   });
 
-  const schema = useMemo(() => ({
-    ...defaultSchema,
-    tagNames: [
-      ...(defaultSchema.tagNames ?? []),
-      "table", "thead", "tbody", "tr", "th", "td",
-    ],
-    attributes: {
-      ...defaultSchema.attributes,
-      th: ["align"],
-      td: ["align"],
-    },
-  }), []);
+  const schema = useMemo(
+    () => ({
+      ...defaultSchema,
+      tagNames: [
+        ...(defaultSchema.tagNames ?? []),
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "th",
+        "td",
+      ],
+      attributes: {
+        ...defaultSchema.attributes,
+        th: ["align"],
+        td: ["align"],
+      },
+    }),
+    [],
+  );
 
   if (isLoading) return <div>در حال لود...</div>;
   if (isError || !article) return <div>مقاله پیدا نشد</div>;
@@ -57,7 +65,7 @@ export default function ArticleDetailPage() {
 
   const readTime = Math.max(
     1,
-    Math.ceil(article.content.split(/\s+/).length / 200)
+    Math.ceil(article.content.split(/\s+/).length / 200),
   );
 
   const cleanContent = article.content.replace(/\r\n/g, "\n");
@@ -99,7 +107,10 @@ export default function ArticleDetailPage() {
         </div>
       )}
 
-      <div className="prose prose-sm max-w-none text-sm text-gray-700 leading-7" dir="rtl">
+      <div
+        className="prose prose-sm max-w-none text-sm text-gray-700 leading-7"
+        dir="rtl"
+      >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[[rehypeSanitize, schema]]}

@@ -1,7 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useArticlesByCategory, useCategories } from "@/src/services/article";
+import {
+  useArticlesByCategory,
+  useCategories,
+} from "@/src/services/article/article";
 import { FileQuestion } from "lucide-react";
 
 export default function Page() {
@@ -86,7 +89,10 @@ export default function Page() {
       {selectedCategory && articlesLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-2xl border border-border overflow-hidden">
+            <div
+              key={i}
+              className="rounded-2xl border border-border overflow-hidden"
+            >
               <div className="w-full h-40 bg-surface-2 animate-pulse" />
               <div className="p-4 space-y-2">
                 <div className="h-3 w-4/5 bg-surface-2 rounded animate-pulse" />
@@ -152,7 +158,10 @@ export default function Page() {
           {isFetchingNextPage && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="rounded-2xl border border-border overflow-hidden">
+                <div
+                  key={i}
+                  className="rounded-2xl border border-border overflow-hidden"
+                >
                   <div className="w-full h-40 bg-surface-2 animate-pulse" />
                   <div className="p-4 space-y-2">
                     <div className="h-3 w-4/5 bg-surface-2 rounded animate-pulse" />

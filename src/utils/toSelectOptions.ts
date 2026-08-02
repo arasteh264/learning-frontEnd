@@ -1,7 +1,4 @@
- type SelectOption = {
-  value: string;
-  label: string;
-};
+
 export const toSelectOptions = <
   T extends { id: string | number; name?: string; title?: string }
 >(

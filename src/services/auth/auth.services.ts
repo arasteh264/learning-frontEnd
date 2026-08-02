@@ -3,39 +3,39 @@
 import {
   AuthResponse,
   LoginApiResponse,
-  LoginType,
   RegisterResponse,
   RegisterType,
+  LoginType,
 } from "@/src/types/auth";
-import http from "../interseptor/http";
 import { signIn } from "next-auth/react";
 import serverApiClient from "../interseptor/http.server";
+import { isAxiosError } from "axios";
 
 export async function loginAction(data: LoginType): Promise<AuthResponse> {
-  const res = await fetch(`${process.env.API_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      identifier: data.identifier,
-      password: data.password,
-    }),
+  const res = await serverApiClient.post<LoginApiResponse>("/auth/login", {
+    identifier: data.identifier,
+    password: data.password,
   });
 
-  const result: LoginApiResponse = await res.json();
+  const loginData = res.data?.data;
 
-  if (!result?.data?.accessToken) {
+  if (!loginData?.accessToken) {
     return { ok: false, error: "توکن دریافت نشد" };
   }
 
-  await signIn("credentials", {
+  const signInResult = await signIn("credentials", {
     redirect: false,
     user: JSON.stringify({
-      id: result.data.id,
-      name: result.data.name,
-      role: result.data.user.role,
-      accessToken: result.data.accessToken,
+      id: loginData.id,
+      name: loginData.name,
+      role: loginData.user.role,
+      accessToken: loginData.accessToken,
     }),
   });
+
+  if (signInResult?.error) {
+    return { ok: false, error: "ورود ناموفق بود" };
+  }
 
   return { ok: true };
 }
@@ -43,9 +43,17 @@ export async function loginAction(data: LoginType): Promise<AuthResponse> {
 export const Register = async (
   data: RegisterType,
 ): Promise<RegisterResponse> => {
-  const response = await serverApiClient.post<{ data: RegisterResponse }>(
-    "/auth/register",
-    data,
-  );
-  return response.data.data;
+  try {
+    const { confirmPassword, ...payload } = data;
+    const response = await serverApiClient.post<{ data: RegisterResponse }>(
+      "/auth/register",
+      payload,
+    );
+    return response.data.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(error.response?.data?.message ?? "ثبت‌نام ناموفق بود");
+    }
+    throw error;
+  }
 };
