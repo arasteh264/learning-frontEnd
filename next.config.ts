@@ -1,14 +1,15 @@
-const withPWA = require('next-pwa')({
-  dest: 'public',
+const withPWA = require("next-pwa")({
+  dest: "public",
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
+  disable: process.env.NODE_ENV === "development",
+
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/eyjhwifhaehxxdcfuunx\.supabase\.co\/storage\/.*/i,
-      handler: 'CacheFirst',
+      handler: "CacheFirst",
       options: {
-        cacheName: 'supabase-images',
+        cacheName: "supabase-images",
         expiration: {
           maxEntries: 100,
           maxAgeSeconds: 30 * 24 * 60 * 60,
@@ -17,9 +18,9 @@ const withPWA = require('next-pwa')({
     },
     {
       urlPattern: /\/api\/.*/i,
-      handler: 'NetworkFirst',
+      handler: "NetworkFirst",
       options: {
-        cacheName: 'api-cache',
+        cacheName: "api-cache",
         networkTimeoutSeconds: 10,
       },
     },
@@ -28,12 +29,14 @@ const withPWA = require('next-pwa')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
+
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'eyjhwifhaehxxdcfuunx.supabase.co',
-        pathname: '/storage/v1/object/**',
+        protocol: "https",
+        hostname: "eyjhwifhaehxxdcfuunx.supabase.co",
+        pathname: "/storage/v1/object/**",
       },
     ],
   },
