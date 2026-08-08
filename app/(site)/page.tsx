@@ -1,4 +1,3 @@
-
 // export const dynamic = "force-dynamic";
 import AnnouncementBar from "@/src/components/site/announcement-bar";
 import HeroSearchSection from "@/src/components/site/_components/HeroSearchSection";
@@ -14,17 +13,13 @@ import CommentsSlider from "@/src/components/site/_components/CommentsSlider";
 import PopularFreeCourses from "@/src/components/site/_components/freePopularCourses";
 
 export default function Page() {
-
-
-
-
   return (
     <main>
       <AnnouncementBar />
-      
+
       <HeroSlider />
       <HeroSearchSection />
-        <SearchBox />
+      <SearchBox />
       <CourseFeatures />
       <LatestCourses />
       <CourseCategory />
@@ -51,9 +46,9 @@ export default function Page() {
           },
         ]}
       />
-      <LatestArticles/>
-      <CommentsSlider/>
-      <PopularFreeCourses/>
+      <LatestArticles />
+      <CommentsSlider />
+      <PopularFreeCourses />
     </main>
   );
 }

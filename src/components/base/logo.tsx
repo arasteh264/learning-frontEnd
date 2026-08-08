@@ -22,7 +22,7 @@ export default function Logo({ className = "", variant = "default" }) {
         className="font-black text-lg leading-none"
         style={{ color: isReversed ? "#FFFFFF" : "#1E1B4B" }}
       >
-        یاددای
+        یاددادی
       </span>
     </div>
   );

@@ -38,7 +38,7 @@ export type OrderSummary = Pick<Order, "id" | "totalPrice" | "status" | "created
 
 
 export const createOrder = async (): Promise<CreateOrderResponse> => {
-  const res = await apiClient.post<ApiResponse<CreateOrderResponse>>("/order/create");
+  const res = await apiClient.post<ApiResponse<CreateOrderResponse>>("/order");
   return res.data.data;
 };
 

@@ -33,10 +33,9 @@ export default function Footer() {
           <div className="flex flex-col gap-y-5">
             <Logo variant="reversed" />
             <p className="text-xs sm:text-sm text-white/60 leading-7">
-              شروع هرچیزی سخته، ولی وقتی مسیر درستی رو انتخاب کنی، با خیال
-              راحت و بدون استرس می‌تونی از مسیر لذت ببری. یاددای همراه توئه تا
-              چیزی که یاد می‌گیری رو یادداشت کنی، مرور کنی و هیچ‌وقت فراموش
-              نکنی.
+              شروع هرچیزی سخته، ولی وقتی مسیر درستی رو انتخاب کنی، با خیال راحت
+              و بدون استرس می‌تونی از مسیر لذت ببری. یاددادی همراه توئه تا چیزی
+              که یاد می‌گیری رو یادداشت کنی، مرور کنی و هیچ‌وقت فراموش نکنی.
             </p>
           </div>
 
@@ -122,9 +121,12 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col-reverse sm:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-white/50">
           <p>
-            کلیه حقوق برای <span className="text-brand font-demibold">یاددای</span> محفوظ است.
+            کلیه حقوق برای{" "}
+            <span className="text-brand font-demibold">یاددادی</span> محفوظ است.
           </p>
-          <p className="dir-ltr opacity-70">Built pixel by pixel by arasteh264</p>
+          <p className="dir-ltr opacity-70">
+            Built pixel by pixel by arasteh264
+          </p>
         </div>
       </div>
     </footer>

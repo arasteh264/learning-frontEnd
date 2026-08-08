@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { navItems } from "@/src/config/siteMenu";
 import { ChevronDown, MoveLeft } from "lucide-react";
@@ -14,26 +15,58 @@ export default function MobileMenu({
 }) {
   const coursesMenu = navItems.find((item) => item.megaMenu);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  if (!coursesMenu) return null;
+  // Portal target only exists on the client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  return (
+  // Lock body scroll while the drawer is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  // Close on Escape
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    if (open) document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
+
+  if (!coursesMenu || !mounted) return null;
+
+  return createPortal(
     <>
       <div
-        className={`fixed inset-0 bg-black/40 transition-opacity ${
+        className={`fixed inset-0 bg-black/40 z-40 transition-opacity ${
           open ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
+        aria-hidden="true"
       />
 
       <div
-        className={`fixed top-0 right-0 h-full w-72 bg-white shadow-xl transition-transform duration-300 ${
+        role="dialog"
+        aria-modal="true"
+        aria-label="منوی دوره‌ها"
+        className={`fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-white shadow-xl transition-transform duration-300 z-50 overflow-y-auto ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="bg-brand/5 py-5 text-center">
           <Link
             href="/auth/login"
+            onClick={onClose}
             className="text-[#1E1B4B] font-bold inline-flex items-center gap-2"
           >
             <MoveLeft className="w-4 h-4" />
@@ -54,6 +87,7 @@ export default function MobileMenu({
               <div key={category.href} className="border-b border-gray-100">
                 <button
                   onClick={() => setActiveCategory(isOpen ? null : index)}
+                  aria-expanded={isOpen}
                   className="w-full flex justify-between items-center py-3 px-3 text-sm font-semibold"
                 >
                   <ChevronDown
@@ -89,6 +123,7 @@ export default function MobileMenu({
           })}
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }
