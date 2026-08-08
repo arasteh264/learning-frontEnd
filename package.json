@@ -25,6 +25,7 @@
     "moment-jalaali": "^0.10.4",
     "next": "15.3.8",
     "next-auth": "^4.24.14",
+    "next-pwa": "^5.6.0",
     "react": "^19.2.5",
     "react-date-object": "^2.1.9",
     "react-dom": "^19.2.5",

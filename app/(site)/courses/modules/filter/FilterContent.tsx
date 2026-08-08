@@ -28,13 +28,11 @@ export default function FilterContent({
 }: Props) {
   return (
     <div className="flex h-full flex-col pt-5">
-      {/* هدر */}
       <h2 className="shrink-0 px-5 text-lg font-bold">دسته‌بندی‌ها</h2>
 
-      {/* دسته‌بندی‌ها */}
       <div className="mt-4 min-h-0 flex-1 space-y-1 overflow-y-auto px-3">
-        {categories.map((item) => {
-          const checked = selectedCategories.includes(item.id);
+        {categories.map((item:any) => {
+          const checked = selectedCategories.includes(item.id as string);
 
           return (
             <label
@@ -44,7 +42,7 @@ export default function FilterContent({
               <input
                 type="checkbox"
                 checked={checked}
-                onChange={() => onToggleCategory(item.id)}
+                onChange={() => onToggleCategory(item.id as string)}
                 className="h-4 w-4 accent-zinc-900"
               />
               <span className="text-sm text-zinc-700">{item.label}</span>

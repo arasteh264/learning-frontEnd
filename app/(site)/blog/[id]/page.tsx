@@ -83,7 +83,7 @@ export default function ArticleDetailPage() {
           <>
             <span className="text-xs text-gray-500">{author.bio}</span>
             <Image
-              src={author.avatar || "/images/default-avatar.png"}
+              src={author.avatar || "/images/avatar-placeholder.png"}
               alt={author.bio || "نویسنده"}
               width={24}
               height={24}

@@ -31,3 +31,26 @@ export type RegisterResponse = {
   message: string;
   status:number;
 };
+export type OtpChannel = "sms" | "email";
+export type OtpPurpose = "login" | "reset_password";
+
+export type SendOtpType = {
+  identifier: string;
+  channel: OtpChannel;
+  purpose: OtpPurpose;
+};
+
+export type VerifyOtpType = {
+  identifier: string;
+  code: string;
+  purpose: OtpPurpose;
+};
+
+export type ResetPasswordType = {
+  identifier: string;
+  code: string;
+  newPassword: string;
+};
+
+export type OtpApiResponse = { success: boolean };
+export type VerifyOtpApiResponse = { data: { verified: boolean; identifier: string } };
