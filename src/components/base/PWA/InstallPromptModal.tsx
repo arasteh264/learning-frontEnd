@@ -11,20 +11,19 @@ export function InstallPromptModal() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    // چک کن قبلاً رد نکرده باشه (توی همین دستگاه)
     const wasDismissed = localStorage.getItem("pwa-install-dismissed");
     if (wasDismissed) {
       setDismissed(true);
       return;
     }
 
-    // چند ثانیه صبر کن، بعد نشونش بده (تا مزاحم لحظه‌ی اول ورود نشه)
     if (isInstallable) {
       const timer = setTimeout(() => setShow(true), 3000);
       return () => clearTimeout(timer);
     }
-  }, [isInstallable]);
 
+    return undefined;
+  }, [isInstallable]);
   const handleInstall = async () => {
     await promptInstall();
     setShow(false);
