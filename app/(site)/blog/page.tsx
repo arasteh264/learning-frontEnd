@@ -22,8 +22,8 @@ export default function Page() {
   const articles = data?.pages.flat() ?? [];
 
   useEffect(() => {
-    if (!selectedCategory && categories && categories.length > 0) {
-      setSelectedCategory(categories[0].id);
+    if (!selectedCategory && categories?.[0]) {
+      setSelectedCategory(String(categories[0].id));
     }
   }, [categories, selectedCategory]);
 
@@ -35,7 +35,7 @@ export default function Page() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
@@ -72,9 +72,9 @@ export default function Page() {
           {categories?.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
+              onClick={() => setSelectedCategory(String(cat.id))}
               className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === cat.id
+                selectedCategory === String(cat.id)
                   ? "bg-brand text-white"
                   : "bg-surface text-muted hover:bg-surface-2"
               }`}

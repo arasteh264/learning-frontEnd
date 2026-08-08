@@ -11,7 +11,7 @@ export function mapCourseToCardProps(course: any) {
     description: course.description,
     author: {
       name: course.teachers?.bio || "بدون مدرس",
-      avatar: course.teachers?.avatar || "/images/default-avatar.png",
+      avatar: course.teachers?.avatar || "/images/avatar-placeholder.png",
     },
     rating: course.teachers?.rating ?? 0,
     students: course.students_count ?? 0,
