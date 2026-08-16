@@ -1,21 +1,21 @@
-// components/InstallPromptModal.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { X, Download } from "lucide-react";
 import { useInstallPrompt } from "@/src/hooks/useInstallPrompt";
+import { Button } from "antd";
 
 export function InstallPromptModal() {
   const { isInstallable, promptInstall } = useInstallPrompt();
-  const [dismissed, setDismissed] = useState(false);
-  const [show, setShow] = useState(false);
+  const [dismissed, setDismissed] = useState(true);
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
-    const wasDismissed = localStorage.getItem("pwa-install-dismissed");
-    if (wasDismissed) {
+    // const wasDismissed = localStorage.getItem("pwa-install-dismissed");
+    // if (wasDismissed) {
       setDismissed(true);
-      return;
-    }
+    //   return;
+    // }
 
     if (isInstallable) {
       const timer = setTimeout(() => setShow(true), 3000);
@@ -45,31 +45,28 @@ export function InstallPromptModal() {
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
               <Download className="h-6 w-6" />
             </div>
-            <div>
+            <div className="text-right">
               <h3 className="font-semibold text-gray-900">نصب یاددادی</h3>
               <p className="text-sm text-gray-500">
                 نسخه‌ی موبایل رو نصب کن، سریع‌تر و راحت‌تر
               </p>
             </div>
           </div>
-          <button onClick={handleDismiss} className="text-gray-400">
-            <X className="h-5 w-5" />
-          </button>
         </div>
 
         <div className="mt-4 flex gap-2">
-          <button
+          <Button
             onClick={handleInstall}
             className="flex-1 rounded-xl bg-brand py-2.5 text-white font-medium"
           >
             نصب کن
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleDismiss}
             className="flex-1 rounded-xl border border-gray-200 py-2.5 text-gray-600"
           >
             فعلاً نه
-          </button>
+          </Button>
         </div>
       </div>
     </div>

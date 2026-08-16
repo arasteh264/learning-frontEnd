@@ -3,13 +3,23 @@ const withPWA = require("next-pwa")({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
-
+  fallbacks: {
+    document: "/offline",
+  },
   runtimeCaching: [
     {
-      urlPattern: /^https:\/\/eyjhwifhaehxxdcfuunx\.supabase\.co\/storage\/.*/i,
-      handler: "CacheFirst",
+      urlPattern: ({ request }: any) => request.mode === 'navigate',
+      handler: 'NetworkFirst',
       options: {
-        cacheName: "supabase-images",
+        cacheName: 'pages-cache',
+        networkTimeoutSeconds: 10,
+      },
+    },
+    {
+      urlPattern: /^https:\/\/eyjhwifhaehxxdcfuunx\.supabase\.co\/storage\/.*/i,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'supabase-images',
         expiration: {
           maxEntries: 100,
           maxAgeSeconds: 30 * 24 * 60 * 60,
@@ -18,9 +28,9 @@ const withPWA = require("next-pwa")({
     },
     {
       urlPattern: /\/api\/.*/i,
-      handler: "NetworkFirst",
+      handler: 'NetworkFirst',
       options: {
-        cacheName: "api-cache",
+        cacheName: 'api-cache',
         networkTimeoutSeconds: 10,
       },
     },
