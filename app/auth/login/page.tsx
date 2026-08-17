@@ -97,7 +97,7 @@ export default function LoginPage() {
             />
             مرا به خاطر بسپار
           </label>
-          <Link href="/forgot-password" className="text-brand hover:text-brand-dark transition-colors">
+          <Link href="/auth/forgot-password" className="text-brand hover:text-brand-dark transition-colors">
             فراموشی رمز؟
           </Link>
         </div>

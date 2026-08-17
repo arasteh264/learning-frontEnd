@@ -53,4 +53,13 @@ export type ResetPasswordType = {
 };
 
 export type OtpApiResponse = { success: boolean };
-export type VerifyOtpApiResponse = { data: { verified: boolean; identifier: string } };
+export type VerifyOtpApiResponse = {
+  data: {
+    verified: boolean;
+    identifier: string;
+    accessToken?: string;
+    id?: string;
+    name?: string;
+    user?: { role: string };
+  };
+};
